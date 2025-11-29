@@ -1,0 +1,74 @@
+/* El contenedor principal de la aplicación (excluyendo el Header/Footer) */
+.app-content {
+    /* El contenido ocupará el 100% del ancho disponible */
+    width: 100%; 
+    max-width: var(--max-width); /* Utiliza la variable definida en index.css */
+    margin: 0 auto;
+    padding: 30px 40px; /* Padding generoso a los lados y verticalmente */
+    min-height: calc(100vh - 80px); /* Asegura que la página sea visiblemente larga */
+}
+
+/* Estilo para los títulos de sección (ej. "Mis Viajes", "Estadísticas") */
+.section-title {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: var(--text);
+    margin-bottom: 24px;
+    text-align: left; /* Alineación a la izquierda para el contenido */
+}
+
+/* Contenedor principal para organizar cards (viajes, destinos) */
+.grid-layout {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Columnas responsivas */
+    gap: 25px; /* Espacio entre los elementos */
+    margin-bottom: 40px;
+}
+
+/* Estilo para los cards dentro de las secciones de Viajes/Destinos */
+.content-card {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--color-border);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.content-card:hover {
+    transform: translateY(-2px); /* Efecto 3D sutil para interactividad */
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+}
+
+.btn-icon {
+    /* Botones pequeños, a menudo usados para editar o eliminar */
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--muted);
+    padding: 8px;
+    border-radius: 50%;
+    transition: color 0.2s ease, background 0.2s ease;
+}
+
+.btn-icon:hover {
+    color: var(--accent);
+    background: rgba(59, 130, 246, 0.1);
+}
+
+@media (max-width: 768px) {
+    .app-content {
+        padding: 20px 20px; /* Menos padding en pantallas pequeñas */
+    }
+
+    .section-title {
+        font-size: 1.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .grid-layout {
+        /* En móviles, las tarjetas pueden apilarse si es necesario */
+        grid-template-columns: 1fr; 
+    }
+}

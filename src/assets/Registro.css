@@ -1,0 +1,163 @@
+/* ----------------------------------- */
+/* CONFIGURACIÓN BASE Y COLORES */
+/* ----------------------------------- */
+:root {
+  /* Colores de Rumbo Cero */
+  --color-primary: #007bff; /* Azul vibrante, como el de un cielo claro */
+  --color-secondary: #6c757d;
+  --color-background-soft: #eef2f9; /* Fondo muy claro */
+  --color-text-dark: #343a40;
+  --color-card-shadow: rgba(0, 0, 0, 0.15); /* Sombra suave y profunda */
+}
+
+/* ----------------------------------- */
+/* 1. LAYOUT Y CONTENEDOR PRINCIPAL */
+/* ----------------------------------- */
+
+/* Fondo con degradado sutil para un aspecto moderno */
+.page-center {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 30px;
+  /* Degradado sutil del azul al blanco/gris claro */
+  background: linear-gradient(135deg, var(--color-background-soft) 0%, #ffffff 100%);
+}
+
+/* Contenedor del formulario (la "caja" elevada) */
+.login-container {
+  width: 100%;
+  max-width: 450px; /* Un poco más ancho */
+  padding: 50px 40px; /* Más padding */
+  background: white;
+  border-radius: 16px; /* Bordes más suaves */
+  /* Sombra más profunda y elegante */
+  box-shadow: 0 15px 40px var(--color-card-shadow); 
+  text-align: center;
+  /* Transición para efectos futuros */
+  transition: transform 0.3s ease-in-out;
+}
+
+/* Efecto al pasar el ratón (opcional) */
+.login-container:hover {
+    transform: translateY(-2px);
+}
+
+/* Títulos y Subtítulos */
+.login-title {
+  font-size: 2rem;
+  font-weight: 800; /* Más grosor */
+  margin-bottom: 5px;
+  color: var(--color-text-dark); 
+}
+
+.login-subtitle {
+  color: var(--color-secondary);
+  margin-bottom: 30px;
+  font-weight: 300;
+}
+
+/* ----------------------------------- */
+/* 2. FORMULARIO E INPUTS MODERNOS */
+/* ----------------------------------- */
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px; 
+}
+
+.form-group {
+  text-align: left;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: var(--color-text-dark);
+  font-size: 0.95rem;
+}
+
+.form-input {
+  width: 100%;
+  padding: 12px 0; /* Padding vertical, sin horizontal */
+  border: none;
+  border-bottom: 2px solid var(--color-secondary); /* Borde inferior elegante */
+  background: transparent;
+  border-radius: 0;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  box-sizing: border-box; 
+  font-size: 1rem;
+}
+
+/* Efecto Focus (la clave del diseño moderno) */
+.form-input:focus {
+  border-color: var(--color-primary); /* La línea se vuelve azul */
+  outline: none;
+  box-shadow: 0 1px 0 0 var(--color-primary); /* Sombra sutil en el borde inferior */
+}
+
+/* ----------------------------------- */
+/* 3. BOTÓN PRINCIPAL DESTACADO */
+/* ----------------------------------- */
+
+.btn-primary {
+  background-color: var(--color-primary);
+  color: white;
+  padding: 15px 25px; /* Más grande */
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
+  font-weight: 700;
+  font-size: 1.1rem;
+  letter-spacing: 0.5px;
+  /* Sombra para destacar el botón */
+  box-shadow: 0 8px 15px rgba(0, 123, 255, 0.4); 
+}
+
+.btn-primary:hover {
+  background-color: #0056b3; /* Tono más oscuro al pasar el ratón */
+  transform: translateY(-1px); /* Efecto 3D sutil */
+  box-shadow: 0 12px 20px rgba(0, 123, 255, 0.5);
+}
+
+.btn-full-width {
+  width: 100%;
+  margin-top: 25px;
+}
+
+/* ----------------------------------- */
+/* 4. ALERTAS Y FOOTER */
+/* ----------------------------------- */
+
+.alert-error {
+  color: #dc3545;
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  text-align: center;
+  margin-top: 15px; 
+}
+
+.login-footer {
+  margin-top: 30px;
+  font-size: 0.95rem;
+  color: var(--color-secondary);
+}
+
+.link-text {
+  color: var(--color-primary);
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s;
+}
+
+.link-text:hover {
+  color: #0056b3;
+  text-decoration: underline;
+}

@@ -1,0 +1,87 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 40px; /* Aumentado para más espacio */
+  border-bottom: 1px solid #e5e7eb;
+  background: #fff;
+  /* Sombra sutil para destacarlo del fondo */
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05); 
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 20px; /* Separación aumentada */
+}
+
+.brand {
+  text-decoration: none;
+  color: #111827;
+  font-weight: 800; /* Más impactante */
+  font-size: 24px; /* Logo más grande */
+  letter-spacing: -0.5px; /* Pequeño ajuste visual */
+}
+
+.nav {
+  display: flex;
+  gap: 15px; /* Más espacio entre enlaces */
+  margin-left: 12px;
+}
+
+.nav-link {
+  color: #374151;
+  text-decoration: none;
+  font-size: 14px;
+  /* Transición para un hover suave */
+  transition: color 0.3s ease; 
+}
+
+.nav-link:hover {
+  color: #3b82f6; /* Color primario al pasar el ratón */
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.greeting {
+  color: #374151;
+  font-size: 14px;
+}
+
+.btn {
+  padding: 8px 16px; /* Botones más grandes y fáciles de pulsar */
+  border-radius: 8px; /* Bordes más suaves */
+  text-decoration: none;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 700; /* Texto del botón negrita */
+  border: none;
+  transition: opacity 0.3s ease, transform 0.1s ease;
+}
+
+.btn:hover {
+  opacity: 0.9;
+}
+
+.btn:active {
+  transform: scale(0.98); /* Efecto de "clic" */
+}
+
+.btn-logout {
+  background: #ef4444;
+  color: #fff;
+}
+
+.btn-login {
+  background: #3b82f6;
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  /* Sombra para destacarlo como CTA (Call to Action) */
+  box-shadow: 0 4px 6px rgba(59, 130, 246, 0.3);
+}
