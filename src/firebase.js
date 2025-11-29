@@ -1,29 +1,23 @@
-// src/firebase.js
-
+// Importa las funciones necesarias de los SDKs de Firebase
 import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
 
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
+// 1. Configuración de Firebase (LEYENDO DESDE EL ARCHIVO .env)
 const firebaseConfig = {
-  apiKey: "AIzaSyDv-8Cyuxkjg4JVzsipp-avoovTAGNkcpM",
-  authDomain: "proyecto-fct-roberto.firebaseapp.com",
-  projectId: "proyecto-fct-roberto",
-  storageBucket: "proyecto-fct-roberto.firebasestorage.app",
-  messagingSenderId: "622521611256",
-  appId: "1:622521611256:web:41df14b1f87b8ed0c2dc0d",
-  measurementId: "G-DNF04GPNR9"
+  // Asegúrate que los nombres de las variables en .env SÍ EMPIECEN con VITE_
+  apiKey: import.meta.env.VITE_API_KEY, 
+  authDomain: import.meta.env.VITE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_APP_ID, 
+  measurementId: import.meta.env.VITE_MEASUREMENT_ID
 };
 
-// Initialize Firebase
+// 2. Inicializa Firebase
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-const auth = getAuth(app);
-const db = getFirestore(app); 
 
-// Exportamos todos los servicios, incluyendo 'db'
-export { app, analytics, auth, db }; 
+// 3. Inicializa Servicios y los exporta
+export const db = getFirestore(app);
+export const auth = getAuth(app);
