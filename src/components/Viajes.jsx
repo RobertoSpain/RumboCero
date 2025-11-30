@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { db, auth } from '../firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 import { collection, query, where, onSnapshot, deleteDoc, doc } from 'firebase/firestore';
-// 1. IMPORTANTE: Importamos Link para poder navegar
 import { Link } from 'react-router-dom';
 
 const Viajes = () => {
@@ -23,10 +22,8 @@ const Viajes = () => {
 
   useEffect(() => {
     if (!miUid) return;
-
     const viajesRef = collection(db, 'viajes');
     const q = query(viajesRef, where('userId', '==', miUid));
-
     const unsubscribeDatos = onSnapshot(q, (snapshot) => {
       const listaViajes = snapshot.docs.map((doc) => {
         const data = doc.data();
@@ -37,7 +34,6 @@ const Viajes = () => {
           fechaFinal: data.fechaFinal?.toDate ? data.fechaFinal.toDate().toLocaleDateString() : 'Pendiente',
         };
       });
-
       setViajes(listaViajes);
       setLoading(false);
     }, (error) => {
@@ -48,7 +44,6 @@ const Viajes = () => {
     return () => unsubscribeDatos();
 
   }, [miUid]);
-
 
   const borrarViaje = async (idViaje) => {
     if (window.confirm("🗑️ ¿Seguro que quieres eliminar este viaje? No se puede recuperar.")) {
@@ -61,7 +56,6 @@ const Viajes = () => {
     }
   };
 
-
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen">
@@ -69,7 +63,6 @@ const Viajes = () => {
       </div>
     );
   }
-
   if (viajes.length === 0) {
     return (
       <div className="text-center p-10 mt-10 bg-white rounded-xl shadow-lg max-w-md mx-auto border border-gray-200">
@@ -81,7 +74,6 @@ const Viajes = () => {
       </div>
     );
   }
-
   return (
     <div className="p-4 sm:p-8 bg-gray-50 min-h-screen">
       <h1 className="text-3xl font-extrabold text-gray-800 mb-8 border-b-4 border-teal-500 inline-block pb-1">
@@ -91,15 +83,13 @@ const Viajes = () => {
       <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
         {viajes.map((viaje) => (
           <div key={viaje.id} className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 flex flex-col">
-            
-            {/* 2. NUEVO: Zona de la Foto de Portada */}
-            <div className="h-48 w-full bg-gray-200 overflow-hidden relative">
+                        <div className="h-48 w-full bg-gray-200 overflow-hidden relative">
                 {viaje.foto ? (
                     <img 
                         src={viaje.foto} 
                         alt={viaje.name} 
                         className="w-full h-full object-cover"
-                        // Pequeño truco: si la url falla, ponemos un color de fondo
+                        //  si la url falla, ponemos un color de fondo
                         onError={(e) => {e.target.style.display='none'; e.target.parentElement.style.backgroundColor='#ccfbf1'}} 
                     />
                 ) : (
@@ -109,7 +99,6 @@ const Viajes = () => {
                     </div>
                 )}
             </div>
-            
             <div className="p-6 flex-grow">
               <h2 className="text-xl font-bold text-gray-800 mb-2 truncate" title={viaje.name}>
                 {viaje.name}
@@ -124,8 +113,6 @@ const Viajes = () => {
                 {viaje.descripcion || 'Sin notas adicionales.'}
               </p>
             </div>
-
-            {/* Botonera inferior */}
             <div className="bg-gray-50 px-6 py-4 border-t flex justify-between items-center">
               <button 
                 onClick={() => borrarViaje(viaje.id)}
@@ -133,8 +120,6 @@ const Viajes = () => {
               >
                 🗑️ Eliminar
               </button>
-
-              {/* 3. NUEVO: El botón ahora es un Link real a la página de detalles */}
               <Link 
                 to={`/viajes/${viaje.id}`}
                 className="text-teal-600 hover:text-teal-800 text-sm font-bold bg-white border border-teal-200 px-4 py-1 rounded-full shadow-sm hover:shadow transition"

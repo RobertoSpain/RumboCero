@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { collection, addDoc, Timestamp } from "firebase/firestore";
 import { auth, db } from "../firebase.js"; 
-import { onAuthStateChanged } from 'firebase/auth'; // Necesario para gestionar el estado de sesión
+import { onAuthStateChanged } from 'firebase/auth'; 
 
 function CrearViaje() {
   // Estados para los campos de la colección Viaje
