@@ -1,9 +1,9 @@
-// Componente de inicio de sesión para la aplicación
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { signInWithPopup, GoogleAuthProvider, signInWithEmailAndPassword } from "firebase/auth";
-import { doc, getDoc } from "firebase/firestore"; 
-import { auth, db } from "../firebase"; 
+import { doc, getDoc } from "firebase/firestore";
+import { auth, db } from "../firebase.js";
+import '../assets/login.css'; 
 
 function Login({ onLogin }) {
   const [usuario, setUsuario] = useState('');
@@ -11,20 +11,16 @@ function Login({ onLogin }) {
   const [error, setError] = useState('');
   const navegar = useNavigate();
 
-  // Función auxiliar para buscar el rol
   const obtenerRolYRedirigir = async (userResult) => {
     try {
       const docRef = doc(db, "usuarios", userResult.uid);
       const docSnap = await getDoc(docRef);
-
-      let rolUsuario = 'usuario'; 
+      let rolUsuario = 'usuario';
       if (docSnap.exists()) {
         rolUsuario = docSnap.data().rol;
       }
-
       onLogin(userResult.displayName || userResult.email, rolUsuario);
-      navegar('/'); 
-      
+      navegar('/');
     } catch (err) {
       console.error("Error al obtener rol:", err);
       onLogin(userResult.displayName || userResult.email, 'usuario');
@@ -32,7 +28,6 @@ function Login({ onLogin }) {
     }
   };
 
-  // Login con Usuario y Contraseña
   const manejarEnvio = async (e) => {
     e.preventDefault();
     if (usuario && contrasena) {
@@ -40,7 +35,7 @@ function Login({ onLogin }) {
         const result = await signInWithEmailAndPassword(auth, usuario, contrasena);
         await obtenerRolYRedirigir(result.user);
       } catch (err) {
-        console.log(err); 
+        console.log(err);
         setError('Usuario o contraseña incorrectos');
       }
     } else {
@@ -48,7 +43,6 @@ function Login({ onLogin }) {
     }
   };
 
-  // Login con Google
   const manejarGoogle = async () => {
     const provider = new GoogleAuthProvider();
     try {
@@ -61,36 +55,40 @@ function Login({ onLogin }) {
   };
 
   return (
-    <section style={{ padding: '20px', textAlign: 'center' }}>
-      <h2>Login</h2>
-      <form onSubmit={manejarEnvio} style={{ display: 'flex', flexDirection: 'column', gap: '10px', maxWidth: '300px', margin: '0 auto' }}>
-        <input
-          type="text"
-          placeholder="Correo electrónico"
-          value={usuario}
-          onChange={e => setUsuario(e.target.value)}
-          style={{ padding: '8px' }}
-        />
-        <input
-          type="password"
-          placeholder="Contraseña"
-          value={contrasena}
-          onChange={e => setContrasena(e.target.value)}
-          style={{ padding: '8px' }}
-        />
-        <button type="submit" style={{ padding: '8px', backgroundColor: '#007bff', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>
-          Login
-        </button>
-      </form>
-      
-      <div style={{ marginTop: '15px' }}>
-        <button onClick={manejarGoogle} style={{ padding: '8px 16px', backgroundColor: '#db4437', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>
-          Entrar con Google
-        </button>
+    <div className="login-page">
+      <div className="login-card">
+        <h2 className="login-title">Login</h2>
+        
+        <form onSubmit={manejarEnvio}>
+          <input
+            type="text"
+            placeholder="Correo electrónico"
+            value={usuario}
+            onChange={e => setUsuario(e.target.value)}
+            className="login-input"
+          />
+          <input
+            type="password"
+            placeholder="Contraseña"
+            value={contrasena}
+            onChange={e => setContrasena(e.target.value)}
+            className="login-input"
+          />
+          <button type="submit" className="btn-login-submit">
+            Login
+          </button>
+        </form>
+        
+        <div className="login-divider">
+          <button onClick={manejarGoogle} className="btn-google">
+            <svg width="18" height="18" viewBox="0 0 24 24"><path fill="currentColor" d="M21.35 11.1h-9.17v2.73h6.51c-.33 3.81-3.5 5.44-6.5 5.44C8.36 19.27 5 16.25 5 12c0-4.1 3.2-7.27 7.2-7.27c3.09 0 4.9 1.97 4.9 1.97L19 4.72S16.64 2 12 2C6.48 2 2 6.48 2 12s4.48 10 10 10c5.19 0 8.8-3.72 8.8-9.04c0-.79-.08-1.39-.08-1.39h.63z"/></svg>
+            Entrar con Google
+          </button>
+        </div>
+        
+        {error && <div className="login-error">{error}</div>}
       </div>
-      
-      {error && <div style={{ color: 'red', marginTop: '10px' }}>{error}</div>}
-    </section>
+    </div>
   );
 }
 

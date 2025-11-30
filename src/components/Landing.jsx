@@ -20,7 +20,7 @@ export default function Landing() {
           </Link>
           
           {/* Opción de Registro */}
-          <Link to="/register" className="btn btn-ghost">
+          <Link to="/registro" className="btn btn-ghost">
             Crear Cuenta
           </Link>
         </div>

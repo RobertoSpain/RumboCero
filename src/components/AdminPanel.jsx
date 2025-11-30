@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { collection, getDocs, deleteDoc, updateDoc, doc } from 'firebase/firestore'; 
-import { db } from '../firebase'; // Importamos la db directamente
+import { db } from '../firebase'; 
 
 export default function AdminPanel() { 
     const [tabActiva, setTabActiva] = useState('viajes'); // 'viajes' o 'usuarios'
