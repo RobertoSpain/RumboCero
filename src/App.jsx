@@ -8,6 +8,9 @@ import CrearViaje from './components/CrearViaje';
 import AdminPanel from './components/AdminPanel';
 import Viajes from './components/Viajes';
 import DetallesViaje from './components/DetallesViaje';
+import Foro from './components/Foro';
+import CrearPost from './components/CrearPost';
+import DetalleForo from './components/DetalleForo';
 
 function App() {
   const [usuario, setUsuario] = useState(localStorage.getItem('usuario') || '');
@@ -37,9 +40,12 @@ function App() {
         <Route path="/login" element={<Login onLogin={handleLogin} />}/>
         <Route path="/registro" element={<Registro />} />
         {/* Rutas protegidas */}
+        <Route path="/foro/:id" element={usuario ? <DetalleForo /> : <Navigate to="/login" replace />} />
         <Route path="/viajes" element={usuario ? <Viajes /> : <Navigate to="/login" replace />} />
         <Route path="/crear-viaje" element={usuario ? <CrearViaje /> : <Navigate to="/login" replace />} />
         <Route path="/viajes/:id" element={usuario ? <DetallesViaje /> : <Navigate to="/login" replace />} />
+        <Route path="/foro" element={usuario ? <Foro /> : <Navigate to="/login" replace />} />
+        <Route path="/crear-post" element={usuario ? <CrearPost /> : <Navigate to="/login" replace />} />
         {/* Protección extra: Si intenta entrar al admin y no es admin, lo mandamos al inicio */}
         <Route path='/Admin-Panel' element={
             usuario && rol === 'administrador' ? <AdminPanel /> : <Navigate to="/" replace />
