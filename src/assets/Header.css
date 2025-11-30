@@ -1,87 +1,132 @@
+/* --- CONTENEDOR PRINCIPAL --- */
 .header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 14px 40px; /* Aumentado para más espacio */
-  border-bottom: 1px solid #e5e7eb;
-  background: #fff;
-  /* Sombra sutil para destacarlo del fondo */
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05); 
+  justify-content: space-between; /* Separa izquierda y derecha al máximo */
+  padding: 0 5%; /* 5% de margen a los lados para que respire */
+  height: 80px; /* Altura fija para que todo esté centrado verticalmente */
+  background-color: #ffffff;
+  border-bottom: 1px solid #f3f4f6;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); /* Sombra suave y moderna */
+  position: sticky;
+  top: 0;
+  z-index: 1000; /* Siempre por encima del contenido */
+  white-space: nowrap; /* IMPIDE que los textos salten de línea */
 }
 
+/* --- ZONA IZQUIERDA (Logo + Menú) --- */
 .header-left {
   display: flex;
   align-items: center;
-  gap: 20px; /* Separación aumentada */
-}
+  gap: 40px; 
 
+/* LOGO */
 .brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #111827; /* Negro suave */
   text-decoration: none;
-  color: #111827;
-  font-weight: 800; /* Más impactante */
-  font-size: 24px; /* Logo más grande */
-  letter-spacing: -0.5px; /* Pequeño ajuste visual */
+  letter-spacing: -0.5px;
+  transition: transform 0.2s;
 }
 
+.brand:hover {
+  transform: scale(1.02);
+}
+
+/* MENÚ DE NAVEGACIÓN */
 .nav {
   display: flex;
-  gap: 15px; /* Más espacio entre enlaces */
-  margin-left: 12px;
+  align-items: center;
+  gap: 25px; /* Espacio entre los enlaces */
 }
 
 .nav-link {
-  color: #374151;
+  color: #6b7280; /* Gris medio */
   text-decoration: none;
-  font-size: 14px;
-  /* Transición para un hover suave */
-  transition: color 0.3s ease; 
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: color 0.2s ease;
+  position: relative;
 }
 
 .nav-link:hover {
-  color: #3b82f6; /* Color primario al pasar el ratón */
+  color: #0d9488; /* Teal al pasar el ratón */
 }
 
+/* --- ZONA DERECHA (Usuario + Botones) --- */
 .header-actions {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 20px;
 }
 
 .greeting {
-  color: #374151;
-  font-size: 14px;
-}
-
-.btn {
-  padding: 8px 16px; /* Botones más grandes y fáciles de pulsar */
-  border-radius: 8px; /* Bordes más suaves */
+  font-size: 0.9rem;
+  color: #4b5563;
   text-decoration: none;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 700; /* Texto del botón negrita */
+  margin-right: 10px;
+}
+
+.greeting strong {
+  color: #111827;
+}
+
+/* --- BOTONES --- */
+.btn-login, .btn-logout, .btn-ghost {
+  padding: 10px 24px;
+  border-radius: 50px; /* Botones redonditos estilo "pill" */
+  font-weight: 700;
+  font-size: 0.9rem;
+  text-decoration: none;
   border: none;
-  transition: opacity 0.3s ease, transform 0.1s ease;
-}
-
-.btn:hover {
-  opacity: 0.9;
-}
-
-.btn:active {
-  transform: scale(0.98); /* Efecto de "clic" */
-}
-
-.btn-logout {
-  background: #ef4444;
-  color: #fff;
-}
-
-.btn-login {
-  background: #3b82f6;
-  color: #fff;
+  cursor: pointer;
+  transition: all 0.2s ease;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  /* Sombra para destacarlo como CTA (Call to Action) */
-  box-shadow: 0 4px 6px rgba(59, 130, 246, 0.3);
+}
+
+/* Botón Crear Viaje (Azul/Teal) */
+.btn-login {
+  background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
+  color: white;
+  box-shadow: 0 4px 6px rgba(13, 148, 136, 0.25);
+}
+
+.btn-login:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(13, 148, 136, 0.3);
+}
+
+/* Botón Cerrar Sesión (Rojo) */
+.btn-logout {
+  background-color: #fee2e2;
+  color: #ef4444;
+}
+
+.btn-logout:hover {
+  background-color: #fecaca;
+  color: #dc2626;
+}
+
+/* Botón Registro (Transparente) */
+.btn-ghost {
+  background: transparent;
+  color: #4b5563;
+}
+
+.btn-ghost:hover {
+  background: #f3f4f6;
+  color: #111827;
+}
+
+/* Icono decorativo de la derecha */
+.logo-right-icon {
+  opacity: 0.2;
+  margin-left: 10px;
+}
 }

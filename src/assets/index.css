@@ -1,13 +1,11 @@
 /* Reset y variables */
 :root {
-  /* Colores propuestos para el branding de viajes (ya definidos por el usuario) */
   --color-brand-primary: #3b82f6; /* Azul fuerte (Uso: CTA, acento) */
   --color-brand-secondary: #0f172a; /* Azul oscuro (Uso: Texto principal) */
   --color-logout: #ef4444; /* Rojo para cerrar sesión (Uso: Botón Logout) */
   --color-text-base: #374151; /* Texto secundario/cuerpo */
   --color-border: #e5e7eb;
 
-  /* Variables del Layout y Componentes (Ajustadas para la estética de viajes) */
   --bg: #f8f9fa; /* Fondo muy claro, casi blanco */
   --card: #ffffff; /* Fondo de tarjetas, blanco puro */
   --text: var(--color-brand-secondary); /* Texto principal (azul oscuro) */

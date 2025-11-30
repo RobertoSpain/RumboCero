@@ -1,0 +1,221 @@
+/* --- VARIABLES Y RESET BÁSICO --- */
+:root {
+  --color-primary: #0d9488; /* Teal 600 */
+  --color-primary-light: #f0fdfa; /* Teal 50 */
+  --color-text-dark: #1f2937;
+  --color-text-gray: #6b7280;
+  --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --radius-card: 16px;
+}
+
+.detalle-page {
+  background-color: #f3f4f6;
+  min-height: 100vh;
+  padding-bottom: 40px;
+}
+
+/* --- HERO SECTION (La foto grande) --- */
+.hero-section {
+  height: 40vh;
+  min-height: 350px;
+  width: 100%;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  display: flex;
+  align-items: flex-end; /* Texto abajo */
+}
+
+/* El degradado oscuro para que se lea el texto */
+.hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.8) 100%);
+  z-index: 1;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 1024px;
+  margin: 0 auto;
+  padding: 0 20px 40px 20px;
+  color: white;
+}
+
+.hero-title {
+  font-size: 3rem;
+  font-weight: 800;
+  margin: 0;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+.hero-subtitle {
+  font-size: 1.5rem;
+  font-weight: 300;
+  margin-top: 5px;
+  opacity: 0.9;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* --- CONTENEDOR PRINCIPAL --- */
+.main-container {
+  max-width: 1024px;
+  margin: -60px auto 0 auto; /* Margen negativo para pisar la foto */
+  padding: 0 20px;
+  position: relative;
+  z-index: 10;
+}
+
+/* Botón Volver */
+.btn-volver {
+  display: inline-flex;
+  align-items: center;
+  background-color: white;
+  color: var(--color-text-dark);
+  padding: 10px 20px;
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 0.9rem;
+  box-shadow: var(--shadow-card);
+  transition: transform 0.2s ease, color 0.2s;
+  margin-bottom: 20px;
+  float: right; /* Lo alineamos a la derecha */
+}
+
+.btn-volver:hover {
+  transform: translateY(-2px);
+  color: var(--color-primary);
+}
+
+/* GRID LAYOUT (Columnas) */
+.info-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr; /* Izquierda doble de ancha */
+  gap: 24px;
+  clear: both; /* Limpia el float del botón */
+}
+
+/* --- TARJETAS --- */
+.card {
+  background: white;
+  border-radius: var(--radius-card);
+  padding: 24px;
+  box-shadow: var(--shadow-card);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  margin-bottom: 24px;
+}
+
+.card-title {
+  font-size: 1.25rem;
+  color: var(--color-text-dark);
+  font-weight: 700;
+  margin-bottom: 16px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.card-icon {
+  background-color: var(--color-primary-light);
+  color: var(--color-primary);
+  padding: 6px;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+/* Estilos específicos de contenido */
+.fechas-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.flecha {
+  font-size: 1.5rem;
+  color: #d1d5db;
+}
+
+.fecha-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--color-text-gray);
+  font-weight: bold;
+}
+
+.fecha-valor {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--color-text-dark);
+}
+
+.desc-box {
+  background-color: #f9fafb;
+  padding: 16px;
+  border-radius: 12px;
+  color: #4b5563;
+  font-style: italic;
+  line-height: 1.6;
+}
+
+/* Tarjeta Clima */
+.card-clima {
+  background: linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%);
+  color: white;
+}
+.card-clima .card-title {
+  color: white;
+  border-bottom-color: rgba(255,255,255,0.2);
+}
+.card-clima .card-icon {
+  background: rgba(255,255,255,0.2);
+  color: white;
+}
+
+/* Checklist items */
+.checklist-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: #f9fafb;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  color: var(--color-text-gray);
+}
+
+.btn-gestion {
+  width: 100%;
+  padding: 10px;
+  background-color: var(--color-primary-light);
+  color: var(--color-primary);
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-gestion:hover {
+  background-color: #ccfbf1;
+}
+
+/* RESPONSIVE (Móvil) */
+@media (max-width: 768px) {
+  .hero-title { font-size: 2rem; }
+  .info-grid { grid-template-columns: 1fr; } /* Una sola columna */
+  .main-container { margin-top: -40px; }
+}

@@ -7,6 +7,7 @@ import { useState } from 'react';
 import CrearViaje from './components/CrearViaje';
 import AdminPanel from './components/AdminPanel';
 import Viajes from './components/Viajes';
+import DetallesViaje from './components/DetallesViaje';
 
 function App() {
   const [usuario, setUsuario] = useState(localStorage.getItem('usuario') || '');
@@ -38,6 +39,7 @@ function App() {
         {/* Rutas protegidas */}
         <Route path="/viajes" element={usuario ? <Viajes /> : <Navigate to="/login" replace />} />
         <Route path="/crear-viaje" element={usuario ? <CrearViaje /> : <Navigate to="/login" replace />} />
+        <Route path="/viajes/:id" element={usuario ? <DetallesViaje /> : <Navigate to="/login" replace />} />
         {/* Protección extra: Si intenta entrar al admin y no es admin, lo mandamos al inicio */}
         <Route path='/Admin-Panel' element={
             usuario && rol === 'administrador' ? <AdminPanel /> : <Navigate to="/" replace />

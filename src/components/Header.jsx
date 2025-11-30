@@ -66,10 +66,7 @@ export default function Header({ usuario, rol, onLogout }) {
             <Link to="/login" className="btn btn-login">Iniciar Sesión</Link>
             <Link to="/registro" className="btn btn-ghost">Registro</Link>
           </>
-        )}
-        <span className="logo-right-icon"> 
-          <TravelAirplaneIcon />
-        </span>
+        )}      
       </div>
     </header>
   );

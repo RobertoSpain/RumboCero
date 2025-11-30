@@ -26,7 +26,6 @@ function Login({ onLogin }) {
       navegar('/'); 
       
     } catch (err) {
-      // Aquí ya lo estábamos usando, así que este no daba error
       console.error("Error al obtener rol:", err);
       onLogin(userResult.displayName || userResult.email, 'usuario');
       navegar('/');
@@ -41,7 +40,6 @@ function Login({ onLogin }) {
         const result = await signInWithEmailAndPassword(auth, usuario, contrasena);
         await obtenerRolYRedirigir(result.user);
       } catch (err) {
-        // CORREGIDO: Usamos 'err' en un console.log para que no salte el aviso
         console.log(err); 
         setError('Usuario o contraseña incorrectos');
       }
@@ -57,7 +55,6 @@ function Login({ onLogin }) {
         const result = await signInWithPopup(auth, provider);
         await obtenerRolYRedirigir(result.user);
     } catch (err) {
-        // CORREGIDO: Usamos 'err' aquí también
         console.log(err);
         setError('Error al iniciar sesión con Google');
     }

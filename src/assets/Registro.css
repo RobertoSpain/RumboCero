@@ -1,6 +1,4 @@
-/* ----------------------------------- */
 /* CONFIGURACIÓN BASE Y COLORES */
-/* ----------------------------------- */
 :root {
   /* Colores de Rumbo Cero */
   --color-primary: #007bff; /* Azul vibrante, como el de un cielo claro */
@@ -10,9 +8,7 @@
   --color-card-shadow: rgba(0, 0, 0, 0.15); /* Sombra suave y profunda */
 }
 
-/* ----------------------------------- */
 /* 1. LAYOUT Y CONTENEDOR PRINCIPAL */
-/* ----------------------------------- */
 
 /* Fondo con degradado sutil para un aspecto moderno */
 .page-center {
@@ -28,14 +24,12 @@
 /* Contenedor del formulario (la "caja" elevada) */
 .login-container {
   width: 100%;
-  max-width: 450px; /* Un poco más ancho */
-  padding: 50px 40px; /* Más padding */
+  max-width: 450px; 
+  padding: 50px 40px; 
   background: white;
-  border-radius: 16px; /* Bordes más suaves */
-  /* Sombra más profunda y elegante */
+  border-radius: 16px; 
   box-shadow: 0 15px 40px var(--color-card-shadow); 
   text-align: center;
-  /* Transición para efectos futuros */
   transition: transform 0.3s ease-in-out;
 }
 
@@ -58,9 +52,7 @@
   font-weight: 300;
 }
 
-/* ----------------------------------- */
 /* 2. FORMULARIO E INPUTS MODERNOS */
-/* ----------------------------------- */
 
 .login-form {
   display: flex;
@@ -99,10 +91,7 @@
   box-shadow: 0 1px 0 0 var(--color-primary); /* Sombra sutil en el borde inferior */
 }
 
-/* ----------------------------------- */
 /* 3. BOTÓN PRINCIPAL DESTACADO */
-/* ----------------------------------- */
-
 .btn-primary {
   background-color: var(--color-primary);
   color: white;
@@ -129,10 +118,7 @@
   margin-top: 25px;
 }
 
-/* ----------------------------------- */
 /* 4. ALERTAS Y FOOTER */
-/* ----------------------------------- */
-
 .alert-error {
   color: #dc3545;
   background-color: #f8d7da;

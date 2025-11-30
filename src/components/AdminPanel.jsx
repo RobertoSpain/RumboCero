@@ -3,14 +3,11 @@ import { collection, getDocs, deleteDoc, updateDoc, doc } from 'firebase/firesto
 import { db } from '../firebase'; // Importamos la db directamente
 
 export default function AdminPanel() { 
-    // Estado para controlar qué pestaña vemos
     const [tabActiva, setTabActiva] = useState('viajes'); // 'viajes' o 'usuarios'
-    
     // Estados de datos
     const [viajes, setViajes] = useState([]);
     const [usuarios, setUsuarios] = useState([]);
     const [cargando, setCargando] = useState(true);
-
     // --- 1. CARGA DE DATOS ---
     const cargarDatos = async () => {
         setCargando(true);
@@ -20,13 +17,11 @@ export default function AdminPanel() {
             const viajesSnap = await getDocs(viajesRef);
             const listaViajes = viajesSnap.docs.map(d => ({ id: d.id, ...d.data() }));
             setViajes(listaViajes);
-
             // Cargar Usuarios
             const usuariosRef = collection(db, 'usuarios');
             const usuariosSnap = await getDocs(usuariosRef);
             const listaUsuarios = usuariosSnap.docs.map(d => ({ id: d.id, ...d.data() }));
             setUsuarios(listaUsuarios);
-
         } catch (error) {
             console.error("Error cargando datos:", error);
             alert("Error al cargar datos");
@@ -34,13 +29,10 @@ export default function AdminPanel() {
             setCargando(false);
         }
     };
-
     useEffect(() => {
         cargarDatos();
     }, []);
-
     // --- 2. FUNCIONES DE ACCIÓN ---
-
     // Función para borrar viaje
     const eliminarViaje = async (idViaje, nombreViaje) => {
         if (window.confirm(`¿Seguro que quieres eliminar el viaje "${nombreViaje}"?`)) {
@@ -77,7 +69,6 @@ export default function AdminPanel() {
     };
 
     // --- 3. RENDERIZADO ---
-
     return (
         <div className="pt-20 p-8 max-w-6xl mx-auto">
             <h1 className="text-3xl font-bold text-red-600 mb-6 border-b-2 border-red-200 pb-2">
@@ -99,13 +90,11 @@ export default function AdminPanel() {
                     Gestión de Usuarios
                 </button>
             </div>
-
             {/* Contenido */}
             {cargando ? (
                 <p>Cargando datos...</p>
             ) : (
                 <div className="bg-white p-6 rounded-lg shadow-lg border">
-                    
                     {/* VISTA DE VIAJES */}
                     {tabActiva === 'viajes' && (
                         <div>
@@ -126,7 +115,6 @@ export default function AdminPanel() {
                             ))}
                         </div>
                     )}
-
                     {/* VISTA DE USUARIOS */}
                     {tabActiva === 'usuarios' && (
                         <div>
