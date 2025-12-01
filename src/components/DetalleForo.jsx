@@ -89,7 +89,6 @@ export default function DetalleForo() {
   };
   if (loading) return <div className="detalle-foro-page text-center">Cargando conversación...</div>;
   if (!post) return <div className="detalle-foro-page text-center">Post no encontrado 😢</div>;
-
   // Usuario actual para comparar dueños
   const usuarioActual = auth.currentUser;
   return (
@@ -98,8 +97,6 @@ export default function DetalleForo() {
         <Link to="/foro" style={{ display: 'inline-block', marginBottom: '20px', textDecoration: 'none', color: '#666', fontWeight: 'bold' }}>
           &larr; Volver al Foro
         </Link>
-
-        {/* POST PRINCIPAL */}
         <div className="post-principal">
           <h1 className="principal-titulo">{post.titulo}</h1>
           <div className="principal-meta">
@@ -109,7 +106,6 @@ export default function DetalleForo() {
             {post.contenido}
           </div>
         </div>
-        {/* SECCIÓN DE COMENTARIOS */}
         <div className="comentarios-section">
           <h3 className="comentarios-titulo">💬 Respuestas ({comentarios.length})</h3>
           <div className="lista-comentarios">
@@ -126,26 +122,13 @@ export default function DetalleForo() {
                       <span className="comentario-fecha">{com.fecha}</span>
                     </div>
                     <p className="comentario-texto">{com.texto}</p>
-                    {puedeBorrar && (
-                        <button 
-                            onClick={() => borrarComentario(com.id)}
-                            style={{
-                                position: 'absolute',
-                                top: '15px',
-                                right: '15px',
-                                background: 'transparent',
-                                border: 'none',
-                                cursor: 'pointer',
-                                fontSize: '1.2rem',
-                                opacity: 0.5,
-                                transition: 'opacity 0.2s'
-                            }}
-                            title={esMio ? "Borrar mi comentario" : "Borrar como Admin"}
-                            onMouseOver={(e) => e.target.style.opacity = 1}
-                            onMouseOut={(e) => e.target.style.opacity = 0.5}
-                        > 🗑️
-                        </button>
-                    )}
+                  {puedeBorrar && (
+                <button 
+                  className="btn-borrar-comentario" 
+                  onClick={() => borrarComentario(com.id)}
+                 title={esMio ? "Borrar mi comentario" : "Borrar como Admin"}
+                 > 🗑️</button>
+                  )}
                   </div>
                 );
             })}
