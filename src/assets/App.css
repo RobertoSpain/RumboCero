@@ -67,7 +67,6 @@
 
 @media (max-width: 480px) {
     .grid-layout {
-        /* En móviles, las tarjetas pueden apilarse si es necesario */
         grid-template-columns: 1fr; 
     }
 }

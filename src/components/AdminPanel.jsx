@@ -3,8 +3,7 @@ import { collection, getDocs, deleteDoc, updateDoc, doc } from 'firebase/firesto
 import { db } from '../firebase'; 
 
 export default function AdminPanel() { 
-    const [tabActiva, setTabActiva] = useState('viajes'); // 'viajes' o 'usuarios'
-    // Estados de datos
+    const [tabActiva, setTabActiva] = useState('viajes'); 
     const [viajes, setViajes] = useState([]);
     const [usuarios, setUsuarios] = useState([]);
     const [cargando, setCargando] = useState(true);

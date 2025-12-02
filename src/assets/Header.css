@@ -2,23 +2,24 @@
 .header {
   display: flex;
   align-items: center;
-  justify-content: space-between; /* Separa izquierda y derecha al máximo */
-  padding: 0 5%; /* 5% de margen a los lados para que respire */
-  height: 80px; /* Altura fija para que todo esté centrado verticalmente */
+  justify-content: space-between;
+  padding: 0 5%;
+  height: 80px;
   background-color: #ffffff;
   border-bottom: 1px solid #f3f4f6;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); /* Sombra suave y moderna */
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
   position: sticky;
   top: 0;
-  z-index: 1000; /* Siempre por encima del contenido */
-  white-space: nowrap; /* IMPIDE que los textos salten de línea */
+  z-index: 1000;
+  white-space: nowrap;
 }
 
-/* --- ZONA IZQUIERDA (Logo + Menú) --- */
+/* --- ZONA IZQUIERDA */
 .header-left {
   display: flex;
   align-items: center;
-  gap: 40px; 
+  gap: 40px;
+} 
 
 /* LOGO */
 .brand {
@@ -27,7 +28,7 @@
   gap: 12px;
   font-size: 1.5rem;
   font-weight: 800;
-  color: #111827; /* Negro suave */
+  color: #111827;
   text-decoration: none;
   letter-spacing: -0.5px;
   transition: transform 0.2s;
@@ -41,11 +42,11 @@
 .nav {
   display: flex;
   align-items: center;
-  gap: 25px; /* Espacio entre los enlaces */
+  gap: 25px;
 }
 
 .nav-link {
-  color: #6b7280; /* Gris medio */
+  color: #6b7280;
   text-decoration: none;
   font-weight: 600;
   font-size: 0.95rem;
@@ -54,31 +55,32 @@
 }
 
 .nav-link:hover {
-  color: #0d9488; /* Teal al pasar el ratón */
+  color: #0d9488;
 }
 
-/* --- ZONA DERECHA (Usuario + Botones) --- */
+/* --- ZONA DERECHA  --- */
 .header-actions {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 35px; 
 }
 
 .greeting {
   font-size: 0.9rem;
   color: #4b5563;
   text-decoration: none;
-  margin-right: 10px;
+  /* He quitado el margin-right porque ahora el 'gap' de arriba se encarga de separar */
 }
 
 .greeting strong {
   color: #111827;
+  font-weight: 800;
 }
 
 /* --- BOTONES --- */
 .btn-login, .btn-logout, .btn-ghost {
   padding: 10px 24px;
-  border-radius: 50px; /* Botones redonditos estilo "pill" */
+  border-radius: 50px;
   font-weight: 700;
   font-size: 0.9rem;
   text-decoration: none;
@@ -128,5 +130,4 @@
 .logo-right-icon {
   opacity: 0.2;
   margin-left: 10px;
-}
 }
