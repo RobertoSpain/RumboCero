@@ -19,7 +19,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: auto; /* En desktop es auto */
+  width: auto; 
 }
 
 /* El contenido (Nav + Actions) en Desktop se muestra en fila */
@@ -29,6 +29,7 @@
   justify-content: space-between;
   width: 100%;
   margin-left: 40px; /* Separación del logo */
+  gap: 30px; /* Esto impide que el menú y el nombre se choquen */
 }
 
 /* LOGO */
@@ -107,9 +108,9 @@
 .btn-ghost { background: transparent; color: #4b5563; }
 .btn-ghost:hover { background: #f3f4f6; color: #111827; }
 
-/* --- HAMBURGUESA (Oculta en Desktop) --- */
+/* --- HAMBURGUESA --- */
 .hamburger-btn {
-  display: none; /* Por defecto no se ve */
+  display: none; 
   background: none;
   border: none;
   font-size: 1.8rem;
@@ -120,15 +121,14 @@
 @media (max-width: 960px) {
   .header {
     padding: 0 20px;
-    /* En móvil queremos que el header sea un bloque para que el menú caiga debajo */
     flex-direction: column; 
     height: auto; 
     align-items: stretch; /* Ocupar todo el ancho */
   }
 
-  /* La barra superior (Logo + Botón) siempre visible */
+  /* La barra superior  siempre visible */
   .header-top-mobile {
-    height: 80px; /* Mantiene la altura original */
+    height: 80px; 
     width: 100%;
     display: flex;
     justify-content: space-between;
@@ -150,6 +150,7 @@
     padding-bottom: 20px;
     border-top: 1px solid #f3f4f6;
     animation: slideDown 0.3s ease-out;
+    gap: 0; 
   }
 
   /* Cuando activamos la clase 'active' en React, se muestra */
@@ -183,7 +184,6 @@
     width: 80%; 
   }
 }
-
 /* Animación suave al abrir */
 @keyframes slideDown {
   from { opacity: 0; transform: translateY(-10px); }
