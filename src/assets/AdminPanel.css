@@ -1,0 +1,180 @@
+/* --- VARIABLES Y ESTRUCTURA --- */
+:root {
+  --admin-bg: #f3f4f6;
+  --admin-card-bg: #ffffff;
+  --color-danger: #ef4444; 
+  --color-danger-hover: #dc2626;
+  --color-accent: #3b82f6; 
+  --color-success: #10b981; 
+  --shadow-soft: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.025);
+  --radius: 16px;
+}
+
+.admin-container {
+  padding: 40px 20px;
+  max-width: 1000px;
+  margin: 0 auto;
+  min-height: 100vh;
+  background-color: var(--admin-bg);
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+/* --- HEADER --- */
+.admin-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #1f2937;
+  margin-bottom: 30px;
+  position: relative;
+  display: inline-block;
+}
+
+.admin-title::after {
+  content: '';
+  display: block;
+  width: 60px;
+  height: 6px;
+  background: linear-gradient(90deg, var(--color-danger), orange);
+  border-radius: 10px;
+  margin-top: 5px;
+}
+
+/* --- TABS (PESTAÑAS) --- */
+.tabs-container {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 25px;
+  background: white;
+  padding: 10px;
+  border-radius: 50px;
+  width: fit-content;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.tab-btn {
+  padding: 10px 24px;
+  border: none;
+  background: transparent;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #6b7280;
+  cursor: pointer;
+  border-radius: 30px;
+  transition: all 0.3s ease;
+}
+
+.tab-btn:hover {
+  color: #111827;
+  background-color: #f3f4f6;
+}
+
+/* Estado Activo de la Pestaña */
+.tab-btn.active {
+  background-color: #1f2937; 
+  color: white;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  transform: translateY(-1px);
+}
+
+/* --- TARJETA DE CONTENIDO --- */
+.panel-card {
+  background: var(--admin-card-bg);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-soft);
+  padding: 30px;
+  border: 1px solid rgba(0,0,0,0.05);
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+.section-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #374151;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #f3f4f6;
+}
+
+/* --- LISTAS (ITEMS) --- */
+.list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  border-radius: 12px;
+  margin-bottom: 10px;
+  background-color: #fff;
+  border: 1px solid #e5e7eb;
+  transition: all 0.2s ease;
+}
+
+.list-item:hover {
+  border-color: #d1d5db;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  transform: translateX(4px); 
+}
+
+.item-info h4 {
+  margin: 0;
+  font-size: 1.05rem;
+  color: #111827;
+  font-weight: 700;
+}
+
+.item-info p, .item-info span {
+  margin: 4px 0 0 0;
+  font-size: 0.9rem;
+  color: #6b7280;
+}
+
+/* Badge de Rol */
+.badge-rol {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  margin-left: 5px;
+}
+.rol-admin { background-color: #fee2e2; color: #b91c1c; }
+.rol-user { background-color: #dbeafe; color: #1e40af; }
+
+/* --- BOTONES DE ACCIÓN --- */
+.btn-action {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+  color: white;
+}
+
+.btn-action:active { transform: scale(0.95); }
+
+/* Botón Eliminar (Rojo) */
+.btn-delete {
+  background-color: white;
+  color: var(--color-danger);
+  border: 1px solid var(--color-danger);
+}
+.btn-delete:hover {
+  background-color: var(--color-danger);
+  color: white;
+}
+
+/* Botón Admin (Naranja/Negro) */
+.btn-toggle-role {
+  background-color: #1f2937;
+}
+.btn-toggle-role:hover {
+  background-color: black;
+}
+
+/* Animación de entrada suave */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
