@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { collection, addDoc, Timestamp } from "firebase/firestore";
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth, db } from "../firebase.js"; 
-// NOTA: Ya no importamos 'storage' porque no vamos a subir archivos
 
 function CrearViaje() {
   const [name, setName] = useState('');
@@ -12,7 +11,7 @@ function CrearViaje() {
   const [fechaFinal, setFechaFinal] = useState('');
   const [descripcion, setDescripcion] = useState('');
   
-  // 📸 CAMBIO: Volvemos a guardar un texto simple (URL)
+  //  CAMBIO: Volvemos a guardar un texto simple 
   const [foto, setFoto] = useState('');
   const [error, setError] = useState('');
   const [cargando, setCargando] = useState(false);
@@ -37,7 +36,6 @@ function CrearViaje() {
       setCargando(false);
       return;
     }
-
     if (!name || !destinoPrincipal || !fechalnicial || !fechaFinal) {
       setError('Por favor, rellena todos los campos obligatorios.');
       setCargando(false);
@@ -54,7 +52,7 @@ function CrearViaje() {
     }
 
     try {
-      // 💾 GUARDAR DIRECTAMENTE EN BASE DE DATOS
+      // GUARDAR DIRECTAMENTE EN BASE DE DATOS
       await addDoc(collection(db, "viajes"), {
         name: name,
         destinoPrincipal: destinoPrincipal,
@@ -101,7 +99,6 @@ function CrearViaje() {
             <input type="text" id="destinoPrincipal" value={destinoPrincipal} onChange={e => setDestinoPrincipal(e.target.value)} required className="form-input" />
           </div>
 
-          {/* 👇 VUELVE A SER UN CAMPO DE TEXTO PARA LA URL */}
           <div className="form-group">
             <label htmlFor="foto">Foto de Portada (URL):</label>
             <input 
@@ -114,24 +111,19 @@ function CrearViaje() {
             />
             <small style={{ color: '#666' }}>Copia y pega el enlace de una imagen de Google.</small>
           </div>
-
           <div className="form-group">
             <label htmlFor="fechalnicial">Fecha de Inicio:</label>
             <input type="date" id="fechalnicial" value={fechalnicial} onChange={e => setFechalnicial(e.target.value)} required className="form-input" />
           </div>
-
           <div className="form-group">
             <label htmlFor="fechaFinal">Fecha de Finalización:</label>
             <input type="date" id="fechaFinal" value={fechaFinal} onChange={e => setFechaFinal(e.target.value)} required className="form-input" />
           </div>
-
           <div className="form-group">
             <label htmlFor="descripcion">Descripción:</label>
             <textarea id="descripcion" value={descripcion} onChange={e => setDescripcion(e.target.value)} rows="3" className="form-input"></textarea>
           </div>
-
           {error && <div className="alert-error">{error}</div>}
-
           <button type="submit" className="btn btn-primary btn-full-width" disabled={cargando}>
             {cargando ? 'Guardando...' : 'Crear Viaje'}
           </button>

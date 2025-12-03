@@ -14,12 +14,22 @@
   white-space: nowrap;
 }
 
-/* --- ZONA IZQUIERDA */
-.header-left {
+/* Contenedor que agrupa logo y botón móvil */
+.header-top-mobile {
   display: flex;
   align-items: center;
-  gap: 40px;
-} 
+  justify-content: space-between;
+  width: auto; /* En desktop es auto */
+}
+
+/* El contenido (Nav + Actions) en Desktop se muestra en fila */
+.header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-left: 40px; /* Separación del logo */
+}
 
 /* LOGO */
 .brand {
@@ -33,10 +43,7 @@
   letter-spacing: -0.5px;
   transition: transform 0.2s;
 }
-
-.brand:hover {
-  transform: scale(1.02);
-}
+.brand:hover { transform: scale(1.02); }
 
 /* MENÚ DE NAVEGACIÓN */
 .nav {
@@ -53,31 +60,26 @@
   transition: color 0.2s ease;
   position: relative;
 }
+.nav-link:hover { color: #0d9488; }
 
-.nav-link:hover {
-  color: #0d9488;
-}
-
-/* --- ZONA DERECHA  --- */
+/* ZONA DERECHA */
 .header-actions {
   display: flex;
   align-items: center;
-  gap: 35px; 
+  gap: 35px;
 }
 
 .greeting {
   font-size: 0.9rem;
   color: #4b5563;
   text-decoration: none;
-  /* He quitado el margin-right porque ahora el 'gap' de arriba se encarga de separar */
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
+.greeting strong { color: #111827; font-weight: 800; }
 
-.greeting strong {
-  color: #111827;
-  font-weight: 800;
-}
-
-/* --- BOTONES --- */
+/* BOTONES */
 .btn-login, .btn-logout, .btn-ghost {
   padding: 10px 24px;
   border-radius: 50px;
@@ -92,42 +94,98 @@
   justify-content: center;
 }
 
-/* Botón Crear Viaje (Azul/Teal) */
 .btn-login {
   background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
   color: white;
   box-shadow: 0 4px 6px rgba(13, 148, 136, 0.25);
 }
+.btn-login:hover { transform: translateY(-2px); box-shadow: 0 6px 12px rgba(13, 148, 136, 0.3); }
 
-.btn-login:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(13, 148, 136, 0.3);
-}
+.btn-logout { background-color: #fee2e2; color: #ef4444; }
+.btn-logout:hover { background-color: #fecaca; color: #dc2626; }
 
-/* Botón Cerrar Sesión (Rojo) */
-.btn-logout {
-  background-color: #fee2e2;
-  color: #ef4444;
-}
+.btn-ghost { background: transparent; color: #4b5563; }
+.btn-ghost:hover { background: #f3f4f6; color: #111827; }
 
-.btn-logout:hover {
-  background-color: #fecaca;
-  color: #dc2626;
-}
-
-/* Botón Registro (Transparente) */
-.btn-ghost {
-  background: transparent;
-  color: #4b5563;
-}
-
-.btn-ghost:hover {
-  background: #f3f4f6;
+/* --- HAMBURGUESA (Oculta en Desktop) --- */
+.hamburger-btn {
+  display: none; /* Por defecto no se ve */
+  background: none;
+  border: none;
+  font-size: 1.8rem;
   color: #111827;
+  cursor: pointer;
 }
 
-/* Icono decorativo de la derecha */
-.logo-right-icon {
-  opacity: 0.2;
-  margin-left: 10px;
+@media (max-width: 960px) {
+  .header {
+    padding: 0 20px;
+    /* En móvil queremos que el header sea un bloque para que el menú caiga debajo */
+    flex-direction: column; 
+    height: auto; 
+    align-items: stretch; /* Ocupar todo el ancho */
+  }
+
+  /* La barra superior (Logo + Botón) siempre visible */
+  .header-top-mobile {
+    height: 80px; /* Mantiene la altura original */
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  /* Botón visible solo en móvil */
+  .hamburger-btn {
+    display: block;
+  }
+
+  /* El contenido del menú (Nav + Actions) */
+  .header-content {
+    display: none; /* Oculto por defecto */
+    flex-direction: column;
+    width: 100%;
+    margin-left: 0;
+    background-color: white;
+    padding-bottom: 20px;
+    border-top: 1px solid #f3f4f6;
+    animation: slideDown 0.3s ease-out;
+  }
+
+  /* Cuando activamos la clase 'active' en React, se muestra */
+  .header-content.active {
+    display: flex;
+  }
+
+  /* Ajustes de los elementos internos para que se apilen verticalmente */
+  .nav {
+    flex-direction: column;
+    width: 100%;
+    gap: 0;
+  }
+
+  .nav-link {
+    width: 100%;
+    padding: 15px;
+    text-align: center;
+    border-bottom: 1px solid #f9fafb;
+  }
+
+  .header-actions {
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 20px;
+    width: 100%;
+  }
+
+  /* Ajustar botones en móvil */
+  .btn-login, .btn-logout, .btn-ghost {
+    width: 80%; 
+  }
+}
+
+/* Animación suave al abrir */
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
 }

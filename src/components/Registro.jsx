@@ -12,7 +12,6 @@ function Registro() {
   const [pass, setPass] = useState('');
   const [error, setError] = useState('');
   const navegar = useNavigate();
-
   const manejarEnvio = async (e) => {
     e.preventDefault(); 
 

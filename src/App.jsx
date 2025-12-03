@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Landing from './components/Landing';
-import Login from './components/login';
+import Login from './components/Login';
 import Registro from './components/Registro';
 import Header from './components/Header';
 import { useState } from 'react';
