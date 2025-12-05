@@ -28,9 +28,8 @@
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  margin-left: 40px; /* Separación del logo */
-  gap: 30px; /* Esto impide que el menú y el nombre se choquen */
-}
+  margin-left: 40px; 
+  gap: 30px; }
 
 /* LOGO */
 .brand {
@@ -101,10 +100,8 @@
   box-shadow: 0 4px 6px rgba(13, 148, 136, 0.25);
 }
 .btn-login:hover { transform: translateY(-2px); box-shadow: 0 6px 12px rgba(13, 148, 136, 0.3); }
-
 .btn-logout { background-color: #fee2e2; color: #ef4444; }
 .btn-logout:hover { background-color: #fecaca; color: #dc2626; }
-
 .btn-ghost { background: transparent; color: #4b5563; }
 .btn-ghost:hover { background: #f3f4f6; color: #111827; }
 
@@ -118,6 +115,8 @@
   cursor: pointer;
 }
 
+/* 
+   RESPONSIVE / MÓVIL (Menor de 960px) */
 @media (max-width: 960px) {
   .header {
     padding: 0 20px;
@@ -126,7 +125,7 @@
     align-items: stretch; /* Ocupar todo el ancho */
   }
 
-  /* La barra superior  siempre visible */
+  /* La barra superior siempre visible */
   .header-top-mobile {
     height: 80px; 
     width: 100%;
@@ -184,8 +183,37 @@
     width: 80%; 
   }
 }
+
 /* Animación suave al abrir */
 @keyframes slideDown {
   from { opacity: 0; transform: translateY(-10px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+/* =========================================*/
+@media (min-width: 961px) and (max-width: 1300px) {
+  /* Reducimos un poco el margen lateral general */
+  .header {
+    padding: 0 20px; 
+  }
+
+  /* Juntamos un poco los enlaces del menú */
+  .nav {
+    gap: 15px; 
+  }
+
+  /* Reducimos un pelín el tamaño de la letra */
+  .nav-link, .btn-login, .btn-logout, .greeting {
+    font-size: 0.85rem; 
+  }
+
+  /* Juntamos un poco la zona del usuario */
+  .header-actions {
+    gap: 20px; 
+  }
+
+  /* Forzamos que, aunque esté apretado, haya separación */
+  .header-content {
+    gap: 20px; 
+  }
 }

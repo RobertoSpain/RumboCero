@@ -14,7 +14,8 @@ const TravelAirplaneIcon = () => (
   </svg>
 );
 
-export default function Header({ usuario, rol, onLogout }) {
+// 1. AÑADIDO: Recibimos la prop 'foto' aquí
+export default function Header({ usuario, rol, foto, onLogout }) {
   const navigate = useNavigate();
   const [menuAbierto, setMenuAbierto] = useState(false);
   const closeMenu = () => setMenuAbierto(false);
@@ -24,9 +25,9 @@ export default function Header({ usuario, rol, onLogout }) {
     navigate('/'); 
     closeMenu();
   };
+
   return (
     <header className="header">
-      {/* --- LOGO Y HAMBURGUESA --- */}
       <div className="header-top-mobile">
         <Link to="/" className="brand" onClick={closeMenu}>
           <TravelAirplaneIcon /> Rumbo Cero
@@ -35,15 +36,18 @@ export default function Header({ usuario, rol, onLogout }) {
           {menuAbierto ? '✖' : '☰'}
         </button>
       </div>
+
       <div className={`header-content ${menuAbierto ? 'active' : ''}`}>
+        
         {/* NAVEGACIÓN */}
         {usuario && (
           <nav className="nav">
             <Link to="/foro" className="nav-link" onClick={closeMenu}>Foro</Link>
             {rol === 'administrador' && (
                <Link to="/Admin-Panel" className="nav-link" style={{ color: 'red', fontWeight: 'bold' }} onClick={closeMenu}>
-                 Panel Admin </Link>
-                )}
+                 Panel Admin
+               </Link>
+            )}
             <Link to="/estadisticas" className="nav-link" onClick={closeMenu}>Estadísticas</Link>
             <Link to="/crear-viaje" className="btn btn-login" style={{ fontSize: '0.9rem', fontWeight: 'bold' }} onClick={closeMenu}>+ Crear Viaje
             </Link>
@@ -51,13 +55,27 @@ export default function Header({ usuario, rol, onLogout }) {
           </nav>
         )}
         <div className="header-actions">
-          {usuario ? (
-            <>
+          {usuario ? (<>
+              {/* 2. MODIFICADO: Añadimos la imagen (avatar) antes del nombre */}
               <Link to="/perfil" className="greeting" onClick={closeMenu}>
-                Hola, <strong>{usuario}</strong>
+                <img 
+                    src={foto || 'https://cdn-icons-png.flaticon.com/512/149/149071.png'} 
+                    alt="Avatar" 
+                    style={{
+                        width: '32px', 
+                        height: '32px', 
+                        borderRadius: '50%', 
+                        objectFit: 'cover', 
+                        border: '2px solid #e5e7eb',
+                        marginRight: '8px'
+                    }}
+                    onError={(e) => e.target.src = 'https://cdn-icons-png.flaticon.com/512/149/149071.png'}
+                />
+                <span>Hola, <strong>{usuario}</strong></span>
               </Link>
               <button onClick={handleLogout} className="btn btn-logout">Cerrar Sesión</button>
-            </> ) : (
+            </> 
+          ) : (
             <>
               <Link to="/" className="nav-link" onClick={closeMenu}>Inicio</Link> 
               <Link to="/login" className="btn btn-login" onClick={closeMenu}>Iniciar Sesión</Link>

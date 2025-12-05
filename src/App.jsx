@@ -40,7 +40,6 @@ function App() {
 
   return (
     <Router>
-      {/* 4. MODIFICADO: Pasamos la foto al Header */}
       <Header usuario={usuario} rol={rol} foto={foto} onLogout={handleLogout} />
       <Routes>
         <Route path="/" element={<Landing />} />
@@ -58,7 +57,6 @@ function App() {
         <Route path='/Admin-Panel' element={
             usuario && rol === 'administrador' ? <AdminPanel /> : <Navigate to="/" replace />
         } />
-        
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Router>

@@ -1,4 +1,4 @@
-import  { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { auth, db } from '../firebase';
 import { updateProfile } from 'firebase/auth';
 import { doc, updateDoc } from 'firebase/firestore';
@@ -28,27 +28,24 @@ export default function Perfil() {
     setCargando(true);
 
     try {
-      // 1. Actualizar perfil en Firebase Auth (Login)
       await updateProfile(usuario, {
         displayName: nombre,
         photoURL: foto
       });
 
-      // 2. Actualizar en Firestore (Base de datos)
-      // Usamos try-catch por si el documento no existiera (aunque debería)
       const userRef = doc(db, 'usuarios', usuario.uid);
       await updateDoc(userRef, {
         nombre: nombre,
         foto: foto 
       });
 
-      // 3. Actualizar LocalStorage (para que la App no se pierda)
+      // 3. Actualizar LocalStorage
       localStorage.setItem('usuario', nombre);
-      
-      // 4. Recargar página para ver cambios en el Header al instante
+      // --- NUEVO: Guardamos también la foto para que el Header la vea ---
+      localStorage.setItem('fotoPerfil', foto); 
+
       alert("¡Perfil actualizado con éxito!");
       window.location.reload(); 
-
     } catch (error) {
       console.error("Error al actualizar:", error);
       alert("Hubo un error al guardar los cambios.");
@@ -58,7 +55,6 @@ export default function Perfil() {
   };
 
   if (!usuario) return <div className="perfil-center">Cargando tu perfil...</div>;
-
   return (
     <div className="perfil-page">
       <div className="perfil-card">
@@ -100,7 +96,6 @@ export default function Perfil() {
             />
             <small className="help-text">Pega aquí el enlace de una imagen de Google.</small>
           </div>
-
           <button type="submit" className="btn-guardar" disabled={cargando}>
             {cargando ? 'Guardando...' : '💾 Guardar Cambios'}
           </button>
