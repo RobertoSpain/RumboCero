@@ -11,7 +11,6 @@ function Registro() {
   const [pass, setPass] = useState('');
   const [error, setError] = useState('');
   const navegar = useNavigate();
-
   const manejarEnvio = async (e) => {
     e.preventDefault(); 
     if (nombre && email && pass) {
@@ -40,20 +39,28 @@ function Registro() {
         <h2 className="tituloregistro">Registro</h2>
         <form onSubmit={manejarEnvio} className="formularioregistro">
           <input 
-            type="text" placeholder="Nombre" className="campotexto"
-            value={nombre} onChange={e => setNombre(e.target.value)} 
+            type="text" 
+            placeholder="Nombre" 
+            className="campotexto"
+            value={nombre} 
+            onChange={e => setNombre(e.target.value)} 
           />
           <input 
-            type="email" placeholder="Correo" className="campotexto"
-            value={email} onChange={e => setEmail(e.target.value)} 
+            type="email" 
+            placeholder="Correo" 
+            className="campotexto"
+            value={email} 
+            onChange={e => setEmail(e.target.value)} 
           />
           <input 
-            type="password" placeholder="Contraseña" className="campotexto"
-            value={pass} onChange={e => setPass(e.target.value)} 
+            type="password" 
+            placeholder="Contraseña" 
+            className="campotexto"
+            value={pass} 
+            onChange={e => setPass(e.target.value)} 
           />
           
           <button type="submit" className="botonregistro">Registrarse</button>
-          
           {error && <p className="mensajeerror">{error}</p>}
         </form>
         <Link to="/login" className="enlacelogin">Ir a Login</Link>

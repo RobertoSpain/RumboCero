@@ -84,6 +84,17 @@
 }
 .saludo-usuario strong { color: #111827; font-weight: 800; }
 
+/* IMAGEN DEL AVATAR  */
+.imagen-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #e5e7eb;
+  margin-right: 8px;
+  display: block; 
+}
+
 /* BOTONES GENERALES */
 .boton-entrar, .boton-salir, .boton-registro, .boton-crear {
   padding: 10px 24px;
@@ -113,7 +124,6 @@
 /* Botón Salir (Rojo) */
 .boton-salir { background-color: #fee2e2; color: #ef4444; }
 .boton-salir:hover { background-color: #fecaca; color: #dc2626; }
-
 /* Botón Registro (Fantasma) */
 .boton-registro { background: transparent; color: #4b5563; }
 .boton-registro:hover { background: #f3f4f6; color: #111827; }
@@ -195,7 +205,6 @@
   from { opacity: 0; transform: translateY(-10px); }
   to { opacity: 1; transform: translateY(0); }
 }
-
 @media (min-width: 961px) and (max-width: 1300px) {
   .cabecera {
     padding: 0 20px; 
