@@ -12,6 +12,7 @@ import Foro from './components/Foro';
 import CrearPost from './components/CrearPost';
 import DetalleForo from './components/DetalleForo';
 import Perfil from './components/Perfil';
+import Estadisticas from './components/Estadisticas';
 
 function App() {
   const [usuario, setUsuario] = useState(localStorage.getItem('usuario') || '');
@@ -53,6 +54,7 @@ function App() {
         <Route path="/viajes/:id" element={usuario ? <DetallesViaje /> : <Navigate to="/login" replace />} />
         <Route path="/foro" element={usuario ? <Foro /> : <Navigate to="/login" replace />} />
         <Route path="/crear-post" element={usuario ? <CrearPost /> : <Navigate to="/login" replace />} />
+        <Route path="/estadisticas" element={usuario ? <Estadisticas /> : <Navigate to="/login" replace />} />
         {/* Protección extra para Admin */}
         <Route path='/Admin-Panel' element={
             usuario && rol === 'administrador' ? <AdminPanel /> : <Navigate to="/" replace />
