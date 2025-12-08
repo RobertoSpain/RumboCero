@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { signInWithPopup, GoogleAuthProvider, signInWithEmailAndPassword } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
 import { auth, db } from "../firebase.js";
-import '../assets/Login.css'; 
+import '../assets/Estiloslogin.css'; 
 
 function Login({ onLogin }) {
   const [usuario, setUsuario] = useState('');
