@@ -1,6 +1,5 @@
 /* --- FONDO BLINDADO --- */
-.login-page {
-  /* Usamos fixed para ignorar el padding del body del index.css */
+.paginalogin {
   position: fixed;
   top: 0;
   left: 0;
@@ -12,14 +11,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  
-  /* Aseguramos que quede por debajo del Header (z-index del header es 1000) */
   z-index: 50; 
-  padding-top: 60px; /* Un poco de espacio extra por si acaso */
+  padding-top: 60px; 
 }
 
 /* --- TARJETA BLANCA --- */
-.login-card {
+.cajalogin {
   background-color: white;
   width: 100%;
   max-width: 400px;
@@ -28,7 +25,6 @@
   box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
   text-align: center;
   border: 1px solid #e5e7eb;
-  /* Animación suave de entrada */
   animation: fadeIn 0.5s ease-out;
 }
 
@@ -37,16 +33,15 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
-.login-title {
+.titulologin {
   font-size: 2rem;
   font-weight: 800;
   color: #111827;
   margin-bottom: 30px;
   margin-top: 0;
 }
-
-/* --- INPUTS --- */
-.login-input {
+/* --- INPUTS (CAMPOS DE TEXTO) --- */
+.campotexto {
   width: 100%;
   padding: 12px 16px;
   margin: 10px 0;
@@ -60,13 +55,13 @@
   transition: all 0.2s;
 }
 
-.login-input:focus {
+.campotexto:focus {
   border-color: #3b82f6;
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
 }
 
-/* --- BOTONES --- */
-.btn-login-submit {
+/* --- BOTÓN ENTRAR --- */
+.botonentrar {
   width: 100%;
   padding: 12px;
   margin-top: 20px;
@@ -80,17 +75,17 @@
   transition: background-color 0.2s;
 }
 
-.btn-login-submit:hover {
+.botonentrar:hover {
   background-color: #0056b3;
 }
-
-.login-divider {
+/* --- SEPARADOR --- */
+.separador {
   margin-top: 25px;
   padding-top: 20px;
   border-top: 1px solid #e5e7eb;
 }
-
-.btn-google {
+/* --- BOTÓN GOOGLE --- */
+.boton-google {
   width: 100%;
   padding: 10px;
   background-color: #db4437;
@@ -107,11 +102,11 @@
   transition: background-color 0.2s;
 }
 
-.btn-google:hover {
+.boton-google:hover {
   background-color: #c53929;
 }
-
-.login-error {
+/* --- MENSAJE DE ERROR --- */
+.mensajeerror {
   background-color: #fee2e2;
   color: #991b1b;
   padding: 12px;

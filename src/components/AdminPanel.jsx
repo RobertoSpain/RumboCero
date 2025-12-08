@@ -1,4 +1,4 @@
-import  { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { collection, getDocs, deleteDoc, updateDoc, doc } from 'firebase/firestore'; 
 import { db } from '../firebase'; 
 import '../assets/AdminPanel.css'; 
@@ -31,7 +31,6 @@ export default function AdminPanel() {
             setCargando(false);
         }
     };
-
     useEffect(() => {
         cargarDatos();
     }, []);
@@ -62,65 +61,64 @@ export default function AdminPanel() {
 
     // --- 3. RENDERIZADO ---
     return (
-        <div className="admin-container">
-            <h1 className="admin-title">Panel de Administración</h1>
-            <div className="tabs-container">
+        <div className="admin-contenedor">
+            <h1 className="titulo-grande">Panel de Administración</h1>    
+            <div className="zonatabs">
                 <button 
                     onClick={() => setTabActiva('viajes')}
-                    className={`tab-btn ${tabActiva === 'viajes' ? 'active' : ''}`}
+                    className={`boton-pes ${tabActiva === 'viajes' ? 'activa' : ''}`}
                 >✈️ Gestión de Viajes
                 </button>
                 <button 
                     onClick={() => setTabActiva('usuarios')}
-                    className={`tab-btn ${tabActiva === 'usuarios' ? 'active' : ''}`}
+                    className={`boton-pes ${tabActiva === 'usuarios' ? 'activa' : ''}`}
                 >👥 Gestión de Usuarios
                 </button>
             </div>
             {/* CONTENIDO PRINCIPAL */}
             {cargando ? (
-                <div style={{textAlign: 'center', padding: '50px', color: '#666'}}>Cargando datos... ⏳</div>
-            ) : (
-                <div className="panel-card">
+                <div style={{textAlign: 'center', padding: '50px', color: '#666'}}>Cargando datos... ⏳</div> ) : (
+                <div className="cajaprincipal">
                     {/* --- VISTA DE VIAJES --- */}
                     {tabActiva === 'viajes' && (
                         <div>
-                            <h2 className="section-title">Listado de Viajes ({viajes.length})</h2>
+                            <h2 className="titulolista">Listado de Viajes ({viajes.length})</h2>
                             {viajes.length === 0 && <p style={{color:'#888'}}>No hay viajes creados.</p>}
-                            
                             {viajes.map(viaje => (
-                                <div key={viaje.id} className="list-item">
-                                    <div className="item-info">
+                                <div key={viaje.id} className="filadato">
+                                    <div className="columnainfo">
                                         <h4>{viaje.name}</h4>
                                         <p>📍 {viaje.destinoPrincipal}</p>
                                     </div>
                                     <button 
                                         onClick={() => eliminarViaje(viaje.id, viaje.name)}
-                                        className="btn-action btn-delete">
+                                        className="boton-mini rojo">
                                         Eliminar Viaje
                                     </button>
                                 </div>
                             ))}
                         </div>)}
+
                     {/* --- VISTA DE USUARIOS --- */}
                     {tabActiva === 'usuarios' && (
                         <div>
-                            <h2 className="section-title">Listado de Usuarios ({usuarios.length})</h2>
+                            <h2 className="titulolista">Listado de Usuarios ({usuarios.length})</h2>
                             {usuarios.map(u => {
                                 const esAdmin = u.rol === 'administrador';
                                 return (
-                                    <div key={u.id} className="list-item">
-                                        <div className="item-info">
+                                    <div key={u.id} className="filadato">
+                                        <div className="columnainfo">
                                             <h4>{u.nombre || 'Usuario sin nombre'}</h4>
                                             <p>{u.email}</p>
                                             <div style={{marginTop:'5px'}}>
-                                                <span className={`badge-rol ${esAdmin ? 'rol-admin' : 'rol-user'}`}>
+                                                <span className={`etiqueta ${esAdmin ? 'tipo-jefe' : 'tipo-normal'}`}>
                                                     {u.rol || 'usuario'}
                                                 </span>
                                             </div>
                                         </div>
                                         <button 
                                             onClick={() => cambiarRol(u.id, u.rol, u.nombre)}
-                                            className="btn-action btn-toggle-role"
+                                            className="boton-mini azul"
                                             title={esAdmin ? "Degradar a Usuario" : "Promover a Admin"}>
                                             {esAdmin ? '🔽 Degradar' : '⭐ Hacer Admin'}
                                         </button>

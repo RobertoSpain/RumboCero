@@ -1,4 +1,4 @@
-import  { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { db, auth } from '../firebase.js'; 
 import { collection, onSnapshot, query, orderBy, deleteDoc, doc, getDocs } from 'firebase/firestore';
@@ -19,6 +19,7 @@ export default function Foro() {
       }
     };
     checkAdmin();
+
     // 2. Cargar posts y contar respuestas
     const postsRef = collection(db, 'foro');
     const q = query(postsRef, orderBy('createAt', 'desc'));
@@ -27,14 +28,14 @@ export default function Foro() {
       const postsData = await Promise.all(snapshot.docs.map(async (documento) => {
         const data = documento.data();
         const id = documento.id;
+        // Contamos las respuestas de la subcolección
         const comentariosRef = collection(db, 'foro', id, 'comentarios');
         const comentariosSnap = await getDocs(comentariosRef);
-        const numeroRespuestas = comentariosSnap.size;
         return {
           id: id,
           ...data,
           fecha: data.createAt?.toDate ? data.createAt.toDate().toLocaleDateString() : 'Reciente',
-          respuestas: numeroRespuestas // Guardamos el número
+          respuestas: comentariosSnap.size
         };
       }));
       setPosts(postsData);
@@ -43,6 +44,7 @@ export default function Foro() {
 
     return () => unsubscribe();
   }, []);
+
   const borrarPost = async (id) => {
     if(window.confirm("👮‍♂️ ADMIN: ¿Borrar este mensaje y sus respuestas?")) {
         try {
@@ -54,44 +56,52 @@ export default function Foro() {
     }
   };
 
-  if (loading) return <div className="foro-page text-center">Cargando comunidad...</div>;
+  if (loading) return <div className="foro cargando">Cargando comunidad...</div>;
+
   return (
-    <div className="foro-page">
-      <div className="foro-header">
-        <h2 className="foro-title">💬 Mini-Foro</h2>
-        <Link to="/crear-post" className="btn-nuevo-tema">
+    // Usamos 'foro' como clase principal para compartir fondo con CrearPost
+    <div className="foro">
+      
+      {/* Cabecera con título y botón */}
+      <div className="cabeceraforo">
+        <h2 className="tituloseccion">💬 Mini-Foro</h2>
+        <Link to="/crear-post" className="boton-nuevo">
           + Nuevo Tema
         </Link>
       </div>
-      <div className="posts-container">
+
+      {/* Lista de tarjetas */}
+      <div className="lista-temas">
         {posts.length === 0 ? (
-          <div className="text-center p-10 bg-white rounded shadow">
+          <div className="cajavacia">
             <h3>¡El foro está vacío! 🦗</h3>
             <p>Sé el primero en compartir tu experiencia.</p>
           </div>
         ) : (
           posts.map(post => (
-            <div key={post.id} className="post-card">
-              <div className="post-header">
+            <div key={post.id} className="tarjeta-tema">
+              
+              <div className="tarjeta">
                 <div>
-                    <h3 className="post-title">{post.titulo}</h3>
-                    <div className="post-meta">
-                        <span>Por: <span className="post-author">{post.autor}</span></span>
+                    <h3 className="titulotema">{post.titulo}</h3>
+                    <div className="datostema">
+                        <span>Por: <span className="nombre-autor">{post.autor}</span></span>
                         <span>• {post.fecha}</span>
                     </div>
                 </div>
-                {/* Etiqueta con número de respuestas */}
-                <div style={{fontSize: '0.9rem', color: post.respuestas > 0 ? '#3b82f6' : '#9ca3af', fontWeight: 'bold'}}>
+                {/* Contador de respuestas */}
+                <div className={`contador-respuestas ${post.respuestas > 0 ? 'con-respuestas' : 'sin-respuestas'}`}>
                     {post.respuestas} {post.respuestas === 1 ? 'respuesta' : 'respuestas'}
                 </div>
               </div>
-        <p className="post-content">{post.contenido}</p>
-             <div className="post-actions" style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '15px', borderTop: '1px solid #eee', paddingTop: '10px'}}>
-                  <Link to={`/foro/${post.id}`} style={{textDecoration: 'none', color: '#3b82f6', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '5px'}}>
+
+              <p className="texto">{post.contenido}</p>
+              <div className="pietarjeta">
+                  <Link to={`/foro/${post.id}`} className="enlace-responder">
                       💬 Responder / Ver Hilo ({post.respuestas})
                   </Link>
                   {esAdmin && (
-                    <button onClick={() => borrarPost(post.id)} className="btn-borrar-post">
+                    <button onClick={() => borrarPost(post.id)} className="boton-borrar">
                         🗑️ Eliminar
                     </button>
                   )}

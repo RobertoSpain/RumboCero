@@ -10,13 +10,10 @@ export default function DetalleForo() {
   const [comentarios, setComentarios] = useState([]);
   const [nuevoComentario, setNuevoComentario] = useState('');
   const [loading, setLoading] = useState(true);
-  
-  // Estado para saber si el usuario actual es JEFE (Admin)
   const [esAdmin, setEsAdmin] = useState(false);
 
-  // 1. CARGAR DATOS Y VERIFICAR PERMISOS
+  // 1. CARGAR DATOS
   useEffect(() => {
-    // A) Chequear si soy Admin
     const checkAdmin = () => {
       const rolGuardado = localStorage.getItem('rol');
       if (rolGuardado === 'administrador') {
@@ -24,7 +21,8 @@ export default function DetalleForo() {
       }
     };
     checkAdmin();
-    // B) Cargar el Post Principal
+
+    // B) Cargar Post
     const obtenerPost = async () => {
       try {
         const docRef = doc(db, 'foro', id);
@@ -39,14 +37,14 @@ export default function DetalleForo() {
       }
     };
     obtenerPost();
-    // C) Suscribirse a los comentarios en tiempo real
+
+    // C) Comentarios en tiempo real
     const comentariosRef = collection(db, 'foro', id, 'comentarios');
     const q = query(comentariosRef, orderBy('createAt', 'asc'));
     const unsubscribe = onSnapshot(q, (snapshot) => {
       const comData = snapshot.docs.map(doc => ({
         id: doc.id,
         ...doc.data(),
-        // Formateo de fecha bonito
         fecha: doc.data().createAt?.toDate ? doc.data().createAt.toDate().toLocaleString() : 'Reciente'
       }));
       setComentarios(comData);
@@ -54,7 +52,7 @@ export default function DetalleForo() {
     return () => unsubscribe();
   }, [id]);
 
-  // 2. ENVIAR NUEVO COMENTARIO
+  // 2. ENVIAR COMENTARIO
   const manejarEnvio = async (e) => {
     e.preventDefault();
     if (!nuevoComentario.trim()) return;
@@ -79,7 +77,6 @@ export default function DetalleForo() {
   const borrarComentario = async (idComentario) => {
     if(!window.confirm("¿Seguro que quieres eliminar este comentario?")) return;
     try {
-        // Ruta: foro -> ID_POST -> comentarios -> ID_COMENTARIO
         const comentarioRef = doc(db, 'foro', id, 'comentarios', idComentario);
         await deleteDoc(comentarioRef);
     } catch (error) {
@@ -87,64 +84,67 @@ export default function DetalleForo() {
         alert("No se pudo borrar.");
     }
   };
-  if (loading) return <div className="detalle-foro-page text-center">Cargando conversación...</div>;
-  if (!post) return <div className="detalle-foro-page text-center">Post no encontrado 😢</div>;
-  // Usuario actual para comparar dueños
+
+  if (loading) return <div className="paginadetalle centrado">Cargando conversación...</div>;
+  if (!post) return <div className="paginadetalle centrado">Post no encontrado 😢</div>;
+
   const usuarioActual = auth.currentUser;
+
   return (
-    <div className="detalle-foro-page">
-      <div className="detalle-container">
-        <Link to="/foro" style={{ display: 'inline-block', marginBottom: '20px', textDecoration: 'none', color: '#666', fontWeight: 'bold' }}>
+    <div className="paginadetalle">
+      <div className="contenedordetalle">
+        <Link to="/foro" className="enlacevolver">
           &larr; Volver al Foro
         </Link>
-        <div className="post-principal">
-          <h1 className="principal-titulo">{post.titulo}</h1>
-          <div className="principal-meta">
-            Escrito por <strong style={{color: '#3b82f6'}}>{post.autor}</strong>
+        {/* POST PRINCIPAL */}
+        <div className="cajapost">
+          <h1 className="titulopost">{post.titulo}</h1>
+          <div className="datospost">
+            Escrito por <span className="autor-resaltado">{post.autor}</span>
           </div>
-          <div className="principal-contenido">
+          <div className="cuerpopost">
             {post.contenido}
           </div>
         </div>
-        <div className="comentarios-section">
-          <h3 className="comentarios-titulo">💬 Respuestas ({comentarios.length})</h3>
-          <div className="lista-comentarios">
-            {comentarios.length === 0 && <p style={{color:'#888', fontStyle:'italic'}}>Nadie ha respondido aún. ¡Sé el primero!</p>}
-            {comentarios.map(com => {
-                // 1. Es mío si mi UID coincide con el del comentario
-                const esMio = usuarioActual && usuarioActual.uid === com.userId;
-                // 2. Puedo borrar si es mío O si soy Admin
-                const puedeBorrar = esMio || esAdmin;
-                return (
-                  <div key={com.id} className="comentario-card" style={{position: 'relative'}}>
-                    <div className="comentario-header">
-                      <span className="comentario-autor">{com.autor}</span>
-                      <span className="comentario-fecha">{com.fecha}</span>
-                    </div>
-                    <p className="comentario-texto">{com.texto}</p>
-                  {puedeBorrar && (
-                <button 
-                  className="btn-borrar-comentario" 
-                  onClick={() => borrarComentario(com.id)}
-                 title={esMio ? "Borrar mi comentario" : "Borrar como Admin"}
-                 > 🗑️</button>
-                  )}
-                  </div>
-                );
-            })}
-          </div>
-          <div className="form-responder">
+
+        {/* SECCIÓN RESPUESTAS */}
+        <div className="seccionrespuestas">
+          <h3 className="titulorespuestas">💬 Respuestas ({comentarios.length})</h3>
+          <div className="listacomentarios">
+            {comentarios.length === 0 && <p className="textovacio">Nadie ha respondido aún. ¡Sé el primero!</p>}
+      {comentarios.map(com => {
+            const esMio = usuarioActual && usuarioActual.uid === com.userId;
+            const puedeBorrar = esMio || esAdmin;
+          return (
+          <div key={com.id} className="tarjetacomentario">
+          <div className="cabeceracomentario">
+           <span className="autorcomentario">{com.autor}</span>
+          <span className="fechacomentario">{com.fecha}</span>
+        </div>
+        <p className="textocomentario">{com.texto}</p>
+        {puedeBorrar && (
+       <button 
+              className="botonborrar" 
+              onClick={() => borrarComentario(com.id)}
+               title={esMio ? "Borrar mi comentario" : "Borrar como Admin"}
+              > 🗑️</button> )}
+                </div>
+             );
+        })}
+       </div>
+      {/* FORMULARIO RESPONDER */}
+          <div className="zonaescribir">
             <h4>Responder al tema:</h4>
             <form onSubmit={manejarEnvio}>
               <textarea 
-                className="textarea-responder" 
+                className="cajatexto" 
                 rows="3" 
                 placeholder="Escribe tu opinión aquí..."
                 value={nuevoComentario}
                 onChange={e => setNuevoComentario(e.target.value)}
                 required
               ></textarea>
-              <button type="submit" className="btn-enviar">Enviar Respuesta</button>
+              <button type="submit" className="botonenviar">Enviar Respuesta</button>
             </form>
           </div>
         </div>

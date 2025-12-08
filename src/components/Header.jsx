@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import '../assets/Header.css'; 
 
-const TravelAirplaneIcon = () => (
+const IconoAvion = () => (
   <svg viewBox="0 0 24 24" width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M10 14L21 3L14 14L3 21L10 14Z" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
     <path d="M14 14L18 18" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -14,72 +14,65 @@ const TravelAirplaneIcon = () => (
   </svg>
 );
 
-// 1. AÑADIDO: Recibimos la prop 'foto' aquí
 export default function Header({ usuario, rol, foto, onLogout }) {
-  const navigate = useNavigate();
+  const navegar = useNavigate();
   const [menuAbierto, setMenuAbierto] = useState(false);
-  const closeMenu = () => setMenuAbierto(false);
-  const toggleMenu = () => setMenuAbierto(!menuAbierto);
-  const handleLogout = () => {
+  const cerrarMenu = () => setMenuAbierto(false);
+  const alternarMenu = () => setMenuAbierto(!menuAbierto);
+  const cerrarSesion = () => {
     if (onLogout) onLogout();
-    navigate('/'); 
-    closeMenu();
+    navegar('/'); 
+    cerrarMenu();
   };
 
   return (
-    <header className="header">
-      <div className="header-top-mobile">
-        <Link to="/" className="brand" onClick={closeMenu}>
-          <TravelAirplaneIcon /> Rumbo Cero
+    <header className="cabecera">
+      <div className="cabecera-movil">
+        <Link to="/" className="logo-marca" onClick={cerrarMenu}>
+          <IconoAvion /> Rumbo Cero
         </Link>
-        <button className="hamburger-btn" onClick={toggleMenu}>
+        <button className="boton-menu" onClick={alternarMenu}>
           {menuAbierto ? '✖' : '☰'}
         </button>
       </div>
 
-      <div className={`header-content ${menuAbierto ? 'active' : ''}`}>
-        
+      <div className={`contenido-cabecera ${menuAbierto ? 'activo' : ''}`}>
         {/* NAVEGACIÓN */}
         {usuario && (
-          <nav className="nav">
-            <Link to="/foro" className="nav-link" onClick={closeMenu}>Foro</Link>
+          <nav className="navegacion">
+            <Link to="/foro" className="enlace-nav" onClick={cerrarMenu}>Foro</Link>
+            
             {rol === 'administrador' && (
-               <Link to="/Admin-Panel" className="nav-link" style={{ color: 'red', fontWeight: 'bold' }} onClick={closeMenu}>
+               <Link to="/Admin-Panel" className="enlace-nav admin-link" onClick={cerrarMenu}>
                  Panel Admin
                </Link>
             )}
-            <Link to="/estadisticas" className="nav-link" onClick={closeMenu}>Estadísticas</Link>
-            <Link to="/crear-viaje" className="btn btn-login" style={{ fontSize: '0.9rem', fontWeight: 'bold' }} onClick={closeMenu}>+ Crear Viaje
+            <Link to="/estadisticas" className="enlace-nav" onClick={cerrarMenu}>Estadísticas</Link>
+            <Link to="/crear-viaje" className="boton-crear" onClick={cerrarMenu}>
+                + Crear Viaje
             </Link>
-            <Link to="/viajes" className="nav-link" onClick={closeMenu}>Mis Viajes</Link>
+            <Link to="/viajes" className="enlace-nav" onClick={cerrarMenu}>Mis Viajes</Link>
           </nav>
         )}
-        <div className="header-actions">
-          {usuario ? (<>
-              {/* 2. MODIFICADO: Añadimos la imagen (avatar) antes del nombre */}
-              <Link to="/perfil" className="greeting" onClick={closeMenu}>
+        <div className="acciones-cabecera">
+          {usuario ? (
+            <>
+              <Link to="/perfil" className="saludo-usuario" onClick={cerrarMenu}>
                 <img 
                     src={foto || 'https://cdn-icons-png.flaticon.com/512/149/149071.png'} 
                     alt="Avatar" 
-                    style={{
-                        width: '32px', 
-                        height: '32px', 
-                        borderRadius: '50%', 
-                        objectFit: 'cover', 
-                        border: '2px solid #e5e7eb',
-                        marginRight: '8px'
-                    }}
+                    className="imagen-avatar"
                     onError={(e) => e.target.src = 'https://cdn-icons-png.flaticon.com/512/149/149071.png'}
                 />
                 <span>Hola, <strong>{usuario}</strong></span>
               </Link>
-              <button onClick={handleLogout} className="btn btn-logout">Cerrar Sesión</button>
+              <button onClick={cerrarSesion} className="boton-salir">Cerrar Sesión</button>
             </> 
           ) : (
             <>
-              <Link to="/" className="nav-link" onClick={closeMenu}>Inicio</Link> 
-              <Link to="/login" className="btn btn-login" onClick={closeMenu}>Iniciar Sesión</Link>
-              <Link to="/registro" className="btn btn-ghost" onClick={closeMenu}>Registro</Link>
+              <Link to="/" className="enlace-nav" onClick={cerrarMenu}>Inicio</Link> 
+              <Link to="/login" className="boton-entrar" onClick={cerrarMenu}>Iniciar Sesión</Link>
+              <Link to="/registro" className="boton-registro" onClick={cerrarMenu}>Registro</Link>
             </>
           )}      
         </div>

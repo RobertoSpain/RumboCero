@@ -1,16 +1,16 @@
-.detalle-foro-page {
+.paginadetalle {
   background-color: #f3f4f6;
   min-height: 100vh;
   padding: 40px 20px;
 }
 
-.detalle-container {
+.contenedordetalle {
   max-width: 800px;
   margin: 0 auto;
 }
 
 /* Post Principal */
-.post-principal {
+.cajapost {
   background: white;
   padding: 30px;
   border-radius: 12px;
@@ -19,14 +19,13 @@
   margin-bottom: 40px;
 }
 
-.principal-titulo { margin: 0 0 10px 0; color: #111827; }
-.principal-meta { color: #6b7280; font-size: 0.9rem; margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 15px; }
-.principal-contenido { line-height: 1.6; color: #374151; white-space: pre-wrap; }
+.titulopost { margin: 0 0 10px 0; color: #111827; }
+.datospost { color: #6b7280; font-size: 0.9rem; margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 15px; }
+.cuerpopost { line-height: 1.6; color: #374151; white-space: pre-wrap; }
 
 /* Comentarios */
-.lista-comentarios { display: flex; flex-direction: column; gap: 15px; margin-bottom: 30px; }
-
-.comentario-card {
+.listacomentarios { display: flex; flex-direction: column; gap: 15px; margin-bottom: 30px; }
+.tarjetacomentario {
   background: white;
   padding: 20px;
   border-radius: 12px;
@@ -35,13 +34,13 @@
   padding-bottom: 45px; 
 }
 
-.comentario-header { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.85rem; }
-.comentario-autor { font-weight: 700; color: #0d9488; }
-.comentario-fecha { color: #9ca3af; font-size: 0.8rem; }
-.comentario-texto { margin: 0; color: #4b5563; }
+.cabeceracomentario { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.85rem; }
+.autorcomentario { font-weight: 700; color: #0d9488; }
+.fechacomentario { color: #9ca3af; font-size: 0.8rem; }
+.textocomentario { margin: 0; color: #4b5563; }
 
 /* Botón de borrar comentario (Posicionado abajo a la derecha) */
-.btn-borrar-comentario {
+.botonborrar {
   position: absolute;
   bottom: 10px;
   right: 15px;
@@ -50,19 +49,17 @@
   font-size: 1.2rem;
   cursor: pointer;
   opacity: 0.4;
-  color: #ef4444; /* Rojo */
+  color: #ef4444; 
   transition: all 0.2s;
 }
 
-
-
-.btn-borrar-comentario:hover {
+.botonborrar:hover {
   opacity: 1;
   transform: scale(1.1);
 }
 
 /* Formulario */
-.form-responder { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 -4px 10px rgba(0,0,0,0.05); }
-.textarea-responder { width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; margin-bottom: 10px; font-family: inherit; resize: vertical; box-sizing: border-box; }
-.btn-enviar { background: #3b82f6; color: white; border: none; padding: 10px 20px; border-radius: 6px; font-weight: bold; cursor: pointer; }
-.btn-enviar:hover { background: #2563eb; }
+.zonaescribir { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 -4px 10px rgba(0,0,0,0.05); }
+.cajatexto { width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; margin-bottom: 10px; font-family: inherit; resize: vertical; box-sizing: border-box; }
+.botonenviar { background: #3b82f6; color: white; border: none; padding: 10px 20px; border-radius: 6px; font-weight: bold; cursor: pointer; }
+.botonenviar:hover { background: #2563eb; }

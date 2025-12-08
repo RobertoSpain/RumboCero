@@ -6,30 +6,25 @@ import { auth, db } from "../firebase";
 import '../assets/Registro.css';
 
 function Registro() {
-  // Estados para los campos
   const [nombre, setNombre] = useState(''); 
   const [email, setEmail] = useState('');
   const [pass, setPass] = useState('');
   const [error, setError] = useState('');
   const navegar = useNavigate();
+
   const manejarEnvio = async (e) => {
     e.preventDefault(); 
-
     if (nombre && email && pass) {
       try {
-        // 1. Crear cuenta en Firebase Auth
         const credencial = await createUserWithEmailAndPassword(auth, email, pass);
-        
-        // 2. Guardar datos en Firestore 
         await setDoc(doc(db, "usuarios", credencial.user.uid), {
            userID: credencial.user.uid,
            nombre: nombre,
            email: email,
-           rol: "usuario", // Rol por defecto
+           rol: "usuario",
            createAt: new Date()
         });
-
-        navegar('/viajes'); // Redirige tras éxito
+        navegar('/viajes');
       } catch (err) {
         console.error(err);
         setError('Error al registrar: ' + err.message);
@@ -40,28 +35,28 @@ function Registro() {
   };
 
   return (
-    <div className="page-center"> 
-      <div className="login-container">
-        <h2>Registro</h2>
-        <form onSubmit={manejarEnvio} className="login-form">
+    <div className="paginacentral"> 
+      <div className="cajaregistro">
+        <h2 className="tituloregistro">Registro</h2>
+        <form onSubmit={manejarEnvio} className="formularioregistro">
           <input 
-            type="text" placeholder="Nombre" className="form-input"
+            type="text" placeholder="Nombre" className="campotexto"
             value={nombre} onChange={e => setNombre(e.target.value)} 
           />
           <input 
-            type="email" placeholder="Correo" className="form-input"
+            type="email" placeholder="Correo" className="campotexto"
             value={email} onChange={e => setEmail(e.target.value)} 
           />
           <input 
-            type="password" placeholder="Contraseña" className="form-input"
+            type="password" placeholder="Contraseña" className="campotexto"
             value={pass} onChange={e => setPass(e.target.value)} 
           />
           
-          <button type="submit" className="btn btn-primary">Registrarse</button>
+          <button type="submit" className="botonregistro">Registrarse</button>
           
-          {error && <p style={{color: 'red', marginTop: '10px'}}>{error}</p>}
+          {error && <p className="mensajeerror">{error}</p>}
         </form>
-        <Link to="/login" style={{display:'block', marginTop:'15px'}}>Ir a Login</Link>
+        <Link to="/login" className="enlacelogin">Ir a Login</Link>
       </div>
     </div>
   );

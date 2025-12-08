@@ -1,10 +1,10 @@
 .app-content {
     /* El contenido ocupará el 100% del ancho disponible */
     width: 100%; 
-    max-width: var(--max-width); /* Utiliza la variable definida en index.css */
+    max-width: var(--max-width); 
     margin: 0 auto;
-    padding: 30px 40px; /* Padding generoso a los lados y verticalmente */
-    min-height: calc(100vh - 80px); /* Asegura que la página sea visiblemente larga */
+    padding: 30px 40px; 
+    min-height: calc(100vh - 80px); 
 }
 
 /* Estilo para los títulos de sección (ej. "Mis Viajes", "Estadísticas") */
@@ -13,14 +13,14 @@
     font-weight: 800;
     color: var(--text);
     margin-bottom: 24px;
-    text-align: left; /* Alineación a la izquierda para el contenido */
+    text-align: left; 
 }
 
 /* Contenedor principal para organizar cards (viajes, destinos) */
 .grid-layout {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Columnas responsivas */
-    gap: 25px; /* Espacio entre los elementos */
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+    gap: 25px; 
     margin-bottom: 40px;
 }
 
@@ -57,7 +57,7 @@
 
 @media (max-width: 768px) {
     .app-content {
-        padding: 20px 20px; /* Menos padding en pantallas pequeñas */
+        padding: 20px 20px; 
     }
 
     .section-title {

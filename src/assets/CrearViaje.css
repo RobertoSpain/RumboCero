@@ -1,0 +1,134 @@
+/* Contenedor que centra todo */
+.paginacentrada {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f3f4f6;
+  padding: 20px;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* Tarjeta Blanca */
+.cajaformulario {
+  background-color: white;
+  width: 100%;
+  max-width: 500px;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e5e7eb;
+}
+
+/* Títulos */
+.titulocrear {
+  text-align: center;
+  color: #111827;
+  font-size: 1.8rem;
+  margin-top: 0;
+  margin-bottom: 5px;
+  font-weight: 800;
+}
+
+.subtitulocrear {
+  text-align: center;
+  color: #6b7280;
+  margin-bottom: 25px;
+  font-size: 1rem;
+}
+
+/* Formulario */
+.formulario-viaje {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.campo label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+  color: #374151;
+  font-size: 0.95rem;
+}
+
+/* Inputs de texto */
+.entradatexto {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 1rem;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.2s;
+  font-family: inherit;
+}
+
+.entradatexto:focus {
+  border-color: #0d9488;
+  box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.1);
+}
+
+.areatexto {
+  resize: vertical;
+}
+
+/* Texto de ayuda (small) */
+.textoayuda {
+  color: #6b7280;
+  font-size: 0.85rem;
+  display: block;
+  margin-top: 4px;
+}
+
+/* Fila de fechas */
+.filafechas {
+  display: flex;
+  gap: 15px;
+}
+
+.mitad {
+  flex: 1;
+}
+
+/* Botón Guardar */
+.botonguardar {
+  margin-top: 10px;
+  background-color: #0d9488; /* Verde azulado */
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  width: 100%;
+}
+
+.botonguardar:hover {
+  background-color: #0f766e;
+}
+
+.botonguardar:disabled {
+  background-color: #9ca3af;
+  cursor: not-allowed;
+}
+
+/* Mensaje de Error */
+.mensajeerror {
+  background-color: #fee2e2;
+  color: #b91c1c;
+  padding: 10px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  text-align: center;
+  border: 1px solid #fca5a5;
+}
+
+/* Texto Cargando */
+.textocargando {
+  font-size: 1.2rem;
+  color: #6b7280;
+}

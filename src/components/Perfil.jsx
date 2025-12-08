@@ -26,13 +26,11 @@ export default function Perfil() {
     e.preventDefault();
     if (!usuario) return;
     setCargando(true);
-
     try {
       await updateProfile(usuario, {
         displayName: nombre,
         photoURL: foto
       });
-
       const userRef = doc(db, 'usuarios', usuario.uid);
       await updateDoc(userRef, {
         nombre: nombre,
@@ -41,7 +39,6 @@ export default function Perfil() {
 
       // 3. Actualizar LocalStorage
       localStorage.setItem('usuario', nombre);
-      // --- NUEVO: Guardamos también la foto para que el Header la vea ---
       localStorage.setItem('fotoPerfil', foto); 
 
       alert("¡Perfil actualizado con éxito!");
@@ -54,49 +51,50 @@ export default function Perfil() {
     }
   };
 
-  if (!usuario) return <div className="perfil-center">Cargando tu perfil...</div>;
+  if (!usuario) return <div className="cargando-perfil">Cargando tu perfil...</div>;
+
   return (
-    <div className="perfil-page">
-      <div className="perfil-card">
-        <h1 className="perfil-title">👤 Editar Perfil</h1>
+    <div className="paginaperfil">
+      <div className="cajaperfil">
+        <h1 className="tituloperfil">👤 Editar Perfil</h1>
         
         {/* Previsualización */}
-        <div className="perfil-header">
+        <div className="cabecera-perfil">
           <img 
             src={foto || 'https://cdn-icons-png.flaticon.com/512/149/149071.png'} 
             alt="Avatar" 
-            className="perfil-avatar"
+            className="avatarimagen"
             onError={(e) => e.target.src = 'https://cdn-icons-png.flaticon.com/512/149/149071.png'} 
           />
-          <p className="perfil-email">{usuario.email}</p>
+          <p className="correousuario">{usuario.email}</p>
         </div>
 
         {/* Formulario */}
-        <form onSubmit={guardarCambios} className="perfil-form">
-          <div className="form-group">
+        <form onSubmit={guardarCambios} className="formulario-perfil">
+          <div className="campo-formulario">
             <label>Nombre de Usuario</label>
             <input 
               type="text" 
               value={nombre} 
               onChange={(e) => setNombre(e.target.value)} 
-              className="input-perfil"
+              className="entrada-datos"
               placeholder="Ej: Roberto España"
               required
             />
           </div>
 
-          <div className="form-group">
+          <div className="campoformulario">
             <label>Foto de Perfil (URL)</label>
             <input 
               type="text" 
               value={foto} 
               onChange={(e) => setFoto(e.target.value)} 
-              className="input-perfil"
+              className="entrada-datos"
               placeholder="https://..."
             />
-            <small className="help-text">Pega aquí el enlace de una imagen de Google.</small>
+            <small className="textoayuda">Pega aquí el enlace de una imagen de Google.</small>
           </div>
-          <button type="submit" className="btn-guardar" disabled={cargando}>
+          <button type="submit" className="boton-guardar" disabled={cargando}>
             {cargando ? 'Guardando...' : '💾 Guardar Cambios'}
           </button>
         </form>

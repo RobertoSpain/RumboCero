@@ -40,13 +40,13 @@ export default function CrearPost() {
   };
 
   return (
-    <div className="foro-page">
-      <div className="crear-post-container">
+    <div className="foro">
+      <div className="crearpost">
         <h2 style={{marginTop: 0, color: '#111827'}}>📝 Nuevo Tema</h2>
         <p style={{color: '#6b7280', marginBottom: '20px'}}>Comparte tus consejos o preguntas con la comunidad.</p>
         
         <form onSubmit={manejarPublicacion}>
-          <div className="form-group">
+          <div className="form">
             <label style={{fontWeight:'bold', display:'block', marginBottom:'5px'}}>Título:</label>
             <input 
                 type="text" 
@@ -57,8 +57,7 @@ export default function CrearPost() {
                 required
             />
           </div>
-          
-          <div className="form-group">
+          <div className="form">
             <label style={{fontWeight:'bold', display:'block', marginBottom:'5px'}}>Mensaje:</label>
             <textarea 
                 placeholder="Escribe aquí..." 
@@ -70,10 +69,10 @@ export default function CrearPost() {
             ></textarea>
           </div>
           <div style={{display:'flex', gap:'10px', marginTop:'10px'}}>
-            <Link to="/foro" className="btn-borrar-post" style={{textDecoration:'none', textAlign:'center', paddingTop:'12px'}}>
+            <Link to="/foro" className="botonborrarpost" style={{textDecoration:'none', textAlign:'center', paddingTop:'12px'}}>
                 Cancelar
             </Link>
-            <button type="submit" className="btn-publicar" disabled={cargando}>
+            <button type="submit" className="botonpublicar" disabled={cargando}>
                 {cargando ? 'Publicando...' : 'Publicar Mensaje'}
             </button>
           </div>

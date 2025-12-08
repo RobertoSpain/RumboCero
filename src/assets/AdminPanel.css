@@ -10,7 +10,7 @@
   --radius: 16px;
 }
 
-.admin-container {
+.admin-contenedor {
   padding: 40px 20px;
   max-width: 1000px;
   margin: 0 auto;
@@ -19,8 +19,8 @@
   font-family: 'Inter', system-ui, sans-serif;
 }
 
-/* --- HEADER --- */
-.admin-title {
+/* --- HEADER (TÍTULO) --- */
+.titulo-grande {
   font-size: 2.5rem;
   font-weight: 800;
   color: #1f2937;
@@ -29,7 +29,8 @@
   display: inline-block;
 }
 
-.admin-title::after {
+/* La barrita de colores debajo del título */
+.titulo-grande::after {
   content: '';
   display: block;
   width: 60px;
@@ -40,18 +41,18 @@
 }
 
 /* --- TABS (PESTAÑAS) --- */
-.tabs-container {
+.zonatabs {
   display: flex;
   gap: 15px;
   margin-bottom: 25px;
   background: white;
   padding: 10px;
-  border-radius: 50px;
+  border-radius: 50px; 
   width: fit-content;
   box-shadow: 0 2px 5px rgba(0,0,0,0.05);
 }
 
-.tab-btn {
+.boton-pes {
   padding: 10px 24px;
   border: none;
   background: transparent;
@@ -63,40 +64,42 @@
   transition: all 0.3s ease;
 }
 
-.tab-btn:hover {
+.boton-pes:hover {
   color: #111827;
   background-color: #f3f4f6;
 }
 
 /* Estado Activo de la Pestaña */
-.tab-btn.active {
+.boton-pes.activa {
   background-color: #1f2937; 
   color: white;
   box-shadow: 0 4px 10px rgba(0,0,0,0.2);
   transform: translateY(-1px);
 }
 
-/* --- TARJETA DE CONTENIDO --- */
-.panel-card {
+/* --- CAJA PRINCIPAL (CONTENIDO) --- */
+.cajaprincipal {
   background: var(--admin-card-bg);
   border-radius: var(--radius);
   box-shadow: var(--shadow-soft);
   padding: 30px;
   border: 1px solid rgba(0,0,0,0.05);
   animation: fadeIn 0.4s ease-in-out;
+  min-height: 300px;
 }
 
-.section-title {
+.titulolista {
   font-size: 1.25rem;
   font-weight: 700;
   color: #374151;
   margin-bottom: 20px;
   padding-bottom: 10px;
   border-bottom: 2px solid #f3f4f6;
+  margin-top: 0;
 }
 
 /* --- LISTAS (ITEMS) --- */
-.list-item {
+.filadato {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -108,40 +111,49 @@
   transition: all 0.2s ease;
 }
 
-.list-item:hover {
+.filadato:hover {
   border-color: #d1d5db;
   box-shadow: 0 4px 12px rgba(0,0,0,0.05);
   transform: translateX(4px); 
 }
 
-.item-info h4 {
+.columnainfo h4 {
   margin: 0;
   font-size: 1.05rem;
   color: #111827;
   font-weight: 700;
 }
 
-.item-info p, .item-info span {
+.columnainfo p {
   margin: 4px 0 0 0;
   font-size: 0.9rem;
   color: #6b7280;
 }
 
-/* Badge de Rol */
-.badge-rol {
+/* Etiquetas de Rol */
+.etiqueta {
   display: inline-block;
   padding: 2px 8px;
   border-radius: 4px;
   font-size: 0.75rem;
   font-weight: 800;
   text-transform: uppercase;
-  margin-left: 5px;
+  margin-left: 0; 
+  margin-top: 5px;
 }
-.rol-admin { background-color: #fee2e2; color: #b91c1c; }
-.rol-user { background-color: #dbeafe; color: #1e40af; }
+
+.tipo-jefe { 
+  background-color: #fee2e2; 
+  color: #b91c1c; 
+}
+
+.tipo-normal { 
+  background-color: #dbeafe; 
+  color: #1e40af; 
+}
 
 /* --- BOTONES DE ACCIÓN --- */
-.btn-action {
+.boton-mini {
   padding: 8px 16px;
   border: none;
   border-radius: 8px;
@@ -149,28 +161,30 @@
   font-weight: 600;
   cursor: pointer;
   transition: background 0.2s, transform 0.1s;
-  color: white;
 }
 
-.btn-action:active { transform: scale(0.95); }
+.boton-mini:active { transform: scale(0.95); }
 
-/* Botón Eliminar (Rojo) */
-.btn-delete {
+/* Botón Rojo (Eliminar) - Estilo outline */
+.boton-mini.rojo {
   background-color: white;
   color: var(--color-danger);
   border: 1px solid var(--color-danger);
 }
-.btn-delete:hover {
+.boton-mini.rojo:hover {
   background-color: var(--color-danger);
   color: white;
 }
 
-/* Botón Admin (Naranja/Negro) */
-.btn-toggle-role {
-  background-color: #1f2937;
+/* Botón Azul (Cambiar Rol) - Estilo sólido oscuro */
+.boton-mini.azul {
+  background-color: #1f2937; 
+  color: white;
+  border: 1px solid #1f2937;
 }
-.btn-toggle-role:hover {
+.boton-mini.azul:hover {
   background-color: black;
+  border-color: black;
 }
 
 /* Animación de entrada suave */

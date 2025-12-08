@@ -1,11 +1,12 @@
-/* --- LAYOUT PRINCIPAL --- */
-.foro-page {
+/* --- LAYOUT PRINCIPAL (Común para Foro y Crear Post) --- */
+.foro {
   background-color: #f3f4f6;
   min-height: 100vh;
   padding: 40px 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
-
-.foro-header {
+/* --- CABECERA --- */
+.cabeceraforo {
   max-width: 800px;
   margin: 0 auto 30px auto;
   display: flex;
@@ -15,25 +16,25 @@
   padding-bottom: 15px;
 }
 
-.foro-title {
+.tituloseccion {
   font-size: 2rem;
   color: #111827;
   margin: 0;
   display: flex;
   align-items: center;
   gap: 10px;
+  font-weight: 800;
 }
-
-/* --- LISTA DE POSTS --- */
-.posts-container {
+/* --- LISTA DE TEMAS (CONTENEDOR) --- */
+.lista-temas {
   max-width: 800px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
-
-.post-card {
+/* --- TARJETA INDIVIDUAL (POST) --- */
+.tarjeta-tema {
   background: white;
   border-radius: 12px;
   padding: 25px;
@@ -42,57 +43,76 @@
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.post-card:hover {
+.tarjeta-tema:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 12px rgba(0, 0, 0, 0.1);
 }
 
-.post-header {
+/* Parte superior de la tarjeta */
+.tarjeta {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   margin-bottom: 15px;
 }
 
-.post-title {
+.titulotema {
   font-size: 1.25rem;
   color: #1f2937;
   margin: 0;
   font-weight: 700;
 }
-
-.post-meta {
+/* Datos meta (autor y fecha) */
+.datostema {
   font-size: 0.85rem;
   color: #6b7280;
   display: flex;
   align-items: center;
   gap: 10px;
+  margin-top: 5px;
 }
 
-.post-author {
+.nombre-autor {
   font-weight: 600;
   color: #3b82f6;
   background-color: #eff6ff;
   padding: 2px 8px;
   border-radius: 4px;
 }
-
-.post-content {
+/* Texto del mensaje */
+.texto {
   color: #4b5563;
   line-height: 1.6;
-  white-space: pre-wrap; /* Respeta saltos de línea */
+  white-space: pre-wrap; 
+  margin-bottom: 20px;
 }
-
-.post-actions {
-  margin-top: 20px;
+/* Pie de tarjeta (botones y enlaces) */
+.pietarjeta {
   padding-top: 15px;
   border-top: 1px solid #f3f4f6;
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+  align-items: center;
 }
 
-/* BOTONES */
-.btn-nuevo-tema {
+/* Enlace azul de responder */
+.enlace-responder {
+  text-decoration: none;
+  color: #3b82f6;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: color 0.2s;
+}
+
+.enlace-responder:hover {
+  color: #1d4ed8;
+}
+
+/* --- BOTONES --- */
+/* Botón Nuevo Tema (Arriba derecha) */
+.boton-nuevo {
   background-color: #3b82f6;
   color: white;
   text-decoration: none;
@@ -103,11 +123,11 @@
   transition: background 0.2s;
 }
 
-.btn-nuevo-tema:hover {
+.boton-nuevo:hover {
   background-color: #2563eb;
 }
-
-.btn-borrar-post {
+/* Botón Borrar (Rojo) */
+.boton-borrar {
   background-color: #fee2e2;
   color: #ef4444;
   border: none;
@@ -119,12 +139,26 @@
   transition: background 0.2s;
 }
 
-.btn-borrar-post:hover {
+.boton-borrar:hover {
   background-color: #fecaca;
 }
+/* Botón Borrar/Cancelar (Gris en Crear Post) */
+.botonborrarpost {
+  background-color: #f3f4f6;
+  color: #4b5563;
+  padding: 12px;
+  border-radius: 8px;
+  font-weight: 600;
+  flex: 1; 
+  transition: background 0.2s;
+}
 
-/* ESTILOS DEL FORMULARIO DE CREAR POST */
-.crear-post-container {
+.botonborrarpost:hover {
+  background-color: #e5e7eb;
+  color: #111827;
+}
+/* --- ESTILOS ESPECÍFICOS DE CREAR POST --- */
+.crearpost {
   max-width: 600px;
   margin: 0 auto;
   background: white;
@@ -133,34 +167,61 @@
   box-shadow: 0 4px 6px rgba(0,0,0,0.05);
 }
 
+.form {
+  margin-bottom: 20px;
+}
+
 .input-post, .textarea-post {
   width: 100%;
   padding: 12px;
-  margin-bottom: 15px;
+  margin-top: 5px;
   border: 1px solid #d1d5db;
   border-radius: 8px;
   font-size: 16px;
   outline: none;
   box-sizing: border-box;
+  font-family: inherit;
 }
 
 .input-post:focus, .textarea-post:focus {
   border-color: #3b82f6;
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
-
-.btn-publicar {
-  width: 100%;
+/* Botón Publicar (Verde) */
+.botonpublicar {
+  flex: 2; 
   padding: 12px;
-  background-color: #10b981; /* Verde */
+  background-color: #10b981; 
   color: white;
   border: none;
   border-radius: 8px;
   font-size: 16px;
   font-weight: bold;
   cursor: pointer;
+  transition: background 0.2s;
 }
 
-.btn-publicar:hover {
+.botonpublicar:hover {
   background-color: #059669;
 }
+
+.botonpublicar:disabled {
+  background-color: #9ca3af;
+  cursor: not-allowed;
+}
+
+/* --- ESTADOS VACÍOS Y CONTADORES --- */
+.cajavacia {
+  text-align: center;
+  padding: 40px;
+  background: white;
+  border-radius: 12px;
+  color: #6b7280;
+}
+
+.contador-respuestas {
+  font-size: 0.85rem;
+  font-weight: bold;
+}
+.con-respuestas { color: #3b82f6; }
+.sin-respuestas { color: #9ca3af; }

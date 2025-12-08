@@ -1,0 +1,104 @@
+/* Contenedor General */
+.estadisticas {
+  padding: 20px;
+  max-width: 1000px;
+  margin: 0 auto;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Título */
+.tituloprincipal {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #333;
+}
+
+/* Zona del Desplegable */
+.zonafiltro {
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+.miselect {
+  padding: 12px;
+  font-size: 1rem;
+  width: 100%;
+  max-width: 400px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  outline: none;
+  background: white;
+  cursor: pointer;
+}
+
+.miselect:focus {
+  border-color: #0d9488;
+  box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.1);
+}
+
+/* Rejilla de Tarjetas */
+.rejilla-dat {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+/* Tarjeta Individual (Unificado a bloquedatos) */
+.bloquedatos {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  border: 1px solid #f3f4f6;
+}
+
+/* Título dentro de la tarjeta */
+.cajatitulo {
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: #4b5563;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+/* Estilos Específicos */
+.numero {
+  font-size: 4rem;
+  font-weight: 800;
+  color: #f59e0b;
+  line-height: 1;
+  margin: 20px 0;
+}
+
+.texto {
+  color: #6b7280;
+  font-size: 1rem;
+}
+
+.contenedor-grafico {
+  width: 200px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.contenedor-barras {
+  height: 220px;
+  width: 100%;
+}
+
+.info-extra {
+  margin-top: 15px;
+  font-size: 0.9rem;
+  color: #374151;
+}
+
+/* Aviso cuando no hay viaje */
+.aviso-vacio {
+  text-align: center;
+  margin-top: 50px;
+  color: #9ca3af;
+  padding: 40px;
+  background: #f9fafb;
+  border-radius: 8px;
+}

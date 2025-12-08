@@ -23,7 +23,6 @@ const Viajes = () => {
 
     const viajesRef = collection(db, 'viajes');
     const q = query(viajesRef, where('userId', '==', miUid));
-
     const unsubscribeDatos = onSnapshot(q, (snapshot) => {
       const listaViajes = snapshot.docs.map((doc) => {
         const data = doc.data();
@@ -52,7 +51,7 @@ const Viajes = () => {
   if (viajes.length === 0) {
     return (
       <div className="viajes-page">
-        <div className="empty-state">
+        <div className="estado">
             <h2 style={{fontSize:'2rem', marginBottom:'10px'}}>🧳 ¡Maletas Vacías!</h2>
             <p style={{color:'#666', marginBottom:'20px'}}>Aún no tienes viajes planificados.</p>
             <Link to="/crear-viaje" className="btn-ver" style={{background:'#0d9488', color:'white'}}>
@@ -65,9 +64,8 @@ const Viajes = () => {
 
   return (
     <div className="viajes-page">
-      
       <div className="viajes-header">
-        <h1 className="viajes-title">✈️ Mis Viajes</h1>
+        <h1 className="viajes-titulo">✈️ Mis Viajes</h1>
       </div>
 
       <div className="viajes-grid">
@@ -75,46 +73,42 @@ const Viajes = () => {
           <div key={viaje.id} className="viaje-card">
             
             {/* FOTO */}
-            <div className="card-img-container">
+            <div className="contenedorimg">
                 {viaje.foto ? (
                     <img 
                         src={viaje.foto} 
                         alt={viaje.name} 
-                        className="card-img"
+                        className="campoimg"
                         onError={(e) => {e.target.style.display='none'; e.target.parentElement.classList.add('no-img-fallback');}} 
                     />
                 ) : (
-                    <div className="card-no-img">✈️</div>
+                    <div className="noimg">✈️</div>
                 )}
             </div>
             
             {/* INFO */}
-            <div className="card-body">
-              <h2 className="card-title" title={viaje.name}>{viaje.name}</h2>
-              
-              <div className="card-info">
+            <div className="cuerpo">
+              <h2 className="titulo" title={viaje.name}>{viaje.name}</h2>
+              <div className="info">
                 <span>📍</span> <strong>Destino:</strong> {viaje.destinoPrincipal}
               </div>
-              <div className="card-info">
+              <div className="info">
                 <span>📅</span> <strong>Fechas:</strong> {viaje.fechalnicial} - {viaje.fechaFinal}
               </div>
-
-              <div className="card-desc">
+              <div className="desc">
                 {viaje.descripcion || 'Sin descripción adicional.'}
               </div>
             </div>
 
             {/* BOTONES */}
-            <div className="card-actions">
+            <div className="acciones">
               <button onClick={() => borrarViaje(viaje.id)} className="btn-borrar">
                 🗑️ Eliminar
               </button>
-
               <Link to={`/viajes/${viaje.id}`} className="btn-ver">
                 Ver Detalles &rarr;
               </Link>
             </div>
-
           </div>
         ))}
       </div>
