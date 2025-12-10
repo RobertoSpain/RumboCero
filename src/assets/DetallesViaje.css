@@ -1,27 +1,35 @@
-/* --- CONFIGURACIÓN GENERAL --- */
+/* --- RESET --- */
+* { box-sizing: border-box; }
+
 .paginadetalle {
   background-color: #f3f4f6;
   min-height: 100vh;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  padding-bottom: 40px;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  padding-bottom: 60px;
 }
 
-/* Estado de carga */
 .paginacentrada {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
-  font-size: 1.2rem;
   color: #6b7280;
+  font-size: 1.2rem;
 }
 
-/* --- PORTADA (HERO) --- */
+/* 2. PORTADA */
 .seccionportada {
-  height: 250px; /* Reducido de 300 a 250 para que no ocupe tanto */
+  width: 100vw; 
+  position: relative;
+  left: 50%; 
+  right: 50%;
+  margin-left: -50vw; 
+  margin-right: -50vw; 
+  max-width: none;
+  
+  height: 300px;
   background-size: cover;
   background-position: center;
-  position: relative;
   display: flex;
   align-items: flex-end;
 }
@@ -29,292 +37,284 @@
 .capahero {
   position: absolute;
   top: 0; left: 0; right: 0; bottom: 0;
-  background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+  background: rgba(0,0,0,0.4);
 }
 
 .contenidohero {
   position: relative;
   z-index: 10;
-  padding: 20px 30px;
+  padding: 40px;
   width: 100%;
-  max-width: 1200px;
+  max-width: 1100px;
   margin: 0 auto;
   color: white;
 }
 
-.titulohero {
-  font-size: 2.5rem; /* Reducido de 3rem */
-  margin: 0;
-  font-weight: 800;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+.titulohero { 
+  font-size: 3.5rem; 
+  margin: 0; 
+  font-weight: 800; 
+  text-shadow: 0 2px 5px rgba(0,0,0,0.7);
+  line-height: 1.1;
 }
 
-.subtitulohero {
-  font-size: 1.2rem; /* Reducido */
-  margin: 5px 0 0 0;
-  opacity: 0.9;
+.subtitulohero { 
+  font-size: 1.3rem; 
+  margin: 10px 0 0 0; 
+  opacity: 0.95; 
   font-weight: 500;
 }
 
-/* --- CONTENEDOR PRINCIPAL --- */
+/* 3. CONTENEDOR PRINCIPAL */
 .contenedorprincipal {
-  max-width: 1100px; /* Un poco más estrecho para que no se desperdigue */
-  margin: -30px auto 0 auto;
+  max-width: 1100px;
+  margin: 30px auto; 
   padding: 0 20px;
   position: relative;
   z-index: 20;
 }
 
-.botonvolver {
-  display: inline-block;
-  background-color: white;
-  color: #374151;
-  padding: 8px 16px; /* Más pequeño */
-  border-radius: 8px;
-  text-decoration: none;
-  font-weight: bold;
-  font-size: 0.9rem;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  margin-bottom: 20px;
-  transition: transform 0.2s;
-}
-
-.botonvolver:hover { transform: translateY(-2px); }
-
-/* --- REJILLA (GRID) --- */
+/* --- REJILLA --- */
 .rejillainfo {
   display: grid;
-  grid-template-columns: 2fr 1fr; /* 66% Izq - 33% Der */
-  gap: 20px;
-  align-items: start;
+  grid-template-columns: 1.8fr 1fr;
+  gap: 30px;
+  align-items: start; 
 }
 
-@media (max-width: 900px) {
-  .rejillainfo { grid-template-columns: 1fr; }
+@media (max-width: 900px) { 
+  .rejillainfo { grid-template-columns: 1fr; } 
 }
 
-/* --- TARJETAS (CARD) --- */
+/* 4. TARJETAS GENERALES */
 .tarjeta {
   background: white;
-  padding: 20px; /* Reducido el padding interno */
+  padding: 30px;
   border-radius: 12px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-  margin-bottom: 20px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
   border: 1px solid #e5e7eb;
+  margin-bottom: 30px;
+  
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 20px !important;
+  height: auto !important;
 }
 
+/* TÍTULOS */
 .titulotarjeta {
-  font-size: 1.1rem; /* Títulos más discretos */
-  font-weight: 700;
+  font-size: 1.2rem;
+  font-weight: 800;
   color: #111827;
-  margin-bottom: 15px;
+  margin: 0;
   display: flex;
   align-items: center;
-  gap: 8px;
-  border-bottom: 1px solid #f3f4f6;
-  padding-bottom: 10px;
+  justify-content: center;
+  gap: 10px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 15px;
+  width: 100%;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
-/* PLAN (FECHAS) */
+/* 5. CLIMA */
+.tarjetaclima {
+  align-items: center !important; 
+  justify-content: center !important;
+  text-align: center;
+  color: #0d9488;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.tarjetaclima:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+.cajaclima {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.textoclima { 
+  font-size: 3rem; 
+  font-weight: 800; 
+  color: #111827; 
+  margin: 10px 0; 
+  line-height: 1;
+}
+
+/* Animación de flotar para el icono */
+@keyframes flotar {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-8px); }
+    100% { transform: translateY(0px); }
+}
+
+.iconoclima { 
+    font-size: 3.5rem; 
+    margin: 10px 0; 
+    display: block; 
+    animation: flotar 3s ease-in-out infinite; 
+} 
+
+.textoviento { 
+  font-size: 0.9rem; color: #6b7280; background-color: #f3f4f6; padding: 5px 15px; border-radius: 20px; font-weight: 600; display: inline-block; 
+}
+.cargandoclima { color: #9ca3af; font-style: italic; margin: 20px auto; }
+
+/*  6. PLAN / FECHAS */
 .filafecha {
   display: flex;
   justify-content: space-around;
   align-items: center;
-  background-color: #f9fafb;
-  padding: 15px;
-  border-radius: 8px;
-  text-align: center;
-  border: 1px solid #f3f4f6;
+  gap: 20px;
+  background: linear-gradient(to bottom right, #ffffff, #f0fdfa);
+  padding: 25px 40px;
+  border-radius: 16px; 
+  border: 1px solid #ccfbf1; 
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  margin: 0 auto; 
+  max-width: 600px; 
+  width: 100%;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.etiquetafecha { color: #6b7280; font-size: 0.75rem; margin: 0; text-transform: uppercase; font-weight: 700; }
-.valorfecha { color: #111827; font-weight: 700; font-size: 1rem; margin: 4px 0 0 0; }
-.flecha { font-size: 1.2rem; color: #d1d5db; }
+.filafecha:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 15px -3px rgba(13, 148, 136, 0.15);
+  border-color: #99f6e4;
+}
+
+.filafecha > div { text-align: center; }
+.etiquetafecha { 
+  font-size: 0.8rem; color: #6b7280; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; display: block; 
+}
+.valorfecha { font-size: 1.4rem; color: #111827; font-weight: 800; margin: 0; }
+.flecha { color: #0d9488; font-size: 1.5rem; opacity: 0.8; }
 
 .cajadescripcion {
-  margin-top: 15px;
   font-style: italic;
-  font-size: 0.95rem;
   color: #4b5563;
-  line-height: 1.5;
+  padding: 20px;
+  border-top: 3px solid #0d9488;
   background: #fff;
-  padding: 10px;
-  border-left: 3px solid #0d9488;
+  font-size: 1rem;
+  text-align: center;
+  margin-top: 20px;
 }
 
-/* --- DESTINOS --- */
-.contenedordestinos {
+/* 7. LISTAS (DESTINOS CON EFECTO)*/
+.contenedordestinos, .listamaleta {
   display: flex;
   flex-direction: column;
-  gap: 8px; /* Menos espacio entre destinos */
-  margin-bottom: 15px;
+  gap: 12px;
+  width: 100%;
 }
 
-.textovacio { color: #9ca3af; text-align: center; font-style: italic; margin: 15px 0; font-size: 0.9rem; }
-
+/* Elemento Destino (CON EFECTO POP) */
 .elementodestino {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px;
+  padding: 12px;
   border: 1px solid #e5e7eb;
   border-radius: 8px;
   background: white;
+  
+  /* Animación suave */
+  transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+  position: relative;
 }
 
-.elementodestino.visitado {
-  background-color: #f0fdf4;
-  border-color: #86efac;
-  opacity: 0.7;
+/* Efecto al pasar el ratón solo en Destinos */
+.elementodestino:hover {
+    transform: scale(1.02); 
+    border-color: #0d9488; 
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08); 
+    z-index: 5;
 }
 
-.infodestino { display: flex; align-items: center; gap: 12px; flex: 1; }
-.checkboxdestino { width: 18px; height: 18px; accent-color: #0d9488; cursor: pointer; }
-.imagendestino { width: 36px; height: 36px; border-radius: 6px; object-fit: cover; border: 1px solid #e5e7eb; }
+/* Item Maleta*/
+.itemmaleta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  background: white;
+  transition: border-color 0.2s; 
+}
+.itemmaleta:hover { border-color: #9ca3af; }
 
-.nombredestino { margin: 0; font-weight: 600; color: #374151; font-size: 0.95rem; }
-.etiquetadestino { font-size: 0.7rem; background: #e5e7eb; padding: 2px 6px; border-radius: 99px; color: #4b5563; font-weight: 600; margin-top: 2px; display: inline-block; }
+.elementodestino.visitado { background-color: #f0fdf4; border-color: #86efac; opacity: 0.8; }
 
-.botonbasura { background: none; border: none; cursor: pointer; opacity: 0.4; font-size: 1rem; padding: 5px; }
-.botonbasura:hover { opacity: 1; color: #ef4444; }
+.infodestino, .labelmaleta { display: flex; align-items: center; gap: 15px; flex: 1; }
+.nombredestino { font-weight: 600; color: #374151; margin: 0; }
+.imagendestino { width: 40px; height: 40px; border-radius: 4px; object-fit: cover; }
+.checkboxdestino, .checkboxmaleta { width: 18px; height: 18px; accent-color: #0d9488; cursor: pointer; }
+.botonbasura, .botonborraritem { border: none; background: transparent; cursor: pointer; opacity: 0.4; padding: 5px; font-size: 1.2rem; color: #ef4444; }
+.botonbasura:hover { opacity: 1; transform: scale(1.1); } 
 
-/* Formulario Destinos Compacto */
-.formulariodestino { 
-  display: flex; 
-  flex-direction: column; 
-  gap: 8px; 
+/* Formularios */
+.formulariodestino, .formulariomaleta {
   margin-top: 15px; 
-  padding-top: 15px; 
-  border-top: 1px dashed #e5e7eb; 
-}
-
-.filaflex { display: flex; gap: 8px; width: 100%; }
-
-.inputdestino, .selectdestino, .inputurl { 
-  padding: 8px 10px; 
-  border: 1px solid #d1d5db; 
-  border-radius: 6px; 
-  outline: none; 
-  font-size: 0.9rem; 
-}
-.inputdestino:focus, .selectdestino:focus, .inputurl:focus { border-color: #0d9488; }
-
-.inputdestino { flex: 2; }
-.selectdestino { flex: 1; background: white; }
-.inputurl { flex: 1; }
-
-.botonagregar { 
-  background-color: #0d9488; 
-  color: white; 
-  border: none; 
-  border-radius: 6px; 
-  cursor: pointer; 
-  font-weight: bold; 
-  padding: 0 15px;
-  font-size: 0.9rem;
-}
-.botonagregar:hover { background-color: #0f766e; }
-
-/* --- CLIMA (REDUCIDO) --- */
-.tarjetaclima { text-align: center; color: #0d9488; }
-.cajaclima { padding: 5px 0; }
-
-.textoclima { 
-  font-size: 2.2rem; /* Mucho más pequeño que antes (3.5rem era una locura) */
-  font-weight: 800; 
-  color: #111827; 
-  margin: 0; 
-  line-height: 1; 
-}
-
-.iconoclima { 
-  font-size: 2.5rem; /* Icono más normal */
-  margin: 8px 0; 
-}
-
-.textoviento { 
-  font-size: 0.85rem; 
-  color: #6b7280; 
-  background-color: #f3f4f6; 
-  display: inline-block; 
-  padding: 4px 10px; 
-  border-radius: 15px; 
-}
-.cargandoclima { color: #9ca3af; font-style: italic; font-size: 0.9rem; }
-
-/* --- MALETA (ORDENADA) --- */
-.listamaleta {
+  padding-top: 20px;
+  border-top: 1px dashed #e5e7eb;
   display: flex;
   flex-direction: column;
-  gap: 0;
-  max-height: 250px; /* Menos altura máxima */
-  overflow-y: auto; 
-  margin-bottom: 15px;
-  border: 1px solid #f3f4f6;
-  border-radius: 8px;
+  gap: 12px;
+  width: 100%;
 }
 
-.itemmaleta { 
-  padding: 10px 12px; 
-  border-bottom: 1px solid #f3f4f6; 
-  display: flex; 
-  justify-content: space-between; 
-  align-items: center; 
-  transition: background 0.2s;
-}
-.itemmaleta:last-child { border-bottom: none; }
-.itemmaleta:hover { background-color: #fafafa; }
-
-.labelmaleta {
+.filaflex, .formulariomaleta {
   display: flex;
-  align-items: center;
   gap: 10px;
-  flex: 1;
-  cursor: pointer;
-  font-size: 0.95rem;
+  width: 100%;
+  align-items: stretch;
 }
 
-.checkboxmaleta {
-  width: 16px;
-  height: 16px;
-  accent-color: #0d9488;
-  cursor: pointer;
-}
-
-.botonborraritem {
-  border: none;
-  background: transparent;
-  color: #ef4444;
-  font-weight: bold;
-  cursor: pointer;
-  padding: 4px;
-  font-size: 1rem;
-}
-.botonborraritem:hover { color: #dc2626; }
-
-.formulariomaleta { display: flex; gap: 8px; }
-
-.inputmaleta {
-  flex: 1;
-  padding: 8px 10px;
-  border: 1px solid #d1d5db;
+/* Inputs y Botones */
+.inputdestino, .selectdestino, .inputurl, .inputmaleta {
+  padding: 0 12px;
+  height: 44px;
+  border: 1px solid #ccc;
   border-radius: 6px;
+  font-size: 0.95rem;
   outline: none;
-  font-size: 0.9rem;
+  background: white;
+  box-sizing: border-box;
+  font-family: inherit;
+  flex-grow: 1;
+  transition: border-color 0.2s;
 }
-.inputmaleta:focus { border-color: #0d9488; }
+.inputdestino:focus, .inputmaleta:focus, .selectdestino:focus, .inputurl:focus { border-color: #0d9488; box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.1); }
 
-.botonmas {
+.inputdestino { flex: 2; } 
+.selectdestino { flex: 1; }
+.inputurl { width: 100%; }
+.inputmaleta { flex: 1; }
+
+.botonagregar, .botonmas {
+  height: 44px;
   background-color: #0d9488;
   color: white;
   border: none;
   border-radius: 6px;
-  width: 36px; 
-  height: 36px;
-  font-size: 1.2rem;
+  cursor: pointer;
+  font-weight: bold;
+  padding: 0 20px;
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
 }
-.botonmas:hover { background-color: #0f766e; }
+.botonagregar:hover, .botonmas:hover { background-color: #0f766e; }
+.botonagregar:active, .botonmas:active { transform: scale(0.98); }
+.botonmas { width: 44px; font-size: 1.5rem; padding: 0; padding-bottom: 3px; }
+.textovacio { text-align: center; color: #9ca3af; font-style: italic; margin: 10px 0; }
