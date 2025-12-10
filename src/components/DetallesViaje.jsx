@@ -8,20 +8,25 @@ export default function DetalleViaje() {
   const { id } = useParams();
   const [viaje, setViaje] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [destinos, setDestinos] = useState([]);
+    const [destinos, setDestinos] = useState([]);
   const [nuevoDestino, setNuevoDestino] = useState('');
   const [categoria, setCategoria] = useState('Turismo');
   const [fotoDestino, setFotoDestino] = useState(''); 
   const [checklist, setChecklist] = useState([]);
   const [nuevoItemMaleta, setNuevoItemMaleta] = useState('');
+  const [clima, setClima] = useState(null);
 
+  // 1. CARGAR DATOS
   useEffect(() => {
     const obtenerViaje = async () => {
       try {
         const docSnap = await getDoc(doc(db, 'viajes', id));
         if (docSnap.exists()) setViaje({ id: docSnap.id, ...docSnap.data() });
-      } catch (error) { console.error(error); } 
-      finally { setLoading(false); }
+      } catch (error) { 
+        console.error(error); 
+      } finally { 
+        setLoading(false); 
+      }
     };
     obtenerViaje();
     const destinosRef = collection(db, 'viajes', id, 'destinos');
@@ -29,19 +34,38 @@ export default function DetalleViaje() {
     const unsubscribeDestinos = onSnapshot(qDestinos, (snapshot) => {
       setDestinos(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
     });
-
-    // 3. Cargar CHECKLIST en tiempo real (Subcolección nueva)
     const checklistRef = collection(db, 'viajes', id, 'checklist');
     const qChecklist = query(checklistRef, orderBy('createAt', 'asc')); 
     const unsubscribeChecklist = onSnapshot(qChecklist, (snapshot) => {
       setChecklist(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
     });
-
     return () => {
         unsubscribeDestinos();
         unsubscribeChecklist();
     };
   }, [id]);
+  // 2. CLIMA (Open-Meteo)
+  useEffect(() => {
+    if (!viaje || !viaje.destinoPrincipal) return;
+
+    const consultarClima = async () => {
+        try {
+            // A) Buscar coordenadas
+            const geoRes = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${viaje.destinoPrincipal}&count=1&language=es&format=json`);
+            const geoData = await geoRes.json();
+            if (geoData.results && geoData.results.length > 0) {
+                const { latitude, longitude } = geoData.results[0];
+
+                const climaRes = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,weather_code,wind_speed_10m&timezone=auto`);
+                const climaData = await climaRes.json();
+                setClima(climaData.current);
+            }
+        } catch (error) {
+            console.error("Error clima:", error);
+        }
+    };
+    consultarClima();
+  }, [viaje]);
 
   const agregarDestino = async (e) => {
     e.preventDefault();
@@ -57,8 +81,8 @@ export default function DetalleViaje() {
       setNuevoDestino('');
       setFotoDestino('');
     } catch (error) { 
-        console.error("Error al añadir destino:", error); 
-        alert("Error al añadir destino"); 
+      console.error(error); 
+      alert("Error al añadir destino"); 
     }
   };
   const borrarDestino = async (idDestino) => {
@@ -71,7 +95,6 @@ export default function DetalleViaje() {
       visitado: !destino.visitado
     });
   };
-
   const agregarItemMaleta = async (e) => {
     e.preventDefault();
     if (!nuevoItemMaleta.trim()) return;
@@ -83,7 +106,8 @@ export default function DetalleViaje() {
         });
         setNuevoItemMaleta('');
     } catch (error) { 
-        console.error("Error al añadir a la maleta:", error); 
+        // AQUÍ TAMBIÉN: Usamos 'error' en el console
+        console.error(error);
         alert("Error al añadir a la maleta"); 
     }
   };
@@ -96,6 +120,17 @@ export default function DetalleViaje() {
     });
   };
 
+  // Iconos simples para el clima
+  const getIconoClima = (codigo) => {
+      if (codigo === 0) return '☀️'; 
+      if (codigo > 0 && codigo < 45) return '⛅'; 
+      if (codigo >= 45 && codigo < 51) return '🌫️'; 
+      if (codigo >= 51 && codigo < 80) return '🌧️'; 
+      if (codigo >= 80 && codigo < 90) return '🌦️'; 
+      if (codigo >= 95) return '⛈️'; 
+      return '🌡️';
+  };
+
   if (loading) return <div className="paginacentrada">Cargando...</div>;
   if (!viaje) return <div className="paginacentrada">Viaje no encontrado</div>;
   const inicio = viaje.fechalnicial?.toDate ? viaje.fechalnicial.toDate().toLocaleDateString() : '--';
@@ -103,7 +138,7 @@ export default function DetalleViaje() {
 
   return (
     <div className="paginadetalle">
-      {/* PORTADA (HERO) */}
+      {/* PORTADA */}
       <div className="seccionportada" style={{ backgroundImage: `url(${viaje.foto || 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=1000&q=80'})` }}>
         <div className="capahero"></div>
         <div className="contenidohero">
@@ -111,15 +146,13 @@ export default function DetalleViaje() {
             <p className="subtitulohero">📍 {viaje.destinoPrincipal}</p>
         </div>
       </div>
-
       {/* CONTENEDOR PRINCIPAL */}
       <div className="contenedorprincipal">
         <Link to="/viajes" className="botonvolver"> &larr; Volver </Link>
-        
         <div className="rejillainfo">
-          
           {/* COLUMNA IZQUIERDA */}
           <div className="columnaizquierda">
+            {/* Tarjeta Plan */}
             <div className="tarjeta">
               <div className="titulotarjeta"><span className="iconotarjeta">📅</span> Plan</div>
               <div className="filafecha">
@@ -129,7 +162,7 @@ export default function DetalleViaje() {
               </div>
               <div className="cajadescripcion">"{viaje.descripcion || "Sin descripción."}"</div>
             </div>
-
+            {/* Tarjeta Destinos */}
             <div className="tarjeta">
               <div className="titulotarjeta">
                 <span className="iconotarjeta">🏙️</span> Destinos ({destinos.length})
@@ -144,7 +177,7 @@ export default function DetalleViaje() {
                         checked={dest.visitado} 
                         onChange={() => toggleVisitado(dest)}
                         className="checkboxdestino"/>
-                      {dest.foto && <img src={dest.foto} alt="mini" style={{width:'40px', height:'40px', borderRadius:'4px', objectFit:'cover'}} />}
+                      {dest.foto && <img src={dest.foto} alt="mini" className="imagendestino" />}
                       <div>
                         <p className="nombredestino">{dest.nombre}</p>
                         <span className="etiquetadestino">{dest.categoria}</span>
@@ -154,9 +187,8 @@ export default function DetalleViaje() {
                   </div>
                 ))} 
               </div>
-              
-              <form onSubmit={agregarDestino} className="formulariodestino" style={{flexDirection: 'column'}}>
-                <div style={{display:'flex', gap:'10px'}}>
+              <form onSubmit={agregarDestino} className="formulariodestino">
+                <div className="filaflex">
                    <input type="text" placeholder="Nombre del sitio..." value={nuevoDestino} onChange={e => setNuevoDestino(e.target.value)} className="inputdestino" required />
                    <select value={categoria} onChange={e => setCategoria(e.target.value)} className="selectdestino">
                       <option value="Turismo">Turismo</option>
@@ -165,51 +197,63 @@ export default function DetalleViaje() {
                       <option value="Hotel">Hotel</option>
                    </select>
                 </div>
-                <div style={{display:'flex', gap:'10px'}}>
-                    <input type="url" placeholder="URL Foto (Opcional)" value={fotoDestino} onChange={e => setFotoDestino(e.target.value)} style={{flex:1, padding:'10px', borderRadius:'6px', border:'1px solid #d1d5db', outline:'none', fontSize:'0.9rem'}} />
-                    <button type="submit" className="botonagregar" style={{width: '100px', fontSize: '1rem'}}>Añadir</button>
+                <div className="filaflex">
+                    <input type="url" placeholder="URL Foto (Opcional)" value={fotoDestino} onChange={e => setFotoDestino(e.target.value)} className="inputurl" />
+                    <button type="submit" className="botonagregar">Añadir</button>
                 </div>
               </form>
             </div>
           </div>
-
           {/* COLUMNA DERECHA */}
-    <div className="columnaderecha">
-          <div className="tarjeta tarjetaclima">
-           <div className="titulotarjeta"><span className="iconotarjeta">🌤️</span> Clima</div>
-            <div style={{fontSize:'2rem', fontWeight:'bold'}}>--°C</div>
-    </div>
-    <div className="tarjeta">
-     <div className="titulotarjeta">
-      <span className="iconotarjeta">🎒</span> Maleta ({checklist.filter(i => i.preparado).length}/{checklist.length})
-    </div>
-    <div className="contenedormaleta" style={{display:'flex', flexDirection:'column', gap:'8px', maxHeight:'300px', overflowY:'auto', marginBottom:'15px'}}>
-    {checklist.length === 0 && <p className="textovacio">Añade cosas a tu maleta.</p>}
-    {checklist.map(item => (
-      <div key={item.id} className="elementomaleta" style={{display:'flex', justifyContent:'space-between', alignItems:'center', opacity: item.preparado ? 0.5 : 1}}>
-      <label style={{display:'flex', alignItems:'center', gap:'10px', cursor:'pointer', flex:1}}>
-      <input type="checkbox" 
-         checked={item.preparado} 
-          onChange={() => togglePreparado(item)}
-          style={{width:'18px', height:'18px', accentColor:'#0d9488'}}/>
-             <span style={{textDecoration: item.preparado ? 'line-through' : 'none'}}>{item.nombre}</span>
-             </label>
-             <button onClick={() => borrarItemMaleta(item.id)} style={{border:'none', background:'transparent', color:'#ef4444', cursor:'pointer'}}>✕</button>
-            </div> ))}
+          <div className="columnaderecha">
+              {/* Tarjeta Clima */}
+              <div className="tarjeta tarjetaclima">
+                  <div className="titulotarjeta"><span className="iconotarjeta">🌤️</span> Clima Actual</div>
+                  {clima ? (
+                    <div className="cajaclima">
+                        <div className="textoclima">{clima.temperature_2m}°C</div>
+                        <div className="iconoclima">{getIconoClima(clima.weather_code)}</div>
+                        <div className="textoviento">💨 Viento: {clima.wind_speed_10m} km/h</div>
+                    </div>
+                  ) : (
+                    <div className="cargandoclima">Consultando satélites...</div>
+                  )}
+              </div>
+              {/* Tarjeta Maleta */}
+              <div className="tarjeta">
+                <div className="titulotarjeta">
+                  <span className="iconotarjeta">🎒</span> Maleta ({checklist.filter(i => i.preparado).length}/{checklist.length})
+                </div>
+                <div className="listamaleta">
+                  {checklist.length === 0 && <p className="textovacio">Añade cosas a tu maleta.</p>}
+                  {checklist.map(item => (
+                    <div key={item.id} className="itemmaleta" style={{opacity: item.preparado ? 0.5 : 1}}>
+                      <label className="labelmaleta">
+                          <input 
+                            type="checkbox" 
+                            checked={item.preparado} 
+                            onChange={() => togglePreparado(item)}
+                            className="checkboxmaleta"/>
+                          <span style={{textDecoration: item.preparado ? 'line-through' : 'none'}}>{item.nombre}</span>
+                      </label>
+                      <button onClick={() => borrarItemMaleta(item.id)} className="botonborraritem">✕</button>
+                    </div>
+                  ))}
+                </div>
+                <form onSubmit={agregarItemMaleta} className="formulariomaleta">
+                    <input 
+                        type="text" 
+                        placeholder="Ej: Pasaporte..." 
+                        value={nuevoItemMaleta}
+                        onChange={e => setNuevoItemMaleta(e.target.value)}
+                        className="inputmaleta"
+                        required/>
+                    <button type="submit" className="botonmas">+</button>
+                </form>
+              </div> 
           </div>
-          <form onSubmit={agregarItemMaleta} style={{display:'flex', gap:'5px'}}>
-          <input type="text" 
-          placeholder="Ej: Pasaporte..." 
-        value={nuevoItemMaleta}
-       onChange={e => setNuevoItemMaleta(e.target.value)}
-         style={{flex:1, padding:'8px', borderRadius:'6px', border:'1px solid #d1d5db', outline:'none'}}
-          required/>
-        <button type="submit" style={{backgroundColor:'#0d9488', color:'white', border:'none', borderRadius:'6px', padding:'0 15px', fontWeight:'bold', cursor:'pointer'}}>+</button>
-            </form>
-        </div> 
+        </div>
       </div>
-      </div>
-     </div>
-  </div>
+    </div>
   );
 }

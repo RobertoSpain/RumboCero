@@ -1,11 +1,12 @@
-/* Página General */
+/* --- CONFIGURACIÓN GENERAL --- */
 .paginadetalle {
   background-color: #f3f4f6;
   min-height: 100vh;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  padding-bottom: 40px;
 }
 
-/* Estado de carga o error */
+/* Estado de carga */
 .paginacentrada {
   display: flex;
   justify-content: center;
@@ -17,7 +18,7 @@
 
 /* --- PORTADA (HERO) --- */
 .seccionportada {
-  height: 300px;
+  height: 250px; /* Reducido de 300 a 250 para que no ocupe tanto */
   background-size: cover;
   background-position: center;
   position: relative;
@@ -34,7 +35,7 @@
 .contenidohero {
   position: relative;
   z-index: 10;
-  padding: 30px;
+  padding: 20px 30px;
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
@@ -42,14 +43,14 @@
 }
 
 .titulohero {
-  font-size: 3rem;
+  font-size: 2.5rem; /* Reducido de 3rem */
   margin: 0;
   font-weight: 800;
   text-shadow: 0 2px 4px rgba(0,0,0,0.3);
 }
 
 .subtitulohero {
-  font-size: 1.5rem;
+  font-size: 1.2rem; /* Reducido */
   margin: 5px 0 0 0;
   opacity: 0.9;
   font-weight: 500;
@@ -57,8 +58,8 @@
 
 /* --- CONTENEDOR PRINCIPAL --- */
 .contenedorprincipal {
-  max-width: 1200px;
-  margin: -40px auto 40px auto; 
+  max-width: 1100px; /* Un poco más estrecho para que no se desperdigue */
+  margin: -30px auto 0 auto;
   padding: 0 20px;
   position: relative;
   z-index: 20;
@@ -68,54 +69,53 @@
   display: inline-block;
   background-color: white;
   color: #374151;
-  padding: 10px 20px;
+  padding: 8px 16px; /* Más pequeño */
   border-radius: 8px;
   text-decoration: none;
   font-weight: bold;
+  font-size: 0.9rem;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
   margin-bottom: 20px;
   transition: transform 0.2s;
 }
 
-.botonvolver:hover {
-  transform: translateY(-2px);
-}
+.botonvolver:hover { transform: translateY(-2px); }
 
-/* --- REJILLA DE INFORMACIÓN --- */
+/* --- REJILLA (GRID) --- */
 .rejillainfo {
   display: grid;
-  grid-template-columns: 2fr 1fr; 
+  grid-template-columns: 2fr 1fr; /* 66% Izq - 33% Der */
   gap: 20px;
+  align-items: start;
 }
 
-/* Responsive: Una columna en móvil */
-@media (max-width: 768px) {
+@media (max-width: 900px) {
   .rejillainfo { grid-template-columns: 1fr; }
 }
 
-/* --- TARJETAS (CAJAS BLANCAS) --- */
+/* --- TARJETAS (CARD) --- */
 .tarjeta {
   background: white;
-  padding: 25px;
+  padding: 20px; /* Reducido el padding interno */
   border-radius: 12px;
-  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
   margin-bottom: 20px;
   border: 1px solid #e5e7eb;
 }
 
 .titulotarjeta {
-  font-size: 1.2rem;
-  font-weight: 800;
+  font-size: 1.1rem; /* Títulos más discretos */
+  font-weight: 700;
   color: #111827;
   margin-bottom: 15px;
   display: flex;
   align-items: center;
   gap: 8px;
-  border-bottom: 2px solid #f3f4f6;
+  border-bottom: 1px solid #f3f4f6;
   padding-bottom: 10px;
 }
 
-/* Sección Fechas */
+/* PLAN (FECHAS) */
 .filafecha {
   display: flex;
   justify-content: space-around;
@@ -124,69 +124,84 @@
   padding: 15px;
   border-radius: 8px;
   text-align: center;
+  border: 1px solid #f3f4f6;
 }
 
-.etiquetafecha { color: #6b7280; font-size: 0.85rem; margin: 0; text-transform: uppercase; letter-spacing: 0.5px; }
-.valorfecha { color: #111827; font-weight: bold; font-size: 1.1rem; margin: 5px 0 0 0; }
-.flecha { font-size: 1.5rem; color: #d1d5db; }
+.etiquetafecha { color: #6b7280; font-size: 0.75rem; margin: 0; text-transform: uppercase; font-weight: 700; }
+.valorfecha { color: #111827; font-weight: 700; font-size: 1rem; margin: 4px 0 0 0; }
+.flecha { font-size: 1.2rem; color: #d1d5db; }
 
 .cajadescripcion {
-  margin-top: 20px;
+  margin-top: 15px;
   font-style: italic;
+  font-size: 0.95rem;
   color: #4b5563;
-  line-height: 1.6;
-  background: #fdfdfd;
-  padding: 15px;
-  border-radius: 8px;
-  border-left: 4px solid #e5e7eb;
+  line-height: 1.5;
+  background: #fff;
+  padding: 10px;
+  border-left: 3px solid #0d9488;
 }
 
 /* --- DESTINOS --- */
 .contenedordestinos {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  margin-bottom: 20px;
+  gap: 8px; /* Menos espacio entre destinos */
+  margin-bottom: 15px;
 }
 
-.textovacio { color: #9ca3af; text-align: center; font-style: italic; margin: 15px 0; }
+.textovacio { color: #9ca3af; text-align: center; font-style: italic; margin: 15px 0; font-size: 0.9rem; }
 
 .elementodestino {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px;
+  padding: 10px;
   border: 1px solid #e5e7eb;
   border-radius: 8px;
-  transition: all 0.2s;
   background: white;
 }
 
-.elementodestino:hover {
-  border-color: #d1d5db;
-}
-
-/* Estilo cuando está visitado */
 .elementodestino.visitado {
-  background-color: #f0fdf4; /* Verde muy claro */
+  background-color: #f0fdf4;
   border-color: #86efac;
-  opacity: 0.8;
+  opacity: 0.7;
 }
 
-.infodestino { display: flex; align-items: center; gap: 12px; }
-.checkboxdestino { width: 20px; height: 20px; accent-color: #0d9488; cursor: pointer; }
+.infodestino { display: flex; align-items: center; gap: 12px; flex: 1; }
+.checkboxdestino { width: 18px; height: 18px; accent-color: #0d9488; cursor: pointer; }
+.imagendestino { width: 36px; height: 36px; border-radius: 6px; object-fit: cover; border: 1px solid #e5e7eb; }
 
-.nombredestino { margin: 0; font-weight: 600; color: #374151; font-size: 1rem; }
-.etiquetadestino { font-size: 0.75rem; background: #e5e7eb; padding: 2px 8px; border-radius: 99px; color: #4b5563; font-weight: bold; }
+.nombredestino { margin: 0; font-weight: 600; color: #374151; font-size: 0.95rem; }
+.etiquetadestino { font-size: 0.7rem; background: #e5e7eb; padding: 2px 6px; border-radius: 99px; color: #4b5563; font-weight: 600; margin-top: 2px; display: inline-block; }
 
-.botonbasura { background: none; border: none; cursor: pointer; opacity: 0.4; font-size: 1.1rem; transition: opacity 0.2s; }
-.botonbasura:hover { opacity: 1; }
+.botonbasura { background: none; border: none; cursor: pointer; opacity: 0.4; font-size: 1rem; padding: 5px; }
+.botonbasura:hover { opacity: 1; color: #ef4444; }
 
-/* Formulario Nuevo Destino */
-.formulariodestino { display: flex; gap: 10px; margin-top: 20px; padding-top: 15px; border-top: 1px dashed #e5e7eb; }
-.inputdestino, .selectdestino { padding: 10px; border: 1px solid #d1d5db; border-radius: 6px; outline: none; font-size: 0.9rem; }
-.inputdestino:focus { border-color: #0d9488; }
-.inputdestino { flex: 1; }
+/* Formulario Destinos Compacto */
+.formulariodestino { 
+  display: flex; 
+  flex-direction: column; 
+  gap: 8px; 
+  margin-top: 15px; 
+  padding-top: 15px; 
+  border-top: 1px dashed #e5e7eb; 
+}
+
+.filaflex { display: flex; gap: 8px; width: 100%; }
+
+.inputdestino, .selectdestino, .inputurl { 
+  padding: 8px 10px; 
+  border: 1px solid #d1d5db; 
+  border-radius: 6px; 
+  outline: none; 
+  font-size: 0.9rem; 
+}
+.inputdestino:focus, .selectdestino:focus, .inputurl:focus { border-color: #0d9488; }
+
+.inputdestino { flex: 2; }
+.selectdestino { flex: 1; background: white; }
+.inputurl { flex: 1; }
 
 .botonagregar { 
   background-color: #0d9488; 
@@ -195,15 +210,111 @@
   border-radius: 6px; 
   cursor: pointer; 
   font-weight: bold; 
-  transition: background 0.2s; 
+  padding: 0 15px;
+  font-size: 0.9rem;
 }
 .botonagregar:hover { background-color: #0f766e; }
 
-/* --- COLUMNA DERECHA (CLIMA Y MALETA) --- */
+/* --- CLIMA (REDUCIDO) --- */
 .tarjetaclima { text-align: center; color: #0d9488; }
+.cajaclima { padding: 5px 0; }
 
-.elementomaleta { 
-  padding: 10px; 
-  border-bottom: 1px solid #f3f4f6; 
+.textoclima { 
+  font-size: 2.2rem; /* Mucho más pequeño que antes (3.5rem era una locura) */
+  font-weight: 800; 
+  color: #111827; 
+  margin: 0; 
+  line-height: 1; 
 }
-.elementomaleta:last-child { border-bottom: none; }
+
+.iconoclima { 
+  font-size: 2.5rem; /* Icono más normal */
+  margin: 8px 0; 
+}
+
+.textoviento { 
+  font-size: 0.85rem; 
+  color: #6b7280; 
+  background-color: #f3f4f6; 
+  display: inline-block; 
+  padding: 4px 10px; 
+  border-radius: 15px; 
+}
+.cargandoclima { color: #9ca3af; font-style: italic; font-size: 0.9rem; }
+
+/* --- MALETA (ORDENADA) --- */
+.listamaleta {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  max-height: 250px; /* Menos altura máxima */
+  overflow-y: auto; 
+  margin-bottom: 15px;
+  border: 1px solid #f3f4f6;
+  border-radius: 8px;
+}
+
+.itemmaleta { 
+  padding: 10px 12px; 
+  border-bottom: 1px solid #f3f4f6; 
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center; 
+  transition: background 0.2s;
+}
+.itemmaleta:last-child { border-bottom: none; }
+.itemmaleta:hover { background-color: #fafafa; }
+
+.labelmaleta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+
+.checkboxmaleta {
+  width: 16px;
+  height: 16px;
+  accent-color: #0d9488;
+  cursor: pointer;
+}
+
+.botonborraritem {
+  border: none;
+  background: transparent;
+  color: #ef4444;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 4px;
+  font-size: 1rem;
+}
+.botonborraritem:hover { color: #dc2626; }
+
+.formulariomaleta { display: flex; gap: 8px; }
+
+.inputmaleta {
+  flex: 1;
+  padding: 8px 10px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  outline: none;
+  font-size: 0.9rem;
+}
+.inputmaleta:focus { border-color: #0d9488; }
+
+.botonmas {
+  background-color: #0d9488;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  width: 36px; 
+  height: 36px;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.botonmas:hover { background-color: #0f766e; }
