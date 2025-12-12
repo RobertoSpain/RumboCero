@@ -32,10 +32,8 @@ export default function DetalleViaje() {
 
     const qDest = query(collection(db, 'viajes', id, 'destinos'), orderBy('createAt', 'desc'));
     const unsubDest = onSnapshot(qDest, (s) => setDestinos(s.docs.map(d => ({ id: d.id, ...d.data() }))));
-
     const qCheck = query(collection(db, 'viajes', id, 'checklist'), orderBy('createAt', 'asc')); 
     const unsubCheck = onSnapshot(qCheck, (s) => setChecklist(s.docs.map(d => ({ id: d.id, ...d.data() }))));
-
     const qEventos = query(collection(db, 'viajes', id, 'eventos'), orderBy('fecha', 'asc'));
     const unsubEventos = onSnapshot(qEventos, (s) => {
         setEventos(s.docs.map(d => ({ 
@@ -83,14 +81,15 @@ export default function DetalleViaje() {
   const agregarDestino = async (e) => { e.preventDefault(); if(!nuevoDestino) return; await addDoc(collection(db,'viajes',id,'destinos'),{nombre:nuevoDestino,categoria,foto:fotoDestino,visitado:false,createAt:Timestamp.now()}); setNuevoDestino(''); setFotoDestino(''); };
   const borrarDestino = async (idD) => { if(confirm("¿Borrar?")) await deleteDoc(doc(db,'viajes',id,'destinos',idD)); };
   const toggleVisitado = async (d) => updateDoc(doc(db,'viajes',id,'destinos',d.id),{visitado:!d.visitado});
-
   // Maleta
   const agregarItem = async (e) => { e.preventDefault(); if(!nuevoItemMaleta) return; await addDoc(collection(db,'viajes',id,'checklist'),{nombre:nuevoItemMaleta,preparado:false,createAt:Timestamp.now()}); setNuevoItemMaleta(''); };
   const borrarItem = async (idI) => deleteDoc(doc(db,'viajes',id,'checklist',idI));
   const togglePreparado = async (i) => updateDoc(doc(db,'viajes',id,'checklist',i.id),{preparado:!i.preparado});
 
   const getIconoClima = (c) => c===0?'☀️':c<45?'⛅':c<80?'🌧️':'⛈️';
+  
   if (loading || !viaje) return <div className="paginacentrada">Cargando...</div>;
+  
   const inicio = viaje.fechalnicial?.toDate ? viaje.fechalnicial.toDate().toLocaleDateString() : '--';
   const fin = viaje.fechaFinal?.toDate ? viaje.fechaFinal.toDate().toLocaleDateString() : '--';
 
@@ -105,8 +104,29 @@ export default function DetalleViaje() {
       </div>
 
       <div className="contenedorprincipal">
+  {/* --- CARRUSEL DE FOTOS --- */}
+        {destinos.some(d => d.foto) && (
+            <div className="seccion-galeria">
+                <h3 className="titulo-galeria">📸 Galería del Viaje</h3>
+                <div className="carrusel-fotos">
+                    {destinos.filter(d => d.foto).map(dest => (
+                        <a 
+                            key={dest.id} 
+                            href={dest.foto} 
+                            target="_blank" 
+                            rel="noopener noreferrer" 
+                            className="tarjeta-foto"
+                            title="Ver foto original">
+                            <img src={dest.foto} alt={dest.nombre} />
+                            <div className="overlay-foto">
+                                <span>{dest.nombre} ↗</span>
+                            </div>
+                        </a>
+                    ))}
+                </div>
+            </div>
+        )}
         <div className="rejillainfo">
-    
           <div className="columnaizquierda">
             {/* TARJETA 1: PLAN */}
             <div className="tarjeta">
@@ -118,6 +138,7 @@ export default function DetalleViaje() {
               </div>
               <p className="cajadescripcion">"{viaje.descripcion || 'Sin notas.'}"</p>
             </div>
+            
             {/* TARJETA 2: AGENDA */}
             <div className="tarjeta">
                 <div className="titulotarjeta"><span className="iconotarjeta">📆</span> Agenda</div>
@@ -136,26 +157,12 @@ export default function DetalleViaje() {
                         </div>
                     ))}
                 </div>
-
                 <form onSubmit={agregarEvento} className="form-agenda">
                    <div className="filaflex">
-                       <input 
-                         type="datetime-local" 
-                         value={nuevoEvento.fecha} 
-                         onChange={e => setNuevoEvento({...nuevoEvento, fecha: e.target.value})} 
-                         className="inputdestino" 
-                         required 
-                       />
+                       <input type="datetime-local" value={nuevoEvento.fecha} onChange={e => setNuevoEvento({...nuevoEvento, fecha: e.target.value})} className="inputdestino" required />
                    </div>
                    <div className="filaflex">
-                       <input 
-                         type="text" 
-                         placeholder="Título del evento..." 
-                         value={nuevoEvento.titulo} 
-                         onChange={e => setNuevoEvento({...nuevoEvento, titulo: e.target.value})} 
-                         className="inputdestino" 
-                         required 
-                       />
+                       <input type="text" placeholder="Título del evento..." value={nuevoEvento.titulo} onChange={e => setNuevoEvento({...nuevoEvento, titulo: e.target.value})} className="inputdestino" required />
                        <button type="submit" className="botonagregar">OK</button>
                    </div>
                 </form>
@@ -206,7 +213,8 @@ export default function DetalleViaje() {
                     </div>
                   ) : <div className="cargandoclima">Cargando...</div>}
               </div>
-          {/* TARJETA MALETA */}
+              
+              {/* MALETA */}
               <div className="tarjeta">
                 <div className="titulotarjeta">
                   <span className="iconotarjeta">🎒</span> Maleta ({checklist.filter(i=>i.preparado).length}/{checklist.length})
@@ -222,12 +230,11 @@ export default function DetalleViaje() {
                     </div>
                   ))}
                 </div>
-
                 <form onSubmit={agregarItem} className="formulariomaleta">
                     <input type="text" placeholder="Item..." value={nuevoItemMaleta} onChange={e => setNuevoItemMaleta(e.target.value)} className="inputmaleta" required/>
                     <button type="submit" className="botonmas">+</button>
                 </form>
-              </div>
+              </div> 
           </div>
         </div>
       </div>
