@@ -6,6 +6,7 @@
   min-height: 100vh;
   font-family: 'Segoe UI', system-ui, sans-serif;
   padding-bottom: 60px;
+  overflow-x: hidden; 
 }
 
 .paginacentrada {
@@ -192,6 +193,7 @@
 }
 .valorfecha { font-size: 1.4rem; color: #111827; font-weight: 800; margin: 0; }
 .flecha { color: #0d9488; font-size: 1.5rem; opacity: 0.8; }
+
 .cajadescripcion {
   font-style: italic;
   color: #4b5563;
@@ -226,7 +228,6 @@
   position: relative;
 }
 
-/* Efecto al pasar el ratón solo en Destinos */
 .elementodestino:hover {
     transform: scale(1.02); 
     border-color: #0d9488; 
@@ -256,7 +257,9 @@
   transition: border-color 0.2s; 
 }
 .itemmaleta:hover { border-color: #9ca3af; }
+
 .elementodestino.visitado { background-color: #f0fdf4; border-color: #86efac; opacity: 0.8; }
+
 .infodestino, .labelmaleta { display: flex; align-items: center; gap: 15px; flex: 1; }
 .nombredestino { font-weight: 600; color: #374151; margin: 0; }
 .imagendestino { width: 40px; height: 40px; border-radius: 4px; object-fit: cover; }
@@ -440,15 +443,56 @@
   text-shadow: 0 1px 2px black;
 }
 
-/* --- 10. RESPONSIVE / MÓVIL  --- */
-@media (max-width: 768px) {
-  .seccionportada { height: 250px; }
-  .titulohero { font-size: 2.2rem; }
-  .contenidohero { padding: 20px; }
-  .tarjeta { padding: 15px !important; margin-bottom: 20px; }
-  .filafecha { padding: 15px 10px; gap: 5px; }
-  .valorfecha { font-size: 1.1rem; }
-  .flecha { font-size: 1.2rem; }
-  .tarjeta-foto { width: 200px; height: 120px; }
-  .titulotarjeta { font-size: 1.1rem; }
+/* --- 10. RESPONSIVE  --- */
+@media (max-width: 900px) {
+  .rejillainfo { 
+    grid-template-columns: 1fr; 
+  } 
+    .seccionportada {
+    height: 220px;
+  }
+  
+  .titulohero {
+    font-size: 2rem; 
+  }
+
+  .contenidohero {
+    padding: 20px;
+  }
+  .contenedorprincipal {
+    margin: 20px auto;
+    padding: 0 15px;
+  }
+  
+  /* TARJETAS MÁS COMPACTAS */
+  .tarjeta {
+    padding: 20px !important;
+    margin-bottom: 20px;
+  }
+    .filafecha {
+    padding: 15px 10px;
+    gap: 10px;
+  }
+  .valorfecha {
+    font-size: 1.1rem;
+  }
+  .etiquetafecha {
+    font-size: 0.7rem;
+  }
+  .flecha {
+    font-size: 1.2rem;
+  }
+    .filaflex {
+    flex-direction: column; 
+    gap: 10px;
+  }
+  
+  .botonagregar, .inputdestino, .selectdestino, .inputurl {
+    width: 100%; 
+  }
+
+  .tarjeta-foto {
+    width: 220px;
+    height: 130px;
+  }
 }
