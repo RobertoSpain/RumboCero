@@ -82,10 +82,6 @@
   align-items: start; 
 }
 
-@media (max-width: 900px) { 
-  .rejillainfo { grid-template-columns: 1fr; } 
-}
-
 /* 4. TARJETAS GENERALES */
 .tarjeta {
   background: white;
