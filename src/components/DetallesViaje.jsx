@@ -8,19 +8,14 @@ export default function DetalleViaje() {
   const { id } = useParams();
   const [viaje, setViaje] = useState(null);
   const [loading, setLoading] = useState(true);
-  
   // --- ESTADOS ---
   const [destinos, setDestinos] = useState([]);
   const [nuevoDestino, setNuevoDestino] = useState('');
   const [categoria, setCategoria] = useState('Turismo');
   const [fotoDestino, setFotoDestino] = useState(''); 
-  
   const [checklist, setChecklist] = useState([]);
   const [nuevoItemMaleta, setNuevoItemMaleta] = useState('');
-  
   const [clima, setClima] = useState(null);
-
-  // Estados Agenda
   const [eventos, setEventos] = useState([]);
   const [nuevoEvento, setNuevoEvento] = useState({ titulo: '', fecha: '' });
 
@@ -69,8 +64,6 @@ export default function DetalleViaje() {
     cargarClima();
   }, [viaje]);
 
-  // --- FUNCIONES CRUD ---
-
   // Agenda
   const agregarEvento = async (e) => {
     e.preventDefault();
@@ -97,15 +90,12 @@ export default function DetalleViaje() {
   const togglePreparado = async (i) => updateDoc(doc(db,'viajes',id,'checklist',i.id),{preparado:!i.preparado});
 
   const getIconoClima = (c) => c===0?'☀️':c<45?'⛅':c<80?'🌧️':'⛈️';
-
   if (loading || !viaje) return <div className="paginacentrada">Cargando...</div>;
-
   const inicio = viaje.fechalnicial?.toDate ? viaje.fechalnicial.toDate().toLocaleDateString() : '--';
   const fin = viaje.fechaFinal?.toDate ? viaje.fechaFinal.toDate().toLocaleDateString() : '--';
 
   return (
     <div className="paginadetalle">
-      {/* PORTADA (El estilo background es dinámico, ese SÍ se permite en JSX) */}
       <div className="seccionportada" style={{ backgroundImage: `url(${viaje.foto || 'https://images.unsplash.com/photo-1488646953014-85cb44e25828'})` }}>
         <div className="capahero"></div>
         <div className="contenidohero">
@@ -116,9 +106,8 @@ export default function DetalleViaje() {
 
       <div className="contenedorprincipal">
         <div className="rejillainfo">
-          
+    
           <div className="columnaizquierda">
-            
             {/* TARJETA 1: PLAN */}
             <div className="tarjeta">
               <div className="titulotarjeta"><span className="iconotarjeta">📅</span> Fechas</div>
@@ -129,11 +118,9 @@ export default function DetalleViaje() {
               </div>
               <p className="cajadescripcion">"{viaje.descripcion || 'Sin notas.'}"</p>
             </div>
-
-            {/* TARJETA 2: AGENDA (Ahora con clases limpias) */}
+            {/* TARJETA 2: AGENDA */}
             <div className="tarjeta">
                 <div className="titulotarjeta"><span className="iconotarjeta">📆</span> Agenda</div>
-                
                 <div className="contenedordestinos">
                     {eventos.length === 0 && <p className="textovacio">No hay planes. Añade eventos.</p>}
                     {eventos.map(ev => (
@@ -219,8 +206,7 @@ export default function DetalleViaje() {
                     </div>
                   ) : <div className="cargandoclima">Cargando...</div>}
               </div>
-              
-              {/* MALETA (Los estilos dinámicos aquí SÍ son válidos y necesarios) */}
+              {/* MALETA */}
               <div className="tarjeta">
                 <div className="titulotarjeta"><span className="iconotarjeta">🎒</span> Maleta ({checklist.filter(i=>i.preparado).length}/{checklist.length})</div>
                 <div className="listamaleta">
@@ -240,7 +226,6 @@ export default function DetalleViaje() {
                 </form>
               </div> 
           </div>
-
         </div>
       </div>
     </div>

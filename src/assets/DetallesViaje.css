@@ -208,7 +208,7 @@
   margin-top: 20px;
 }
 
-/* 7. LISTAS (DESTINOS CON EFECTO)*/
+/* 7. LISTAS */
 .contenedordestinos, .listamaleta {
   display: flex;
   flex-direction: column;
@@ -216,7 +216,7 @@
   width: 100%;
 }
 
-/* Elemento Destino (CON EFECTO POP) */
+/* Elemento Destino */
 .elementodestino {
   display: flex;
   justify-content: space-between;
@@ -319,7 +319,7 @@
 .botonmas { width: 44px; font-size: 1.5rem; padding: 0; padding-bottom: 3px; }
 .textovacio { text-align: center; color: #9ca3af; font-style: italic; margin: 10px 0; }
 
-/* 8. ESTILOS AGENDA (NUEVO) */
+/* 8. ESTILOS AGENDA */
 .item-agenda {
   display: flex;
   align-items: center;
@@ -328,7 +328,7 @@
   padding: 10px;
   border-radius: 8px;
   border: 1px solid #e5e7eb;
-  border-left: 4px solid #3b82f6; /* Borde azul para distinguir */
+  border-left: 4px solid #3b82f6; 
   transition: transform 0.2s ease;
 }
 

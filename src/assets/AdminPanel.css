@@ -19,7 +19,7 @@
   font-family: 'Inter', system-ui, sans-serif;
 }
 
-/* --- HEADER (TÍTULO) --- */
+/* --- HEADER  --- */
 .titulo-grande {
   font-size: 2.5rem;
   font-weight: 800;
@@ -40,7 +40,6 @@
   margin-top: 5px;
 }
 
-/* --- TABS (PESTAÑAS) --- */
 .zonatabs {
   display: flex;
   gap: 15px;
@@ -77,7 +76,7 @@
   transform: translateY(-1px);
 }
 
-/* --- CAJA PRINCIPAL (CONTENIDO) --- */
+/* --- CAJA PRINCIPAL  --- */
 .cajaprincipal {
   background: var(--admin-card-bg);
   border-radius: var(--radius);
@@ -139,7 +138,6 @@
   font-weight: 800;
   text-transform: uppercase;
   margin-left: 0; 
-  margin-top: 5px;
 }
 
 .tipo-jefe { 
@@ -165,7 +163,7 @@
 
 .boton-mini:active { transform: scale(0.95); }
 
-/* Botón Rojo (Eliminar) - Estilo outline */
+/* Botón Rojo  */
 .boton-mini.rojo {
   background-color: white;
   color: var(--color-danger);
@@ -176,7 +174,7 @@
   color: white;
 }
 
-/* Botón Azul (Cambiar Rol) - Estilo sólido oscuro */
+/* Botón Azul */
 .boton-mini.azul {
   background-color: #1f2937; 
   color: white;
@@ -191,4 +189,22 @@
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- CLASES UTILITARIAS (Para limpiar JSX) --- */
+.estado-carga {
+  text-align: center;
+  padding: 50px;
+  color: #666;
+  font-size: 1.1rem;
+}
+
+.texto-vacio {
+  color: #9ca3af;
+  font-style: italic;
+  margin-top: 10px;
+}
+
+.contenedor-rol {
+  margin-top: 6px;
 }
