@@ -239,6 +239,16 @@
     z-index: 5;
 }
 
+.itemmaleta.completado {
+  opacity: 0.5;
+  background-color: #f9fafb; 
+}
+
+.itemmaleta.completado span {
+  text-decoration: line-through;
+  color: #9ca3af;
+}
+
 /* Item Maleta*/
 .itemmaleta {
   display: flex;

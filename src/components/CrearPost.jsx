@@ -1,8 +1,9 @@
-import  { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { collection, addDoc, Timestamp } from "firebase/firestore";
 import { auth, db } from "../firebase.js"; 
 import '../assets/Foro.css'; 
+
 export default function CrearPost() {
   const [titulo, setTitulo] = useState('');
   const [contenido, setContenido] = useState('');
@@ -42,12 +43,11 @@ export default function CrearPost() {
   return (
     <div className="foro">
       <div className="crearpost">
-        <h2 style={{marginTop: 0, color: '#111827'}}>📝 Nuevo Tema</h2>
-        <p style={{color: '#6b7280', marginBottom: '20px'}}>Comparte tus consejos o preguntas con la comunidad.</p>
-        
+        <h2 className="titulo-crear">📝 Nuevo Tema</h2>
+        <p className="texto-ayuda">Comparte tus consejos o preguntas con la comunidad.</p>
         <form onSubmit={manejarPublicacion}>
           <div className="form">
-            <label style={{fontWeight:'bold', display:'block', marginBottom:'5px'}}>Título:</label>
+            <label className="label-form">Título:</label>
             <input 
                 type="text" 
                 placeholder="Ej: ¿Mejor época para ir a Japón?" 
@@ -57,8 +57,9 @@ export default function CrearPost() {
                 required
             />
           </div>
+          
           <div className="form">
-            <label style={{fontWeight:'bold', display:'block', marginBottom:'5px'}}>Mensaje:</label>
+            <label className="label-form">Mensaje:</label>
             <textarea 
                 placeholder="Escribe aquí..." 
                 className="textarea-post"
@@ -68,8 +69,8 @@ export default function CrearPost() {
                 required
             ></textarea>
           </div>
-          <div style={{display:'flex', gap:'10px', marginTop:'10px'}}>
-            <Link to="/foro" className="botonborrarpost" style={{textDecoration:'none', textAlign:'center', paddingTop:'12px'}}>
+          <div className="acciones-post">
+            <Link to="/foro" className="botonborrarpost boton-cancelar">
                 Cancelar
             </Link>
             <button type="submit" className="botonpublicar" disabled={cargando}>

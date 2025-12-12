@@ -37,7 +37,7 @@ export default function Perfil() {
         nombre: nombre,
         foto: foto 
       });
-      // 3. Actualizar LocalStorage (para mantener coherencia con tu App.jsx)
+      // 3. Actualizar LocalStorage
       localStorage.setItem('usuario', nombre);
       localStorage.setItem('fotoPerfil', foto); 
       // 4. ACTUALIZACIÓN VISUAL 
@@ -46,7 +46,6 @@ export default function Perfil() {
         displayName: nombre,
         photoURL: foto
       });
-
       alert("¡Perfil actualizado con éxito!");
     } catch (error) {
       console.error("Error al actualizar:", error);
@@ -57,20 +56,22 @@ export default function Perfil() {
   };
 
   if (!usuario) return <div className="cargando-perfil">Cargando tu perfil...</div>;
+  
   return (
     <div className="paginaperfil">
       <div className="cajaperfil">
         <h1 className="tituloperfil">👤 Editar Perfil</h1>
-                <div className="cabecera-perfil">
+        <div className="cabecera-perfil">
           <img 
             src={foto || 'https://cdn-icons-png.flaticon.com/512/149/149071.png'} 
             alt="Avatar" 
             className="avatarimagen"
             onError={(e) => e.target.src = 'https://cdn-icons-png.flaticon.com/512/149/149071.png'} 
           />
-          <h3 style={{marginTop: '10px'}}>{nombre || usuario.email}</h3>
-          <p className="correousuario" style={{color: '#666', fontSize: '0.9rem'}}>{usuario.email}</p>
+          <h3 className="nombre-usuario">{nombre || usuario.email}</h3>
+          <p className="correousuario">{usuario.email}</p>
         </div>
+
         {/* Formulario */}
         <form onSubmit={guardarCambios} className="formulario-perfil">
           <div className="campo-formulario">
@@ -84,6 +85,7 @@ export default function Perfil() {
               required
             />
           </div>
+
           <div className="campoformulario">
             <label>Foto de Perfil (URL)</label>
             <input 
@@ -91,8 +93,7 @@ export default function Perfil() {
               value={foto} 
               onChange={(e) => setFoto(e.target.value)} 
               className="entrada-datos"
-              placeholder="https://..."
-            />
+              placeholder="https://..."/>
             <small className="textoayuda">Pega aquí el enlace de una imagen de Google.</small>
           </div>
           <button type="submit" className="boton-guardar" disabled={cargando}>

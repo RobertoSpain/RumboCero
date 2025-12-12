@@ -1,4 +1,4 @@
-/* --- LAYOUT PRINCIPAL (Común para Foro y Crear Post) --- */
+/* --- LAYOUT PRINCIPAL  --- */
 .foro {
   background-color: #f3f4f6;
   min-height: 100vh;
@@ -25,7 +25,7 @@
   gap: 10px;
   font-weight: 800;
 }
-/* --- LISTA DE TEMAS (CONTENEDOR) --- */
+/* --- LISTA DE TEMAS  --- */
 .lista-temas {
   max-width: 800px;
   margin: 0 auto;
@@ -33,7 +33,7 @@
   flex-direction: column;
   gap: 20px;
 }
-/* --- TARJETA INDIVIDUAL (POST) --- */
+/* --- TARJETA INDIVIDUAL --- */
 .tarjeta-tema {
   background: white;
   border-radius: 12px;
@@ -62,7 +62,7 @@
   margin: 0;
   font-weight: 700;
 }
-/* Datos meta (autor y fecha) */
+/* Datos meta */
 .datostema {
   font-size: 0.85rem;
   color: #6b7280;
@@ -86,7 +86,7 @@
   white-space: pre-wrap; 
   margin-bottom: 20px;
 }
-/* Pie de tarjeta (botones y enlaces) */
+/* Pie de tarjeta  */
 .pietarjeta {
   padding-top: 15px;
   border-top: 1px solid #f3f4f6;
@@ -111,7 +111,6 @@
 }
 
 /* --- BOTONES --- */
-/* Botón Nuevo Tema (Arriba derecha) */
 .boton-nuevo {
   background-color: #3b82f6;
   color: white;
@@ -142,7 +141,7 @@
 .boton-borrar:hover {
   background-color: #fecaca;
 }
-/* Botón Borrar/Cancelar (Gris en Crear Post) */
+/* Botón Borrar/Cancelar  */
 .botonborrarpost {
   background-color: #f3f4f6;
   color: #4b5563;
@@ -187,7 +186,7 @@
   border-color: #3b82f6;
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
-/* Botón Publicar (Verde) */
+/* Botón Publicar  */
 .botonpublicar {
   flex: 2; 
   padding: 12px;
@@ -225,3 +224,32 @@
 }
 .con-respuestas { color: #3b82f6; }
 .sin-respuestas { color: #9ca3af; }
+
+/* --- ESTILOS CREAR POST  --- */
+.titulo-crear {
+  margin-top: 0;
+  color: #111827;
+}
+
+.texto-ayuda {
+  color: #6b7280;
+  margin-bottom: 20px;
+}
+
+.label-form {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.acciones-post {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.boton-cancelar {
+  text-decoration: none;
+  text-align: center;
+  display: block; 
+}

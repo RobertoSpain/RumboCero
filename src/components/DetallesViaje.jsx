@@ -206,25 +206,28 @@ export default function DetalleViaje() {
                     </div>
                   ) : <div className="cargandoclima">Cargando...</div>}
               </div>
-              {/* MALETA */}
+          {/* TARJETA MALETA */}
               <div className="tarjeta">
-                <div className="titulotarjeta"><span className="iconotarjeta">🎒</span> Maleta ({checklist.filter(i=>i.preparado).length}/{checklist.length})</div>
+                <div className="titulotarjeta">
+                  <span className="iconotarjeta">🎒</span> Maleta ({checklist.filter(i=>i.preparado).length}/{checklist.length})
+                </div>
                 <div className="listamaleta">
                   {checklist.map(i => (
-                    <div key={i.id} className="itemmaleta" style={{opacity: i.preparado?0.5:1}}>
+                    <div key={i.id} className={`itemmaleta ${i.preparado ? 'completado' : ''}`}>
                       <label className="labelmaleta">
                           <input type="checkbox" checked={i.preparado} onChange={() => togglePreparado(i)} className="checkboxmaleta"/>
-                          <span style={{textDecoration:i.preparado?'line-through':'none'}}>{i.nombre}</span>
+                          <span>{i.nombre}</span>
                       </label>
                       <button onClick={() => borrarItem(i.id)} className="botonborraritem">✕</button>
                     </div>
                   ))}
                 </div>
+
                 <form onSubmit={agregarItem} className="formulariomaleta">
                     <input type="text" placeholder="Item..." value={nuevoItemMaleta} onChange={e => setNuevoItemMaleta(e.target.value)} className="inputmaleta" required/>
                     <button type="submit" className="botonmas">+</button>
                 </form>
-              </div> 
+              </div>
           </div>
         </div>
       </div>

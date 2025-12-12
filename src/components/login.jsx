@@ -55,11 +55,11 @@ function Login({ onLogin }) {
         setError('Error al iniciar sesión con Google');
     }
   };
+
   return (
     <div className="paginalogin">
       <div className="cajalogin">
         <h2 className="titulologin">Login</h2>
-        
         <form onSubmit={manejarEnvio} className="formulariologin">
           <input
             type="text"
@@ -77,10 +77,9 @@ function Login({ onLogin }) {
             Entrar
           </button>
         </form>
-
         <div className="separador">
           <button onClick={manejarGoogle} className="boton-google">
-            <svg width="18" height="18" viewBox="0 0 24 24" style={{marginRight: '8px'}}>
+            <svg className="icono-google" width="18" height="18" viewBox="0 0 24 24">
                 <path fill="currentColor" d="M21.35 11.1h-9.17v2.73h6.51c-.33 3.81-3.5 5.44-6.5 5.44C8.36 19.27 5 16.25 5 12c0-4.1 3.2-7.27 7.2-7.27c3.09 0 4.9 1.97 4.9 1.97L19 4.72S16.64 2 12 2C6.48 2 2 6.48 2 12s4.48 10 10 10c5.19 0 8.8-3.72 8.8-9.04c0-.79-.08-1.39-.08-1.39h.63z"/>
             </svg>
             Entrar con Google

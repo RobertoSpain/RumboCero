@@ -20,7 +20,6 @@ const Viajes = () => {
 
   useEffect(() => {
     if (!miUid) return;
-
     const viajesRef = collection(db, 'viajes');
     const q = query(viajesRef, where('userId', '==', miUid));
     const unsubscribeDatos = onSnapshot(q, (snapshot) => {
@@ -46,15 +45,15 @@ const Viajes = () => {
     }
   };
 
-  if (loading) return <div className="viajes-page" style={{textAlign:'center', paddingTop:'50px'}}>Cargando aventuras...</div>;
+  if (loading) return <div className="viajes-page cargando-contenedor">Cargando aventuras...</div>;
 
   if (viajes.length === 0) {
     return (
       <div className="viajes-page">
         <div className="estado">
-            <h2 style={{fontSize:'2rem', marginBottom:'10px'}}>🧳 ¡Maletas Vacías!</h2>
-            <p style={{color:'#666', marginBottom:'20px'}}>Aún no tienes viajes planificados.</p>
-            <Link to="/crear-viaje" className="btn-ver" style={{background:'#0d9488', color:'white'}}>
+            <h2 className="estado-titulo">🧳 ¡Maletas Vacías!</h2>
+            <p className="estado-texto">Aún no tienes viajes planificados.</p>
+            <Link to="/crear-viaje" className="btn-ver btn-solido">
               + Crear Primer Viaje
             </Link>
         </div>
@@ -67,7 +66,6 @@ const Viajes = () => {
       <div className="viajes-header">
         <h1 className="viajes-titulo">✈️ Mis Viajes</h1>
       </div>
-
       <div className="viajes-grid">
         {viajes.map((viaje) => (
           <div key={viaje.id} className="viaje-card">
@@ -85,7 +83,6 @@ const Viajes = () => {
                     <div className="noimg">✈️</div>
                 )}
             </div>
-            
             {/* INFO */}
             <div className="cuerpo">
               <h2 className="titulo" title={viaje.name}>{viaje.name}</h2>
@@ -99,7 +96,6 @@ const Viajes = () => {
                 {viaje.descripcion || 'Sin descripción adicional.'}
               </div>
             </div>
-
             {/* BOTONES */}
             <div className="acciones">
               <button onClick={() => borrarViaje(viaje.id)} className="btn-borrar">

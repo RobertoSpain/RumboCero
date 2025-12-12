@@ -105,6 +105,11 @@
 .boton-google:hover {
   background-color: #c53929;
 }
+
+.icono-google {
+  margin-right: 8px;
+}
+
 /* --- MENSAJE DE ERROR --- */
 .mensajeerror {
   background-color: #fee2e2;

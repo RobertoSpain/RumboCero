@@ -48,6 +48,14 @@
   margin-bottom: 10px;
 }
 
+.nombre-usuario {
+  margin-top: 10px;
+  margin-bottom: 5px;
+  font-size: 1.3rem;
+  color: #1f2937;
+  font-weight: 700;
+}
+
 .correousuario {
   color: #6b7280;
   font-weight: 500;
