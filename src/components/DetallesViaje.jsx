@@ -1,129 +1,112 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { doc, getDoc, collection, addDoc, onSnapshot, query, orderBy, Timestamp, deleteDoc, updateDoc } from 'firebase/firestore';
-import { db } from '../firebase.js';
-import '../assets/DetallesViaje.css';
+import { db } from '../firebase.js'; 
+import '../assets/DetallesViaje.css'; 
 
 export default function DetalleViaje() {
   const { id } = useParams();
   const [viaje, setViaje] = useState(null);
   const [loading, setLoading] = useState(true);
-
-  // Estados
-
+  
+  // --- ESTADOS ---
   const [destinos, setDestinos] = useState([]);
   const [nuevoDestino, setNuevoDestino] = useState('');
   const [categoria, setCategoria] = useState('Turismo');
-  const [fotoDestino, setFotoDestino] = useState('');
+  const [fotoDestino, setFotoDestino] = useState(''); 
+  
   const [checklist, setChecklist] = useState([]);
   const [nuevoItemMaleta, setNuevoItemMaleta] = useState('');
+  
   const [clima, setClima] = useState(null);
 
-  // 1. CARGAR DATOS
+  // Estados Agenda
+  const [eventos, setEventos] = useState([]);
+  const [nuevoEvento, setNuevoEvento] = useState({ titulo: '', fecha: '' });
 
+  // --- CARGA DE DATOS ---
   useEffect(() => {
     const obtenerViaje = async () => {
       try {
         const docSnap = await getDoc(doc(db, 'viajes', id));
         if (docSnap.exists()) setViaje({ id: docSnap.id, ...docSnap.data() });
-      } catch (error) { console.error(error); }
+      } catch (error) { console.error(error); } 
       finally { setLoading(false); }
     };
-
     obtenerViaje();
-    const destinosRef = collection(db, 'viajes', id, 'destinos');
-    const qDestinos = query(destinosRef, orderBy('createAt', 'desc'));
-    const unsubscribeDestinos = onSnapshot(qDestinos, (snapshot) => {
-      setDestinos(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+
+    const qDest = query(collection(db, 'viajes', id, 'destinos'), orderBy('createAt', 'desc'));
+    const unsubDest = onSnapshot(qDest, (s) => setDestinos(s.docs.map(d => ({ id: d.id, ...d.data() }))));
+
+    const qCheck = query(collection(db, 'viajes', id, 'checklist'), orderBy('createAt', 'asc')); 
+    const unsubCheck = onSnapshot(qCheck, (s) => setChecklist(s.docs.map(d => ({ id: d.id, ...d.data() }))));
+
+    const qEventos = query(collection(db, 'viajes', id, 'eventos'), orderBy('fecha', 'asc'));
+    const unsubEventos = onSnapshot(qEventos, (s) => {
+        setEventos(s.docs.map(d => ({ 
+            id: d.id, 
+            ...d.data(),
+            fechaJs: d.data().fecha?.toDate ? d.data().fecha.toDate() : new Date() 
+        })));
     });
-    const checklistRef = collection(db, 'viajes', id, 'checklist');
-    const qChecklist = query(checklistRef, orderBy('createAt', 'asc'));
-    const unsubscribeChecklist = onSnapshot(qChecklist, (snapshot) => {
-      setChecklist(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
-    });
-    return () => {
-        unsubscribeDestinos();
-        unsubscribeChecklist();
-    };
+
+    return () => { unsubDest(); unsubCheck(); unsubEventos(); };
   }, [id]);
 
-  // 2. CLIMA (Open-Meteo)
+  // --- CLIMA ---
   useEffect(() => {
-    if (!viaje || !viaje.destinoPrincipal) return;
-    const consultarClima = async () => {
-
+    if (!viaje?.destinoPrincipal) return;
+    const cargarClima = async () => {
         try {
-            const geoRes = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${viaje.destinoPrincipal}&count=1&language=es&format=json`);
-            const geoData = await geoRes.json();
-            if (geoData.results && geoData.results.length > 0) {
-                const { latitude, longitude } = geoData.results[0];
-                const climaRes = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,weather_code,wind_speed_10m&timezone=auto`);
-                const climaData = await climaRes.json();
-                setClima(climaData.current);
+            const geo = await (await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${viaje.destinoPrincipal}&count=1&language=es&format=json`)).json();
+            if (geo.results?.[0]) {
+                const { latitude, longitude } = geo.results[0];
+                const datos = await (await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,weather_code,wind_speed_10m&timezone=auto`)).json();
+                setClima(datos.current);
             }
-        } catch (error) { 
-            console.error("Error clima:", error);
-        }
+        } catch (error) { console.error(error); }
     };
-    consultarClima();
+    cargarClima();
   }, [viaje]);
 
-  // --- FUNCIONES ---//
-  const agregarDestino = async (e) => {
+  // --- FUNCIONES CRUD ---
+
+  // Agenda
+  const agregarEvento = async (e) => {
     e.preventDefault();
-    if (!nuevoDestino.trim()) return;
+    if (!nuevoEvento.titulo || !nuevoEvento.fecha) return;
     try {
-      await addDoc(collection(db, 'viajes', id, 'destinos'), {
-        nombre: nuevoDestino, categoria: categoria, foto: fotoDestino, visitado: false, createAt: Timestamp.now()
-      });
-      setNuevoDestino(''); setFotoDestino('');
-    } catch (error) { console.error(error); alert("Error al añadir destino"); }
-  };
-
-  const borrarDestino = async (idDestino) => {
-    if (window.confirm("¿Borrar este destino?")) {
-      await deleteDoc(doc(db, 'viajes', id, 'destinos', idDestino));
-    }
-  };
-
-  const toggleVisitado = async (destino) => {
-    await updateDoc(doc(db, 'viajes', id, 'destinos', destino.id), { visitado: !destino.visitado });
-  };
-
-  const agregarItemMaleta = async (e) => {
-    e.preventDefault();
-    if (!nuevoItemMaleta.trim()) return;
-    try {
-        await addDoc(collection(db, 'viajes', id, 'checklist'), {
-            nombre: nuevoItemMaleta, preparado: false, createAt: Timestamp.now()
+        await addDoc(collection(db, 'viajes', id, 'eventos'), {
+            titulo: nuevoEvento.titulo,
+            fecha: Timestamp.fromDate(new Date(nuevoEvento.fecha)),
+            createAt: Timestamp.now()
         });
-        setNuevoItemMaleta('');
-    } catch (error) { console.error(error); alert("Error al añadir a la maleta"); }
+        setNuevoEvento({ titulo: '', fecha: '' }); 
+    } catch (err) { console.error(err); alert("Error al guardar"); }
   };
+  const borrarEvento = async (idEv) => { if(confirm("¿Eliminar evento?")) await deleteDoc(doc(db, 'viajes', id, 'eventos', idEv)); };
 
-  const borrarItemMaleta = async (idItem) => await deleteDoc(doc(db, 'viajes', id, 'checklist', idItem));
-  const togglePreparado = async (item) => {
-    await updateDoc(doc(db, 'viajes', id, 'checklist', item.id), { preparado: !item.preparado });
-  };
+  // Destinos
+  const agregarDestino = async (e) => { e.preventDefault(); if(!nuevoDestino) return; await addDoc(collection(db,'viajes',id,'destinos'),{nombre:nuevoDestino,categoria,foto:fotoDestino,visitado:false,createAt:Timestamp.now()}); setNuevoDestino(''); setFotoDestino(''); };
+  const borrarDestino = async (idD) => { if(confirm("¿Borrar?")) await deleteDoc(doc(db,'viajes',id,'destinos',idD)); };
+  const toggleVisitado = async (d) => updateDoc(doc(db,'viajes',id,'destinos',d.id),{visitado:!d.visitado});
 
-  const getIconoClima = (codigo) => {
-      if (codigo === 0) return '☀️';
-      if (codigo > 0 && codigo < 45) return '⛅';
-      if (codigo >= 45 && codigo < 51) return '🌫️';
-      if (codigo >= 51 && codigo < 80) return '🌧️';
-      if (codigo >= 80 && codigo < 90) return '🌦️';
-      if (codigo >= 95) return '⛈️';
-      return '🌡️';
-  };
+  // Maleta
+  const agregarItem = async (e) => { e.preventDefault(); if(!nuevoItemMaleta) return; await addDoc(collection(db,'viajes',id,'checklist'),{nombre:nuevoItemMaleta,preparado:false,createAt:Timestamp.now()}); setNuevoItemMaleta(''); };
+  const borrarItem = async (idI) => deleteDoc(doc(db,'viajes',id,'checklist',idI));
+  const togglePreparado = async (i) => updateDoc(doc(db,'viajes',id,'checklist',i.id),{preparado:!i.preparado});
 
-  if (loading) return <div className="paginacentrada">Cargando...</div>;
-  if (!viaje) return <div className="paginacentrada">Viaje no encontrado</div>;
+  const getIconoClima = (c) => c===0?'☀️':c<45?'⛅':c<80?'🌧️':'⛈️';
+
+  if (loading || !viaje) return <div className="paginacentrada">Cargando...</div>;
+
   const inicio = viaje.fechalnicial?.toDate ? viaje.fechalnicial.toDate().toLocaleDateString() : '--';
   const fin = viaje.fechaFinal?.toDate ? viaje.fechaFinal.toDate().toLocaleDateString() : '--';
+
   return (
     <div className="paginadetalle">
-      {/* PORTADA */}
-      <div className="seccionportada" style={{ backgroundImage: `url(${viaje.foto || 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=1000&q=80'})` }}>
+      {/* PORTADA (El estilo background es dinámico, ese SÍ se permite en JSX) */}
+      <div className="seccionportada" style={{ backgroundImage: `url(${viaje.foto || 'https://images.unsplash.com/photo-1488646953014-85cb44e25828'})` }}>
         <div className="capahero"></div>
         <div className="contenidohero">
             <h1 className="titulohero">{viaje.name}</h1>
@@ -131,98 +114,135 @@ export default function DetalleViaje() {
         </div>
       </div>
 
-      {/* CONTENEDOR PRINCIPAL */}
       <div className="contenedorprincipal">
         <div className="rejillainfo">
+          
           <div className="columnaizquierda">
-            {/* Tarjeta Plan */}
+            
+            {/* TARJETA 1: PLAN */}
             <div className="tarjeta">
-              <div className="titulotarjeta"><span className="iconotarjeta">📅</span> Plan</div>
+              <div className="titulotarjeta"><span className="iconotarjeta">📅</span> Fechas</div>
               <div className="filafecha">
                   <div><p className="etiquetafecha">Ida</p><p className="valorfecha">{inicio}</p></div>
                   <div className="flecha">➔</div>
                   <div><p className="etiquetafecha">Vuelta</p><p className="valorfecha">{fin}</p></div>
               </div>
-              <div className="cajadescripcion">"{viaje.descripcion || "Sin descripción."}"</div>
+              <p className="cajadescripcion">"{viaje.descripcion || 'Sin notas.'}"</p>
             </div>
 
-            {/* Tarjeta Destinos */}
+            {/* TARJETA 2: AGENDA (Ahora con clases limpias) */}
             <div className="tarjeta">
-              <div className="titulotarjeta">
-                <span className="iconotarjeta">🏙️</span> Destinos ({destinos.length})
-              </div>
+                <div className="titulotarjeta"><span className="iconotarjeta">📆</span> Agenda</div>
+                
+                <div className="contenedordestinos">
+                    {eventos.length === 0 && <p className="textovacio">No hay planes. Añade eventos.</p>}
+                    {eventos.map(ev => (
+                        <div key={ev.id} className="item-agenda">
+                            <div className="fecha-caja">
+                                <div className="dia-mes">{ev.fechaJs.getDate()}/{ev.fechaJs.getMonth()+1}</div>
+                                <div className="hora-evento">{ev.fechaJs.getHours()}:{ev.fechaJs.getMinutes().toString().padStart(2,'0')}</div>
+                            </div>
+                            <div className="titulo-evento">
+                                {ev.titulo}
+                            </div>
+                            <button onClick={() => borrarEvento(ev.id)} className="botonbasura">×</button>
+                        </div>
+                    ))}
+                </div>
+
+                <form onSubmit={agregarEvento} className="form-agenda">
+                   <div className="filaflex">
+                       <input 
+                         type="datetime-local" 
+                         value={nuevoEvento.fecha} 
+                         onChange={e => setNuevoEvento({...nuevoEvento, fecha: e.target.value})} 
+                         className="inputdestino" 
+                         required 
+                       />
+                   </div>
+                   <div className="filaflex">
+                       <input 
+                         type="text" 
+                         placeholder="Título del evento..." 
+                         value={nuevoEvento.titulo} 
+                         onChange={e => setNuevoEvento({...nuevoEvento, titulo: e.target.value})} 
+                         className="inputdestino" 
+                         required 
+                       />
+                       <button type="submit" className="botonagregar">OK</button>
+                   </div>
+                </form>
+            </div>
+
+            {/* TARJETA 3: DESTINOS */}
+            <div className="tarjeta">
+              <div className="titulotarjeta"><span className="iconotarjeta">🏙️</span> Sitios</div> 
               <div className="contenedordestinos">
-                {destinos.length === 0 && <p className="textovacio">No has añadido destinos aún.</p>}
-                {destinos.map(dest => (
-                  <div key={dest.id} className={`elementodestino ${dest.visitado ? 'visitado' : ''}`}>
+                {destinos.map(d => (
+                  <div key={d.id} className={`elementodestino ${d.visitado ? 'visitado' : ''}`}>
                     <div className="infodestino">
-                      <input type="checkbox" checked={dest.visitado} onChange={() => toggleVisitado(dest)} className="checkboxdestino"/>
-                      {dest.foto && <img src={dest.foto} alt="mini" className="imagendestino" />}
+                      <input type="checkbox" checked={d.visitado} onChange={() => toggleVisitado(d)} className="checkboxdestino"/>
+                      {d.foto && <img src={d.foto} alt="mini" className="imagendestino" />}
                       <div>
-                        <p className="nombredestino">{dest.nombre}</p>
-                        <span className="etiquetadestino">{dest.categoria}</span>
+                        <p className="nombredestino">{d.nombre}</p>
+                        <span className="etiquetadestino">{d.categoria}</span>
                       </div>
                     </div>
-                    <button onClick={() => borrarDestino(dest.id)} className="botonbasura">🗑️</button>
+                    <button onClick={() => borrarDestino(d.id)} className="botonbasura">🗑️</button>
                   </div>
-                ))}
+                ))} 
               </div>
-      <form onSubmit={agregarDestino} className="formulariodestino">
-        <div className="filaflex">
-         <input type="text" placeholder="Nombre del sitio..." value={nuevoDestino} onChange={e => setNuevoDestino(e.target.value)} className="inputdestino" required />
-          <select value={categoria} onChange={e => setCategoria(e.target.value)} className="selectdestino">
-            <option value="Turismo">Turismo</option>
-            <option value="Comida">Comida</option>
-            <option value="Ocio">Ocio</option>
-            <option value="Hotel">Hotel</option>
-            </select>
-              </div>
-          <div className="filaflex">
-            <input type="url" placeholder="URL Foto (Opcional)" value={fotoDestino} onChange={e => setFotoDestino(e.target.value)} className="inputurl" />
-            <button type="submit" className="botonagregar">Añadir</button>
-                </div>
+              <form onSubmit={agregarDestino} className="formulariodestino">
+                 <div className="filaflex">
+                    <input type="text" placeholder="Sitio..." value={nuevoDestino} onChange={e => setNuevoDestino(e.target.value)} className="inputdestino" required />
+                    <select value={categoria} onChange={e => setCategoria(e.target.value)} className="selectdestino">
+                       <option>Turismo</option><option>Comida</option><option>Ocio</option>
+                    </select>
+                 </div>
+                 <div className="filaflex">
+                     <input type="url" placeholder="Foto URL" value={fotoDestino} onChange={e => setFotoDestino(e.target.value)} className="inputurl" />
+                     <button type="submit" className="botonagregar">Añadir</button>
+                 </div>
               </form>
             </div>
           </div>
-          {/* COLUMNA DERECHA */}
+
           <div className="columnaderecha">
-              {/* Tarjeta Clima */}
+              {/* CLIMA */}
               <div className="tarjeta tarjetaclima">
-                  <div className="titulotarjeta"><span className="iconotarjeta">🌤️</span> Clima Actual</div>
+                  <div className="titulotarjeta"><span className="iconotarjeta">🌤️</span> Clima</div>
                   {clima ? (
                     <div className="cajaclima">
                         <div className="textoclima">{clima.temperature_2m}°C</div>
                         <div className="iconoclima">{getIconoClima(clima.weather_code)}</div>
-                        <div className="textoviento">💨 Viento: {clima.wind_speed_10m} km/h</div>
+                        <div className="textoviento">💨 {clima.wind_speed_10m} km/h</div>
                     </div>
-                  ) : (
-          <div className="cargandoclima">Consultando satélites...</div>
-            )}
+                  ) : <div className="cargandoclima">Cargando...</div>}
+              </div>
+              
+              {/* MALETA (Los estilos dinámicos aquí SÍ son válidos y necesarios) */}
+              <div className="tarjeta">
+                <div className="titulotarjeta"><span className="iconotarjeta">🎒</span> Maleta ({checklist.filter(i=>i.preparado).length}/{checklist.length})</div>
+                <div className="listamaleta">
+                  {checklist.map(i => (
+                    <div key={i.id} className="itemmaleta" style={{opacity: i.preparado?0.5:1}}>
+                      <label className="labelmaleta">
+                          <input type="checkbox" checked={i.preparado} onChange={() => togglePreparado(i)} className="checkboxmaleta"/>
+                          <span style={{textDecoration:i.preparado?'line-through':'none'}}>{i.nombre}</span>
+                      </label>
+                      <button onClick={() => borrarItem(i.id)} className="botonborraritem">✕</button>
+                    </div>
+                  ))}
+                </div>
+                <form onSubmit={agregarItem} className="formulariomaleta">
+                    <input type="text" placeholder="Item..." value={nuevoItemMaleta} onChange={e => setNuevoItemMaleta(e.target.value)} className="inputmaleta" required/>
+                    <button type="submit" className="botonmas">+</button>
+                </form>
+              </div> 
           </div>
-              {/* Tarjeta Maleta */}
-        <div className="tarjeta">
-              <div className="titulotarjeta">
-            <span className="iconotarjeta">🎒</span> Maleta ({checklist.filter(i => i.preparado).length}/{checklist.length})
-          </div>
-      <div className="listamaleta">
-           {checklist.length === 0 && <p className="textovacio">Añade cosas a tu maleta.</p>}
-           {checklist.map(item => (
-        <div key={item.id} className="itemmaleta" style={{opacity: item.preparado ? 0.5 : 1}}>
-               <label className="labelmaleta">
-               <input type="checkbox" checked={item.preparado} onChange={() => togglePreparado(item)} className="checkboxmaleta"/>
-              <span style={{textDecoration: item.preparado ? 'line-through' : 'none'}}>{item.nombre}</span>
-            </label>
-           <button onClick={() => borrarItemMaleta(item.id)} className="botonborraritem">✕</button>
-       </div>
-        ))}
-         </div>
-          <form onSubmit={agregarItemMaleta} className="formulariomaleta">
-         <input type="text" placeholder="Ej: Pasaporte..." value={nuevoItemMaleta} onChange={e => setNuevoItemMaleta(e.target.value)} className="inputmaleta" required/>
-         <button type="submit" className="botonmas">+</button>
-       </form>
-       </div>
-     </div>
+
+        </div>
+      </div>
     </div>
-   </div>
-  </div>);
-} 
+  );
+}

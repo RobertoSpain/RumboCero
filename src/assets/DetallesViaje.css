@@ -167,7 +167,7 @@
 }
 .cargandoclima { color: #9ca3af; font-style: italic; margin: 20px auto; }
 
-/*  6. PLAN / FECHAS */
+/* 6. PLAN / FECHAS */
 .filafecha {
   display: flex;
   justify-content: space-around;
@@ -318,3 +318,58 @@
 .botonagregar:active, .botonmas:active { transform: scale(0.98); }
 .botonmas { width: 44px; font-size: 1.5rem; padding: 0; padding-bottom: 3px; }
 .textovacio { text-align: center; color: #9ca3af; font-style: italic; margin: 10px 0; }
+
+/* 8. ESTILOS AGENDA (NUEVO) */
+.item-agenda {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  background-color: white;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  border-left: 4px solid #3b82f6; /* Borde azul para distinguir */
+  transition: transform 0.2s ease;
+}
+
+.item-agenda:hover {
+  transform: scale(1.01);
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.fecha-caja {
+  text-align: center;
+  margin-right: 15px;
+  min-width: 50px;
+  line-height: 1.2;
+  padding-right: 10px;
+  border-right: 1px solid #f3f4f6;
+}
+
+.dia-mes {
+  font-weight: 800;
+  color: #3b82f6;
+  font-size: 1.1rem;
+}
+
+.hora-evento {
+  font-size: 0.8rem;
+  color: #6b7280;
+  font-weight: 600;
+}
+
+.titulo-evento {
+  flex: 1;
+  color: #1f2937;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.form-agenda {
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px dashed #e5e7eb;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
