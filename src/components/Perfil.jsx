@@ -11,7 +11,6 @@ export default function Perfil() {
   const [cargando, setCargando] = useState(false);
 
   useEffect(() => {
-    // Escuchamos al usuario logueado
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
         setUsuario(user);
@@ -27,22 +26,28 @@ export default function Perfil() {
     if (!usuario) return;
     setCargando(true);
     try {
+      // 1. Actualizar Auth de Firebase 
       await updateProfile(usuario, {
         displayName: nombre,
         photoURL: foto
       });
+      // 2. Actualizar Base de Datos Firestore
       const userRef = doc(db, 'usuarios', usuario.uid);
       await updateDoc(userRef, {
         nombre: nombre,
         foto: foto 
       });
-
-      // 3. Actualizar LocalStorage
+      // 3. Actualizar LocalStorage (para mantener coherencia con tu App.jsx)
       localStorage.setItem('usuario', nombre);
       localStorage.setItem('fotoPerfil', foto); 
+      // 4. ACTUALIZACIÓN VISUAL 
+      setUsuario({
+        ...usuario,
+        displayName: nombre,
+        photoURL: foto
+      });
 
       alert("¡Perfil actualizado con éxito!");
-      window.location.reload(); 
     } catch (error) {
       console.error("Error al actualizar:", error);
       alert("Hubo un error al guardar los cambios.");
@@ -52,23 +57,20 @@ export default function Perfil() {
   };
 
   if (!usuario) return <div className="cargando-perfil">Cargando tu perfil...</div>;
-
   return (
     <div className="paginaperfil">
       <div className="cajaperfil">
         <h1 className="tituloperfil">👤 Editar Perfil</h1>
-        
-        {/* Previsualización */}
-        <div className="cabecera-perfil">
+                <div className="cabecera-perfil">
           <img 
             src={foto || 'https://cdn-icons-png.flaticon.com/512/149/149071.png'} 
             alt="Avatar" 
             className="avatarimagen"
             onError={(e) => e.target.src = 'https://cdn-icons-png.flaticon.com/512/149/149071.png'} 
           />
-          <p className="correousuario">{usuario.email}</p>
+          <h3 style={{marginTop: '10px'}}>{nombre || usuario.email}</h3>
+          <p className="correousuario" style={{color: '#666', fontSize: '0.9rem'}}>{usuario.email}</p>
         </div>
-
         {/* Formulario */}
         <form onSubmit={guardarCambios} className="formulario-perfil">
           <div className="campo-formulario">
@@ -82,7 +84,6 @@ export default function Perfil() {
               required
             />
           </div>
-
           <div className="campoformulario">
             <label>Foto de Perfil (URL)</label>
             <input 

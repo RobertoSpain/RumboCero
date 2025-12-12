@@ -85,7 +85,6 @@ function CrearViaje() {
         <p className="subtitulocrear">Planifica tu próxima aventura.</p>
 
         <form onSubmit={manejarCreacion} className="formulario-viaje">
-          
           <div className="campo">
             <label htmlFor="name">Título del Viaje:</label>
             <input 
@@ -97,7 +96,6 @@ function CrearViaje() {
                 className="entradatexto" 
             />
           </div>
-
           <div className="campo">
             <label htmlFor="destinoPrincipal">Destino Principal:</label>
             <input 
@@ -109,7 +107,6 @@ function CrearViaje() {
                 className="entradatexto" 
             />
           </div>
-
           <div className="campo">
             <label htmlFor="foto">Foto de Portada (URL):</label>
             <input 
@@ -122,7 +119,6 @@ function CrearViaje() {
             />
             <small className="textoayuda">Copia y pega el enlace de una imagen de Google.</small>
           </div>
-
           <div className="filafechas">
               <div className="campo mitad">
                 <label htmlFor="fechalnicial">Fecha Ida:</label>
@@ -147,7 +143,6 @@ function CrearViaje() {
                 />
               </div>
           </div>
-
           <div className="campo">
             <label htmlFor="descripcion">Descripción:</label>
             <textarea 
@@ -158,12 +153,10 @@ function CrearViaje() {
                 className="entradatexto areatexto"
             ></textarea>
           </div>
-
           {error && <div className="mensajeerror">{error}</div>}
           <button type="submit" className="botonguardar" disabled={cargando}>
             {cargando ? 'Guardando...' : 'Crear Viaje'}
           </button>
-          
         </form>
       </div>
     </div>
