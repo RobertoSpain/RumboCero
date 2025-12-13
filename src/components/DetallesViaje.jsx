@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { doc, getDoc, collection, addDoc, onSnapshot, query, orderBy, Timestamp, deleteDoc, updateDoc } from 'firebase/firestore';
+import { doc, getDoc, collection, addDoc, onSnapshot, query, orderBy, Timestamp, deleteDoc, updateDoc, arrayUnion, getDocs, where } from 'firebase/firestore';
 import { db } from '../firebase.js'; 
 import '../assets/DetallesViaje.css'; 
 
@@ -62,7 +62,33 @@ export default function DetalleViaje() {
     cargarClima();
   }, [viaje]);
 
-  // Agenda
+  // --- INVITAR AMIGO ---
+  const invitarAmigo = async () => {
+    const emailAmigo = prompt("Introduce el email de tu amigo (debe estar registrado):");
+    if (!emailAmigo) return;
+    
+    try {
+        const usuariosRef = collection(db, 'usuarios');
+        const q = query(usuariosRef, where('email', '==', emailAmigo));
+        const querySnapshot = await getDocs(q);
+        if (querySnapshot.empty) {
+            alert("❌ Error: No existe ningún usuario con ese correo.");
+            return;
+        }
+
+        const uidAmigo = querySnapshot.docs[0].id;
+        const viajeRef = doc(db, 'viajes', id);
+        await updateDoc(viajeRef, {
+            participantes: arrayUnion(uidAmigo)
+        });
+
+        alert(`✅ ¡Listo! ${emailAmigo} añadido al equipo.`);
+    } catch (error) {
+        console.error("Error al invitar:", error);
+        alert("Hubo un error al procesar la invitación.");
+    }
+  };
+  // --- AGENDA ---
   const agregarEvento = async (e) => {
     e.preventDefault();
     if (!nuevoEvento.titulo || !nuevoEvento.fecha) return;
@@ -76,20 +102,16 @@ export default function DetalleViaje() {
     } catch (err) { console.error(err); alert("Error al guardar"); }
   };
   const borrarEvento = async (idEv) => { if(confirm("¿Eliminar evento?")) await deleteDoc(doc(db, 'viajes', id, 'eventos', idEv)); };
-
-  // Destinos
+  // --- DESTINOS ---
   const agregarDestino = async (e) => { e.preventDefault(); if(!nuevoDestino) return; await addDoc(collection(db,'viajes',id,'destinos'),{nombre:nuevoDestino,categoria,foto:fotoDestino,visitado:false,createAt:Timestamp.now()}); setNuevoDestino(''); setFotoDestino(''); };
   const borrarDestino = async (idD) => { if(confirm("¿Borrar?")) await deleteDoc(doc(db,'viajes',id,'destinos',idD)); };
   const toggleVisitado = async (d) => updateDoc(doc(db,'viajes',id,'destinos',d.id),{visitado:!d.visitado});
-  // Maleta
+  // --- MALETA ---
   const agregarItem = async (e) => { e.preventDefault(); if(!nuevoItemMaleta) return; await addDoc(collection(db,'viajes',id,'checklist'),{nombre:nuevoItemMaleta,preparado:false,createAt:Timestamp.now()}); setNuevoItemMaleta(''); };
   const borrarItem = async (idI) => deleteDoc(doc(db,'viajes',id,'checklist',idI));
   const togglePreparado = async (i) => updateDoc(doc(db,'viajes',id,'checklist',i.id),{preparado:!i.preparado});
-
   const getIconoClima = (c) => c===0?'☀️':c<45?'⛅':c<80?'🌧️':'⛈️';
-  
   if (loading || !viaje) return <div className="paginacentrada">Cargando...</div>;
-  
   const inicio = viaje.fechalnicial?.toDate ? viaje.fechalnicial.toDate().toLocaleDateString() : '--';
   const fin = viaje.fechaFinal?.toDate ? viaje.fechaFinal.toDate().toLocaleDateString() : '--';
 
@@ -100,11 +122,26 @@ export default function DetalleViaje() {
         <div className="contenidohero">
             <h1 className="titulohero">{viaje.name}</h1>
             <p className="subtitulohero">📍 {viaje.destinoPrincipal}</p>
+            <button 
+                onClick={invitarAmigo} 
+                style={{
+                    marginTop: '15px', 
+                    padding: '8px 16px', 
+                    background: 'rgba(255,255,255,0.25)', 
+                    border: '1px solid white', 
+                    color: 'white', 
+                    borderRadius: '20px', 
+                    cursor: 'pointer',
+                    fontWeight: 'bold',
+                    backdropFilter: 'blur(4px)'
+                }}
+            >
+                ➕ Invitar Amigos
+            </button>
         </div>
       </div>
-
       <div className="contenedorprincipal">
-  {/* --- CARRUSEL DE FOTOS --- */}
+        {/* --- CARRUSEL DE FOTOS --- */}
         {destinos.some(d => d.foto) && (
             <div className="seccion-galeria">
                 <h3 className="titulo-galeria">📸 Galería del Viaje</h3>
@@ -126,6 +163,7 @@ export default function DetalleViaje() {
                 </div>
             </div>
         )}
+        
         <div className="rejillainfo">
           <div className="columnaizquierda">
             {/* TARJETA 1: PLAN */}
@@ -138,7 +176,6 @@ export default function DetalleViaje() {
               </div>
               <p className="cajadescripcion">"{viaje.descripcion || 'Sin notas.'}"</p>
             </div>
-            
             {/* TARJETA 2: AGENDA */}
             <div className="tarjeta">
                 <div className="titulotarjeta"><span className="iconotarjeta">📆</span> Agenda</div>
@@ -167,7 +204,6 @@ export default function DetalleViaje() {
                    </div>
                 </form>
             </div>
-
             {/* TARJETA 3: DESTINOS */}
             <div className="tarjeta">
               <div className="titulotarjeta"><span className="iconotarjeta">🏙️</span> Sitios</div> 
@@ -200,7 +236,6 @@ export default function DetalleViaje() {
               </form>
             </div>
           </div>
-
           <div className="columnaderecha">
               {/* CLIMA */}
               <div className="tarjeta tarjetaclima">
@@ -213,7 +248,6 @@ export default function DetalleViaje() {
                     </div>
                   ) : <div className="cargandoclima">Cargando...</div>}
               </div>
-              
               {/* MALETA */}
               <div className="tarjeta">
                 <div className="titulotarjeta">

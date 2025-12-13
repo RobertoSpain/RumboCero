@@ -50,18 +50,19 @@ function CrearViaje() {
       return;
     }
 
-    try {
+  try {
       await addDoc(collection(db, "viajes"), {
         name: name,
         destinoPrincipal: destinoPrincipal,
         fechalnicial: Timestamp.fromDate(inicio), 
         fechaFinal: Timestamp.fromDate(fin),
         descripcion: descripcion,
-        foto: foto, 
-        userId: userId, 
+        foto: foto,
+        participantes: [userId], 
+        owner: userId, 
         createAt: Timestamp.now() 
       });
-      navegar('/viajes'); 
+      navegar('/viajes');
     } catch (err) {
       console.error(err);
       setError("Error al guardar: " + err.message);

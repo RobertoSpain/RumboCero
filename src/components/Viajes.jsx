@@ -21,7 +21,7 @@ const Viajes = () => {
   useEffect(() => {
     if (!miUid) return;
     const viajesRef = collection(db, 'viajes');
-    const q = query(viajesRef, where('userId', '==', miUid));
+    const q = query(viajesRef, where('participantes', 'array-contains', miUid));
     const unsubscribeDatos = onSnapshot(q, (snapshot) => {
       const listaViajes = snapshot.docs.map((doc) => {
         const data = doc.data();
@@ -46,13 +46,12 @@ const Viajes = () => {
   };
 
   if (loading) return <div className="viajes-page cargando-contenedor">Cargando aventuras...</div>;
-
   if (viajes.length === 0) {
     return (
       <div className="viajes-page">
         <div className="estado">
             <h2 className="estado-titulo">🧳 ¡Maletas Vacías!</h2>
-            <p className="estado-texto">Aún no tienes viajes planificados.</p>
+            <p className="estado-texto">Aún no tienes viajes planificados (ni compartidos contigo).</p>
             <Link to="/crear-viaje" className="btn-ver btn-solido">
               + Crear Primer Viaje
             </Link>
@@ -69,7 +68,6 @@ const Viajes = () => {
       <div className="viajes-grid">
         {viajes.map((viaje) => (
           <div key={viaje.id} className="viaje-card">
-            
             {/* FOTO */}
             <div className="contenedorimg">
                 {viaje.foto ? (
