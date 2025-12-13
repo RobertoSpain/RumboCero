@@ -1,30 +1,43 @@
-import { Link } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import '../assets/Landing.css'; 
 
 export default function Landing() {
-  return (
-    <section className="page-center"> 
-      <div className="landing-wrap"> 
+  const navigate = useNavigate();
 
-        <h1 className="landing-title">
-          Planifica tu próximo viaje con <span style={{ color: 'var(--accent)' }}>Rumbo Cero</span>
+  useEffect(() => {
+    const usuarioGuardado = localStorage.getItem('usuario');
+    if (usuarioGuardado) {
+      navigate('/viajes');
+    }
+  }, [navigate]);
+
+  return (
+    <div className="paginalanding">
+      {/* El velo oscuro para que se lea */}
+      <div className="filtrooscuro"></div>
+
+      <div className="cajacentral">
+        
+        <h1 className="titulazo">
+          Viaja mejor acompañado: planifica, organiza y comparte con <span className="resalteverde">Rumbo Cero</span>
         </h1>
-        <p className="landing-sub">
-          Organiza destinos, gestiona tu equipaje con checklists y comparte tus experiencias en el mini-foro.
-          ¡Tu aventura comienza aquí!
+        
+        <p className="parrafolanding">
+          Crea itinerarios colaborativos con tus amigos, gestiona listas de equipaje conjuntas y conecta con la comunidad en nuestro foro.
+          <br />¡Vuestra próxima gran aventura comienza aquí!
         </p>
 
-        {/* Contenedor de acciones */}
-        <div className="form-actions" style={{ marginTop: 'var(--gap)' }}>
-          <Link to="/login" className="btn btn-primary">
+        <div className="zonabotones">
+          <Link to="/login" className="botonlanding botonazul">
             Comienza a Planificar
           </Link>
           
-          {/* Opción de Registro */}
-          <Link to="/registro" className="btn btn-ghost">
+          <Link to="/registro" className="botonlanding botontransparente">
             Crear Cuenta
           </Link>
         </div>
       </div>
-    </section>
+    </div>
   );
 }
