@@ -1,210 +1,182 @@
-/* --- VARIABLES Y ESTRUCTURA --- */
-:root {
-  --admin-bg: #f3f4f6;
-  --admin-card-bg: #ffffff;
-  --color-danger: #ef4444; 
-  --color-danger-hover: #dc2626;
-  --color-accent: #3b82f6; 
-  --color-success: #10b981; 
-  --shadow-soft: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.025);
-  --radius: 16px;
-}
-
+/* --- CONTENEDOR PRINCIPAL --- */
 .admin-contenedor {
-  padding: 40px 20px;
   max-width: 1000px;
   margin: 0 auto;
-  min-height: 100vh;
-  background-color: var(--admin-bg);
-  font-family: 'Inter', system-ui, sans-serif;
-}
-
-/* --- HEADER  --- */
-.titulo-grande {
-  font-size: 2.5rem;
-  font-weight: 800;
+  padding: 40px 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   color: #1f2937;
+}
+
+.titulo-grande {
+  text-align: center;
+  font-size: 2.5rem;
   margin-bottom: 30px;
-  position: relative;
-  display: inline-block;
+  color: #111827;
 }
 
-/* La barrita de colores debajo del título */
-.titulo-grande::after {
-  content: '';
-  display: block;
-  width: 60px;
-  height: 6px;
-  background: linear-gradient(90deg, var(--color-danger), orange);
-  border-radius: 10px;
-  margin-top: 5px;
-}
-
+/* --- ZONA DE PESTAÑAS  --- */
 .zonatabs {
   display: flex;
-  gap: 15px;
-  margin-bottom: 25px;
-  background: white;
-  padding: 10px;
-  border-radius: 50px; 
-  width: fit-content;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 30px;
+  border-bottom: 2px solid #e5e7eb;
 }
 
 .boton-pes {
-  padding: 10px 24px;
+  background: none;
   border: none;
-  background: transparent;
-  font-size: 1rem;
+  font-size: 1.1rem;
   font-weight: 600;
-  color: #6b7280;
+  padding: 10px 20px;
   cursor: pointer;
-  border-radius: 30px;
+  color: #6b7280; 
+  border-bottom: 3px solid transparent;
   transition: all 0.3s ease;
 }
 
 .boton-pes:hover {
-  color: #111827;
-  background-color: #f3f4f6;
+  color: #3b82f6;
 }
 
-/* Estado Activo de la Pestaña */
+/* Estado Activo ) */
 .boton-pes.activa {
-  background-color: #1f2937; 
-  color: white;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-  transform: translateY(-1px);
+  color: #3b82f6; /* Azul */
+  border-bottom: 3px solid #3b82f6;
 }
 
-/* --- CAJA PRINCIPAL  --- */
+/* --- CAJA DEL CONTENIDO --- */
 .cajaprincipal {
-  background: var(--admin-card-bg);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow-soft);
+  background: white;
+  border-radius: 12px;
   padding: 30px;
-  border: 1px solid rgba(0,0,0,0.05);
-  animation: fadeIn 0.4s ease-in-out;
-  min-height: 300px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  border: 1px solid #f3f4f6;
+  min-height: 400px;
+}
+
+.estado-carga {
+  text-align: center;
+  font-size: 1.2rem;
+  margin-top: 50px;
+  color: #6b7280;
 }
 
 .titulolista {
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: #374151;
-  margin-bottom: 20px;
-  padding-bottom: 10px;
-  border-bottom: 2px solid #f3f4f6;
   margin-top: 0;
+  border-bottom: 1px solid #e5e7eb;
+  padding-bottom: 15px;
+  margin-bottom: 20px;
+  font-size: 1.5rem;
 }
 
-/* --- LISTAS (ITEMS) --- */
+.texto-vacio {
+  text-align: center;
+  color: #9ca3af;
+  font-style: italic;
+  margin-top: 40px;
+}
+
+/* --- FILAS DE DATOS  --- */
 .filadato {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 16px;
-  border-radius: 12px;
-  margin-bottom: 10px;
-  background-color: #fff;
-  border: 1px solid #e5e7eb;
-  transition: all 0.2s ease;
+  padding: 15px 0;
+  border-bottom: 1px solid #f3f4f6;
 }
 
-.filadato:hover {
-  border-color: #d1d5db;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-  transform: translateX(4px); 
+.filadato:last-child {
+  border-bottom: none;
 }
 
 .columnainfo h4 {
   margin: 0;
-  font-size: 1.05rem;
+  font-size: 1.1rem;
   color: #111827;
-  font-weight: 700;
 }
 
 .columnainfo p {
-  margin: 4px 0 0 0;
-  font-size: 0.9rem;
+  margin: 5px 0 0 0;
   color: #6b7280;
+  font-size: 0.9rem;
 }
 
-/* Etiquetas de Rol */
+/* --- ETIQUETAS DE ROL --- */
+.contenedor-rol {
+  margin-top: 8px;
+}
+
 .etiqueta {
-  display: inline-block;
-  padding: 2px 8px;
-  border-radius: 4px;
-  font-size: 0.75rem;
-  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: bold;
   text-transform: uppercase;
-  margin-left: 0; 
+  letter-spacing: 0.5px;
 }
 
-.tipo-jefe { 
-  background-color: #fee2e2; 
-  color: #b91c1c; 
-}
-
-.tipo-normal { 
+.tipo-jefe {
   background-color: #dbeafe; 
   color: #1e40af; 
 }
 
-/* --- BOTONES DE ACCIÓN --- */
+.tipo-normal {
+  background-color: #f3f4f6; 
+  color: #374151; 
+}
+
+/* --- BOTONES DE ACCIÓN  --- */
 .boton-mini {
   padding: 8px 16px;
   border: none;
-  border-radius: 8px;
-  font-size: 0.85rem;
+  border-radius: 6px;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.2s, transform 0.1s;
+  font-size: 0.9rem;
+  transition: transform 0.2s, opacity 0.2s;
 }
 
-.boton-mini:active { transform: scale(0.95); }
-
-/* Botón Rojo  */
-.boton-mini.rojo {
-  background-color: white;
-  color: var(--color-danger);
-  border: 1px solid var(--color-danger);
+.boton-mini:hover {
+  opacity: 0.9;
+  transform: scale(1.05);
 }
-.boton-mini.rojo:hover {
-  background-color: var(--color-danger);
+
+.rojo {
+  background-color: #ef4444;
   color: white;
 }
 
-/* Botón Azul */
-.boton-mini.azul {
-  background-color: #1f2937; 
+.azul {
+  background-color: #3b82f6;
   color: white;
-  border: 1px solid #1f2937;
-}
-.boton-mini.azul:hover {
-  background-color: black;
-  border-color: black;
 }
 
-/* Animación de entrada suave */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
+/* --- RESPONSIVE  --- */
+@media (max-width: 600px) {
+  .filadato {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
 
-/* --- CLASES UTILITARIAS (Para limpiar JSX) --- */
-.estado-carga {
-  text-align: center;
-  padding: 50px;
-  color: #666;
-  font-size: 1.1rem;
-}
+  .boton-mini {
+    width: 100%; 
+  }
 
-.texto-vacio {
-  color: #9ca3af;
-  font-style: italic;
-  margin-top: 10px;
-}
-
-.contenedor-rol {
-  margin-top: 6px;
+  .zonatabs {
+    flex-direction: column;
+    gap: 0;
+  }
+  
+  .boton-pes {
+    width: 100%;
+    text-align: center;
+    border-bottom: 1px solid #e5e7eb;
+  }
+  
+  .boton-pes.activa {
+    border-bottom: 3px solid #3b82f6;
+    background-color: #eff6ff;
+  }
 }

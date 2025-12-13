@@ -131,14 +131,12 @@
 .boton-nuevo:hover {
   background-color: #2563eb;
 }
-
-/* --- NUEVOS ESTILOS DE ADMIN (CENSURAR Y BORRAR) --- */
 .acciones-admin {
   display: flex;
   gap: 10px;
 }
 
-/* Botón Censurar (Naranja Advertencia) */
+/* Botón Censurar  */
 .boton-censurar {
   background-color: #f59e0b; 
   color: white;
@@ -155,7 +153,7 @@
   background-color: #d97706;
 }
 
-/* Botón Borrar (Rojo Peligro) */
+/* Botón Borrar  */
 .boton-borrar {
   background-color: #ef4444;
   color: white;
@@ -285,7 +283,7 @@
   display: block; 
 }
 
-/* --- RESPONSIVE (MÓVIL) --- */
+/* --- RESPONSIVE  --- */
 @media (max-width: 600px) {
   .pietarjeta {
       flex-direction: column;
@@ -295,6 +293,6 @@
   
   .acciones-admin {
       width: 100%;
-      justify-content: flex-end; /* Alinea botones a la derecha en móvil */
+      justify-content: flex-end; 
   }
 }
