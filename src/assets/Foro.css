@@ -5,6 +5,7 @@
   padding: 40px 20px;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
+
 /* --- CABECERA --- */
 .cabeceraforo {
   max-width: 800px;
@@ -25,6 +26,7 @@
   gap: 10px;
   font-weight: 800;
 }
+
 /* --- LISTA DE TEMAS  --- */
 .lista-temas {
   max-width: 800px;
@@ -33,6 +35,7 @@
   flex-direction: column;
   gap: 20px;
 }
+
 /* --- TARJETA INDIVIDUAL --- */
 .tarjeta-tema {
   background: white;
@@ -62,6 +65,7 @@
   margin: 0;
   font-weight: 700;
 }
+
 /* Datos meta */
 .datostema {
   font-size: 0.85rem;
@@ -79,6 +83,7 @@
   padding: 2px 8px;
   border-radius: 4px;
 }
+
 /* Texto del mensaje */
 .texto {
   color: #4b5563;
@@ -86,6 +91,7 @@
   white-space: pre-wrap; 
   margin-bottom: 20px;
 }
+
 /* Pie de tarjeta  */
 .pietarjeta {
   padding-top: 15px;
@@ -110,7 +116,7 @@
   color: #1d4ed8;
 }
 
-/* --- BOTONES --- */
+/* --- BOTONES GENERALES --- */
 .boton-nuevo {
   background-color: #3b82f6;
   color: white;
@@ -125,10 +131,34 @@
 .boton-nuevo:hover {
   background-color: #2563eb;
 }
-/* Botón Borrar (Rojo) */
+
+/* --- NUEVOS ESTILOS DE ADMIN (CENSURAR Y BORRAR) --- */
+.acciones-admin {
+  display: flex;
+  gap: 10px;
+}
+
+/* Botón Censurar (Naranja Advertencia) */
+.boton-censurar {
+  background-color: #f59e0b; 
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: background 0.2s;
+}
+
+.boton-censurar:hover {
+  background-color: #d97706;
+}
+
+/* Botón Borrar (Rojo Peligro) */
 .boton-borrar {
-  background-color: #fee2e2;
-  color: #ef4444;
+  background-color: #ef4444;
+  color: white;
   border: none;
   padding: 6px 12px;
   border-radius: 6px;
@@ -139,9 +169,10 @@
 }
 
 .boton-borrar:hover {
-  background-color: #fecaca;
+  background-color: #dc2626;
 }
-/* Botón Borrar/Cancelar  */
+
+/* --- ESTILOS DE CREAR POST --- */
 .botonborrarpost {
   background-color: #f3f4f6;
   color: #4b5563;
@@ -156,7 +187,7 @@
   background-color: #e5e7eb;
   color: #111827;
 }
-/* --- ESTILOS ESPECÍFICOS DE CREAR POST --- */
+
 .crearpost {
   max-width: 600px;
   margin: 0 auto;
@@ -186,6 +217,7 @@
   border-color: #3b82f6;
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
+
 /* Botón Publicar  */
 .botonpublicar {
   flex: 2; 
@@ -225,7 +257,6 @@
 .con-respuestas { color: #3b82f6; }
 .sin-respuestas { color: #9ca3af; }
 
-/* --- ESTILOS CREAR POST  --- */
 .titulo-crear {
   margin-top: 0;
   color: #111827;
@@ -252,4 +283,18 @@
   text-decoration: none;
   text-align: center;
   display: block; 
+}
+
+/* --- RESPONSIVE (MÓVIL) --- */
+@media (max-width: 600px) {
+  .pietarjeta {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 15px;
+  }
+  
+  .acciones-admin {
+      width: 100%;
+      justify-content: flex-end; /* Alinea botones a la derecha en móvil */
+  }
 }

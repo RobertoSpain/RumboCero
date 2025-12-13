@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { db, auth } from '../firebase.js'; 
-import { collection, onSnapshot, query, orderBy, deleteDoc, doc, getDocs } from 'firebase/firestore';
+import { collection, onSnapshot, query, orderBy, doc, getDocs, updateDoc, deleteDoc } from 'firebase/firestore';
 import '../assets/Foro.css'; 
 
 export default function Foro() {
@@ -10,7 +10,7 @@ export default function Foro() {
   const [esAdmin, setEsAdmin] = useState(false);
 
   useEffect(() => {
-    // 1. Verificar Admin
+    // 1. Verificar si es Admin
     const checkAdmin = () => {
       const user = auth.currentUser;
       const rolGuardado = localStorage.getItem('rol');
@@ -20,7 +20,7 @@ export default function Foro() {
     };
     checkAdmin();
 
-    // 2. Cargar posts y contar respuestas
+    // 2. Cargar posts
     const postsRef = collection(db, 'foro');
     const q = query(postsRef, orderBy('createAt', 'desc'));
 
@@ -28,7 +28,6 @@ export default function Foro() {
       const postsData = await Promise.all(snapshot.docs.map(async (documento) => {
         const data = documento.data();
         const id = documento.id;
-        // Contamos las respuestas de la subcolección
         const comentariosRef = collection(db, 'foro', id, 'comentarios');
         const comentariosSnap = await getDocs(comentariosRef);
         return {
@@ -45,8 +44,26 @@ export default function Foro() {
     return () => unsubscribe();
   }, []);
 
+  // --- OPCIÓN A: CENSURAR  ---
+  const censurarPost = async (id) => {
+    if (window.confirm("⚠️ ¿Censurar este mensaje? Se cambiará el texto por un aviso.")) {
+        try {
+            const postRef = doc(db, 'foro', id);
+            await updateDoc(postRef, {
+                titulo: "⛔ TEMA ELIMINADO",
+                contenido: "Este mensaje ha sido eliminado por un administrador por incumplir las normas.",
+                autor: "Administrador",
+                respuestas: 0 
+            });
+        } catch (err) {
+            console.error(err);
+            alert("Error al censurar");
+        }
+    }
+  };
+  // --- OPCIÓN B: BORRAR  ---
   const borrarPost = async (id) => {
-    if(window.confirm("👮‍♂️ ADMIN: ¿Borrar este mensaje y sus respuestas?")) {
+    if (window.confirm("🗑️ ¿Borrar DEFINITIVAMENTE este post? Desaparecerá para siempre.")) {
         try {
             await deleteDoc(doc(db, 'foro', id));
         } catch (err) {
@@ -55,22 +72,17 @@ export default function Foro() {
         }
     }
   };
-
   if (loading) return <div className="foro cargando">Cargando comunidad...</div>;
 
   return (
-    // Usamos 'foro' como clase principal para compartir fondo con CrearPost
     <div className="foro">
       
-      {/* Cabecera con título y botón */}
       <div className="cabeceraforo">
         <h2 className="tituloseccion">💬 Mini-Foro</h2>
         <Link to="/crear-post" className="boton-nuevo">
           + Nuevo Tema
         </Link>
       </div>
-
-      {/* Lista de tarjetas */}
       <div className="lista-temas">
         {posts.length === 0 ? (
           <div className="cajavacia">
@@ -89,21 +101,25 @@ export default function Foro() {
                         <span>• {post.fecha}</span>
                     </div>
                 </div>
-                {/* Contador de respuestas */}
                 <div className={`contador-respuestas ${post.respuestas > 0 ? 'con-respuestas' : 'sin-respuestas'}`}>
                     {post.respuestas} {post.respuestas === 1 ? 'respuesta' : 'respuestas'}
                 </div>
               </div>
 
-              <p className="texto">{post.contenido}</p>
+              <p className="texto">{post.contenido}</p> 
               <div className="pietarjeta">
                   <Link to={`/foro/${post.id}`} className="enlace-responder">
                       💬 Responder / Ver Hilo ({post.respuestas})
                   </Link>
                   {esAdmin && (
-                    <button onClick={() => borrarPost(post.id)} className="boton-borrar">
-                        🗑️ Eliminar
-                    </button>
+                    <div className="acciones-admin">
+                        <button onClick={() => censurarPost(post.id)} className="boton-censurar">
+                            🚨 Censurar
+                        </button>
+                        <button onClick={() => borrarPost(post.id)} className="boton-borrar">
+                            🗑️ Borrar
+                        </button>
+                    </div>
                   )}
               </div>
 
