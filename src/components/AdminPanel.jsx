@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-// IMPORTANTE: Hemos añadido 'addDoc' y 'serverTimestamp' para las notificaciones
 import { collection, getDocs, deleteDoc, updateDoc, doc, addDoc, serverTimestamp } from 'firebase/firestore'; 
 import { db } from '../firebase'; 
 import '../assets/AdminPanel.css'; 
@@ -9,22 +8,20 @@ export default function AdminPanel() {
     const [viajes, setViajes] = useState([]);
     const [usuarios, setUsuarios] = useState([]);
     const [cargando, setCargando] = useState(true);
-
     // --- 1. CARGA DE DATOS ---
     const cargarDatos = async () => {
         setCargando(true);
         try {
+            // Cargar Viajes
             const viajesRef = collection(db, 'viajes');
             const viajesSnap = await getDocs(viajesRef);
-            const listaViajes = viajesSnap.docs.map(d => ({ id: d.id, ...d.data() }));
-            setViajes(listaViajes);
+            setViajes(viajesSnap.docs.map(d => ({ id: d.id, ...d.data() })));
+            // Cargar Usuarios
             const usuariosRef = collection(db, 'usuarios');
             const usuariosSnap = await getDocs(usuariosRef);
-            const listaUsuarios = usuariosSnap.docs.map(d => ({ id: d.id, ...d.data() }));
-            setUsuarios(listaUsuarios);
+            setUsuarios(usuariosSnap.docs.map(d => ({ id: d.id, ...d.data() })));
         } catch (error) {
             console.error("Error cargando datos:", error);
-            alert("Error al cargar datos");
         } finally {
             setCargando(false);
         }
@@ -32,137 +29,132 @@ export default function AdminPanel() {
     useEffect(() => {
         cargarDatos();
     }, []);
-
     // --- 2. FUNCIONES DE ACCIÓN ---
-    // A) BORRAR VIAJE CON NOTIFICACIÓN 
     const borrarViaje = async (viaje) => {
-        // 1. Pedimos el motivo 
         const motivo = prompt(`¿Por qué eliminas el viaje "${viaje.name}"?`, "Contenido inapropiado");
         if (!motivo) return; 
-
         try {
-            // 2. CREAMOS LA NOTIFICACIÓN PARA EL USUARIO
             const idAvisar = viaje.userId || (viaje.participantes && viaje.participantes[0]);
             if (idAvisar) {
                 await addDoc(collection(db, "notificaciones"), {
                     uidUsuario: idAvisar,
-                    mensaje: `Tu viaje "${viaje.name}" ha sido eliminado por administración. Motivo: ${motivo}`,
+                    mensaje: `Tu viaje "${viaje.name}" eliminado. Motivo: ${motivo}`,
                     leido: false,
                     fecha: serverTimestamp()
                 });
             }
-            // 3. BORRAMOS EL VIAJE DE LA BASE DE DATOS
             await deleteDoc(doc(db, "viajes", viaje.id));
-            // 4. Actualizamos la pantalla sin recargar
             setViajes(viajes.filter(v => v.id !== viaje.id));
-            alert("✅ Viaje eliminado y usuario notificado.");
+            alert("✅ Viaje eliminado y aviso enviado.");
         } catch (error) {
-            console.error("Error admin:", error);
-            alert("❌ Error al borrar el viaje");
+            console.error(error);
+            alert("Error al borrar viaje.");
         }
     };
 
-    // B) CAMBIAR ROL DE USUARIO
-    const cambiarRol = async (idUsuario, rolActual, nombreUsuario) => {
-        const nuevoRol = rolActual === 'administrador' ? 'usuario' : 'administrador';
-        const mensaje = rolActual === 'administrador' 
-            ? `¿Quitar permisos de admin a ${nombreUsuario}?`
-            : `¿Hacer ADMINISTRADOR a ${nombreUsuario}?`;
-        
-        if (window.confirm(mensaje)) {
+    // B) CAMBIAR ROL
+    const cambiarRol = async (usuario) => {
+        const nuevoRol = usuario.rol === 'administrador' ? 'usuario' : 'administrador';
+        if (window.confirm(`¿Cambiar rol de ${usuario.nombre} a ${nuevoRol}?`)) {
             try {
-                await updateDoc(doc(db, 'usuarios', idUsuario), { rol: nuevoRol });
-                setUsuarios(usuarios.map(u => 
-                    u.id === idUsuario ? { ...u, rol: nuevoRol } : u
+                await updateDoc(doc(db, 'usuarios', usuario.id), { rol: nuevoRol });
+                setUsuarios(usuarios.map(u => u.id === usuario.id ? { ...u, rol: nuevoRol } : u));
+            } catch (error) { console.error(error); }
+        }
+    };
+
+    const cambiarBaneo = async (usuario) => {
+        const nuevoEstado = !usuario.baneado; 
+        const accion = nuevoEstado ? "BANEAR 🚫" : "DESBANEAR 😇";
+        if (window.confirm(`¿Seguro que quieres ${accion} a ${usuario.nombre}?`)) {
+            try {
+                await updateDoc(doc(db, 'usuarios', usuario.id), { baneado: nuevoEstado });
+                    setUsuarios(usuarios.map(u => 
+                    u.id === usuario.id ? { ...u, baneado: nuevoEstado } : u
                 ));
-            } catch (error) { 
-                console.error(error); 
-                alert("Error al cambiar rol"); 
+            } catch (error) {
+                console.error(error);
+                alert("Error al cambiar estado de baneo.");
             }
         }
     };
-
     // --- 3. RENDERIZADO ---
     return (
         <div className="admin-contenedor">
             <h1 className="titulo-grande">Panel de Administración</h1>    
-            {/* ACCESIBILIDAD: role="tablist" indica que esto es un menú de pestañas */}
             <div className="zonatabs" role="tablist">
                 <button 
                     onClick={() => setTabActiva('viajes')}
                     className={`boton-pes ${tabActiva === 'viajes' ? 'activa' : ''}`}
-                    role="tab"
-                    aria-selected={tabActiva === 'viajes'}
-                    aria-controls="panel-viajes">
-                    ✈️ Gestión de Viajes
+                    role="tab">
+                    ✈️ Viajes
                 </button>
                 <button 
                     onClick={() => setTabActiva('usuarios')}
                     className={`boton-pes ${tabActiva === 'usuarios' ? 'activa' : ''}`}
-                    role="tab"
-                    aria-selected={tabActiva === 'usuarios'}
-                    aria-controls="panel-usuarios" >
-                    👥 Gestión de Usuarios
+                    role="tab">
+                    👥 Usuarios
                 </button>
             </div>
             {cargando ? (
-                <div className="estado-carga" role="status">Cargando datos... ⏳</div> 
+                <div className="estado-carga">Cargando...</div> 
             ) : (
                 <div className="cajaprincipal">
-                                        {tabActiva === 'viajes' && (
-                        <div id="panel-viajes" role="tabpanel">
-                            <h2 className="titulolista">Listado de Viajes ({viajes.length})</h2>
-                            {viajes.length === 0 && <p className="texto-vacio">No hay viajes creados.</p>}          
+                    {/* LISTA DE VIAJES */}
+                    {tabActiva === 'viajes' && (
+                        <div>
+                            <h2 className="titulolista">Viajes ({viajes.length})</h2>     
                             {viajes.map(viaje => (
                                 <div key={viaje.id} className="filadato">
                                     <div className="columnainfo">
-                                        <h4>{viaje.name}</h4>
-                                        <p><span aria-hidden="true">📍</span> {viaje.destinoPrincipal}</p>
+                                    <h4>{viaje.name}</h4>
+                                    <p>📍 {viaje.destinoPrincipal}</p>
+                                </div>
+                            <button 
+                                    onClick={() => borrarViaje(viaje)}
+                                    className="boton-mini rojo">
+                                    Eliminar
+                                 </button>
+                             </div>
+                         ))}
+                    </div>
+            )}
+                    {/* LISTA DE USUARIOS */}
+                    {tabActiva === 'usuarios' && (
+                        <div>
+                            <h2 className="titulolista">Usuarios ({usuarios.length})</h2>
+                            {usuarios.map(u => (
+                                <div key={u.id} className="filadato">
+                                    <div className="columnainfo">
+                                        <h4>
+                                            {u.nombre || 'Sin nombre'} 
+                                            {u.baneado && <span className="tag-baneado" style={{color:'red', marginLeft:'5px'}}>(BANEADO)</span>}
+                                        </h4>
+                                        <p>{u.email}</p>
+                                        <div className="contenedor-rol">
+                                            <span className={`etiqueta ${u.rol === 'administrador' ? 'tipo-jefe' : 'tipo-normal'}`}>
+                                                {u.rol || 'usuario'}
+                                            </span>
+                                        </div>
                                     </div>
-                                    <button 
-                                        onClick={() => borrarViaje(viaje)} 
-                                        className="boton-mini rojo"
-                                        aria-label={`Eliminar viaje a ${viaje.destinoPrincipal} creado por ${viaje.name}`}
-                                    >
-                                        Eliminar Viaje
+                                    <div className="botones-grupo">
+                                        <button 
+                                            onClick={() => cambiarRol(u)}
+                                            className="boton-mini azul">
+                                            {u.rol === 'administrador' ? '🔽 Rol' : '⭐ Rol'}
+                                        </button>
+                                        <button 
+                                            onClick={() => cambiarBaneo(u)}
+                                            className={`boton-mini ${u.baneado ? 'verde' : 'rojo'}`}>
+                                        {u.baneado ? '😇 Desbanear' : '🚫 Banear'}
                                     </button>
                                 </div>
-                            ))}
-                        </div>
-                    )}
-
-                    {/* --- VISTA DE USUARIOS --- */}
-                    {tabActiva === 'usuarios' && (
-                        <div id="panel-usuarios" role="tabpanel">
-                            <h2 className="titulolista">Listado de Usuarios ({usuarios.length})</h2>
-                            
-                            {usuarios.map(u => {
-                                const esAdmin = u.rol === 'administrador';
-                                return (
-                                    <div key={u.id} className="filadato">
-                                        <div className="columnainfo">
-                                            <h4>{u.nombre || 'Usuario sin nombre'}</h4>
-                                            <p>{u.email}</p>
-                                            <div className="contenedor-rol">
-                                                <span className={`etiqueta ${esAdmin ? 'tipo-jefe' : 'tipo-normal'}`}>
-                                                    {u.rol || 'usuario'}
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <button 
-                                            onClick={() => cambiarRol(u.id, u.rol, u.nombre)}
-                                            className="boton-mini azul"
-                                            title={esAdmin ? "Degradar a Usuario" : "Promover a Admin"}
-                                            aria-label={esAdmin ? `Quitar permisos de administrador a ${u.nombre}` : `Dar permisos de administrador a ${u.nombre}`}>
-                                            {esAdmin ? '🔽 Degradar' : '⭐ Hacer Admin'}
-                                        </button>
-                                    </div>
-                                );
-                            })}
-                        </div>
-                    )}
-                </div>
-            )}
-        </div>
+                             </div>
+                         ))}
+                    </div>
+                 )}
+            </div>
+         )}
+    </div>
     );
 }

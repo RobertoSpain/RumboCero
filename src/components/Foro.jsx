@@ -19,7 +19,6 @@ export default function Foro() {
       }
     };
     checkAdmin();
-
     // 2. Cargar posts
     const postsRef = collection(db, 'foro');
     const q = query(postsRef, orderBy('createAt', 'desc'));
@@ -40,7 +39,6 @@ export default function Foro() {
       setPosts(postsData);
       setLoading(false);
     });
-
     return () => unsubscribe();
   }, []);
 

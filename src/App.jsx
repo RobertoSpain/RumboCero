@@ -3,7 +3,7 @@ import Landing from './components/Landing';
 import Login from './components/login';
 import Registro from './components/Registro';
 import Header from './components/Header';
-import { useState } from 'react';
+import { useState, useEffect } from 'react'; // AÑADIDO: useEffect
 import CrearViaje from './components/CrearViaje';
 import AdminPanel from './components/AdminPanel';
 import Viajes from './components/Viajes';
@@ -13,13 +13,16 @@ import CrearPost from './components/CrearPost';
 import DetalleForo from './components/DetalleForo';
 import Perfil from './components/Perfil';
 import Estadisticas from './components/Estadisticas';
+import { auth, db } from './firebase';
+import { onAuthStateChanged, signOut } from 'firebase/auth';
+import { doc, getDoc } from 'firebase/firestore';
 
 function App() {
   const [usuario, setUsuario] = useState(localStorage.getItem('usuario') || '');
   const [foto, setFoto] = useState(localStorage.getItem('fotoPerfil') || ''); 
   const [rol, setRol] = useState(localStorage.getItem('rol') || '');
 
-  // 2. MODIFICADO: Ahora aceptamos un tercer parámetro 'fotoUsuario'
+  // 2. Login
   const handleLogin = (nombre, rolUsuario, fotoUsuario) => {
     setUsuario(nombre);
     setRol(rolUsuario);
@@ -29,7 +32,7 @@ function App() {
     localStorage.setItem('fotoPerfil', fotoUsuario || ''); 
   };
 
-  // 3. MODIFICADO: Limpiamos también la foto al salir
+  // 3. Logout (Limpiar todo)
   const handleLogout = () => {
     setUsuario('');
     setRol('');
@@ -38,6 +41,29 @@ function App() {
     localStorage.removeItem('rol');
     localStorage.removeItem('fotoPerfil'); 
   };
+  // Vigila constantemente si el usuario conectado está baneado
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+      if (firebaseUser) {
+        try {
+          const docRef = doc(db, "usuarios", firebaseUser.uid);
+          const docSnap = await getDoc(docRef);
+
+          if (docSnap.exists()) {
+             if (docSnap.data().baneado === true) {
+                alert("⛔ SESIÓN CERRADA: Tu cuenta ha sido suspendida por administración.");
+                await signOut(auth); 
+                handleLogout();      
+                window.location.href = '/';
+             }
+          }
+        } catch (error) {
+          console.error("Error verificando seguridad:", error);
+        }
+      }
+    });
+    return () => unsubscribe();
+  }, []);
 
   return (
     <Router>
@@ -55,8 +81,7 @@ function App() {
         <Route path="/foro" element={usuario ? <Foro /> : <Navigate to="/login" replace />} />
         <Route path="/crear-post" element={usuario ? <CrearPost /> : <Navigate to="/login" replace />} />
         <Route path="/estadisticas" element={usuario ? <Estadisticas /> : <Navigate to="/login" replace />} />
-        {/* Protección extra para Admin */}
-        <Route path='/Admin-Panel' element={
+                <Route path='/Admin-Panel' element={
             usuario && rol === 'administrador' ? <AdminPanel /> : <Navigate to="/" replace />
         } />
         <Route path="*" element={<Navigate to="/" replace />} />

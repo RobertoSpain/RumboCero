@@ -22,14 +22,12 @@ function Login({ onLogin }) {
       }
       onLogin(userResult.displayName || userResult.email, rolUsuario, fotoUsuario);
       navegar('/viajes'); 
-
     } catch (err) {
-      console.error("Error al obtener rol:", err);
+      console.error(err); 
       onLogin(userResult.displayName || userResult.email, 'usuario', userResult.photoURL);
       navegar('/viajes'); 
     }
   };
-
   const manejarEnvio = async (e) => {
     e.preventDefault();
     if (usuario && contrasena) {
@@ -37,29 +35,28 @@ function Login({ onLogin }) {
         const result = await signInWithEmailAndPassword(auth, usuario, contrasena);
         await obtenerRolYRedirigir(result.user);
       } catch (err) {
-        console.log(err);
+        console.error(err);
         setError('Usuario o contraseña incorrectos');
       }
     } else {
       setError('Usuario y contraseña obligatorios');
     }
   };
-
   const manejarGoogle = async () => {
     const provider = new GoogleAuthProvider();
     try {
         const result = await signInWithPopup(auth, provider);
         await obtenerRolYRedirigir(result.user);
     } catch (err) {
-        console.log(err);
+        console.error(err);
         setError('Error al iniciar sesión con Google');
     }
   };
-
   return (
     <div className="paginalogin">
       <div className="cajalogin">
-        <h2 className="titulologin">Login</h2>
+        <h2 className="titulologin">Rumbo Cero</h2>
+        <p className="subtitulo-login">Inicia tu próxima aventura</p>
         <form onSubmit={manejarEnvio} className="formulariologin">
           <input
             type="text"
