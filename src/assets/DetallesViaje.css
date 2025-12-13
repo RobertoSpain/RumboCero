@@ -494,4 +494,53 @@
     width: 220px;
     height: 130px;
   }
+  /* ---  Invitaciones y Viajeros --- */
+.boton-invitar {
+  margin-top: 15px; 
+  padding: 8px 16px; 
+  background: rgba(255,255,255,0.25); 
+  border: 1px solid white; 
+  color: white; 
+  border-radius: 20px; 
+  cursor: pointer;
+  font-weight: bold;
+  backdrop-filter: blur(4px);
+  transition: background 0.3s ease;
 }
+
+.boton-invitar:hover {
+  background: rgba(255,255,255,0.4); 
+}
+
+.caja-viajeros {
+  margin-top: 15px; 
+  background: rgba(0,0,0,0.3); 
+  padding: 10px 20px; 
+  border-radius: 10px; 
+  backdrop-filter: blur(5px); 
+  display: inline-block;
+}
+
+.titulo-viajeros {
+  margin: 0 0 8px 0; 
+  font-size: 0.9rem; 
+  opacity: 0.9; 
+  font-weight: bold;
+  color: white; 
+}
+
+.lista-emails {
+  display: flex; 
+  flex-wrap: wrap; 
+  gap: 8px; 
+  justify-content: flex-start;
+}
+
+.badge-email {
+  background: rgba(255,255,255,0.2); 
+  padding: 4px 10px; 
+  border-radius: 15px; 
+  font-size: 0.85rem;
+  color: white;
+} 
+  }

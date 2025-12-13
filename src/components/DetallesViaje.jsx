@@ -18,7 +18,7 @@ export default function DetalleViaje() {
   const [clima, setClima] = useState(null);
   const [eventos, setEventos] = useState([]);
   const [nuevoEvento, setNuevoEvento] = useState({ titulo: '', fecha: '' });
-
+  const [listaAmigos, setListaAmigos] = useState([]); 
   // --- CARGA DE DATOS ---
   useEffect(() => {
     const obtenerViaje = async () => {
@@ -29,7 +29,6 @@ export default function DetalleViaje() {
       finally { setLoading(false); }
     };
     obtenerViaje();
-
     const qDest = query(collection(db, 'viajes', id, 'destinos'), orderBy('createAt', 'desc'));
     const unsubDest = onSnapshot(qDest, (s) => setDestinos(s.docs.map(d => ({ id: d.id, ...d.data() }))));
     const qCheck = query(collection(db, 'viajes', id, 'checklist'), orderBy('createAt', 'asc')); 
@@ -42,10 +41,27 @@ export default function DetalleViaje() {
             fechaJs: d.data().fecha?.toDate ? d.data().fecha.toDate() : new Date() 
         })));
     });
-
     return () => { unsubDest(); unsubCheck(); unsubEventos(); };
   }, [id]);
 
+  // --- CARGAR NOMBRES DE AMIGOS ---
+  useEffect(() => {
+    if (!viaje?.participantes) return; 
+    const cargarAmigos = async () => {
+        try {
+            const promesas = viaje.participantes.map(uid => getDoc(doc(db, 'usuarios', uid)));
+            const snapshots = await Promise.all(promesas);
+            const emails = snapshots.map(snap => {
+                if (snap.exists()) return snap.data().email;
+                return 'Usuario desconocido';
+            });
+            setListaAmigos(emails);
+        } catch (error) {
+            console.error("Error cargando amigos:", error);
+        }
+    };
+    cargarAmigos();
+  }, [viaje]);
   // --- CLIMA ---
   useEffect(() => {
     if (!viaje?.destinoPrincipal) return;
@@ -61,7 +77,6 @@ export default function DetalleViaje() {
     };
     cargarClima();
   }, [viaje]);
-
   // --- INVITAR AMIGO ---
   const invitarAmigo = async () => {
     const emailAmigo = prompt("Introduce el email de tu amigo (debe estar registrado):");
@@ -122,22 +137,23 @@ export default function DetalleViaje() {
         <div className="contenidohero">
             <h1 className="titulohero">{viaje.name}</h1>
             <p className="subtitulohero">📍 {viaje.destinoPrincipal}</p>
-            <button 
-                onClick={invitarAmigo} 
-                style={{
-                    marginTop: '15px', 
-                    padding: '8px 16px', 
-                    background: 'rgba(255,255,255,0.25)', 
-                    border: '1px solid white', 
-                    color: 'white', 
-                    borderRadius: '20px', 
-                    cursor: 'pointer',
-                    fontWeight: 'bold',
-                    backdropFilter: 'blur(4px)'
-                }}
-            >
+            {/* BOTÓN INVITAR LIMPIO */}
+            <button onClick={invitarAmigo} className="boton-invitar">
                 ➕ Invitar Amigos
             </button>
+            {/* LISTA DE VIAJEROS LIMPIA */}
+            {listaAmigos.length > 0 && (
+                <div className="caja-viajeros">
+                    <p className="titulo-viajeros">👥 Viajeros:</p>
+                    <div className="lista-emails">
+                        {listaAmigos.map((email, index) => (
+                            <span key={index} className="badge-email">
+                                {email}
+                            </span>
+                        ))}
+                    </div>
+                </div>
+            )}
         </div>
       </div>
       <div className="contenedorprincipal">
@@ -187,9 +203,7 @@ export default function DetalleViaje() {
                                 <div className="dia-mes">{ev.fechaJs.getDate()}/{ev.fechaJs.getMonth()+1}</div>
                                 <div className="hora-evento">{ev.fechaJs.getHours()}:{ev.fechaJs.getMinutes().toString().padStart(2,'0')}</div>
                             </div>
-                            <div className="titulo-evento">
-                                {ev.titulo}
-                            </div>
+                            <div className="titulo-evento">{ev.titulo}</div>
                             <button onClick={() => borrarEvento(ev.id)} className="botonbasura">×</button>
                         </div>
                     ))}
