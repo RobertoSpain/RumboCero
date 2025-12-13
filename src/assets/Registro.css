@@ -33,7 +33,7 @@
 .formularioregistro {
   display: flex;
   flex-direction: column;
-  gap: 12px; /* Aquí está el truco para que no se vean separados */
+  gap: 12px; /* Espacio entre inputs */
 }
 
 /* INPUTS */
@@ -73,7 +73,6 @@
   transform: translateY(-2px); 
 }
 
-/* EXTRAS */
 .mensajeerror {
   color: #dc3545;
   background-color: #f8d7da;
@@ -83,14 +82,40 @@
   margin-top: 10px; 
 }
 
-/* BOTÓN IR A LOGIN (ROJO) */
+
+/* Línea separadora sutil */
+.separador {
+  margin-top: 25px;
+  padding-top: 15px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.texto-registro {
+  color: #6b7280;
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+.enlace-registro {
+  color: #007bff; 
+  font-weight: bold;
+  text-decoration: none;
+  margin-left: 5px;
+  transition: color 0.2s;
+}
+
+.enlace-registro:hover {
+  color: #0056b3;
+  text-decoration: underline;
+}
+
 .enlacelogin {
   display: block;
   width: 100%;
   box-sizing: border-box;
   margin-top: 15px;
   padding: 12px;
-  background-color: #ef4444; /* Rojo */
+  background-color: #ef4444; 
   color: white;
   text-decoration: none;
   font-weight: 700;
@@ -98,7 +123,6 @@
   border-radius: 8px;
   transition: background 0.3s, transform 0.2s;
 }
-
 .enlacelogin:hover {
   background-color: #dc2626;
   transform: translateY(-2px);

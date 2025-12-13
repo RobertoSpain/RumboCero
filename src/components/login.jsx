@@ -16,17 +16,17 @@ function Login({ onLogin }) {
       const docSnap = await getDoc(docRef);
       let rolUsuario = 'usuario';
       let fotoUsuario = userResult.photoURL || ''; 
-
       if (docSnap.exists()) {
         rolUsuario = docSnap.data().rol;
         if (docSnap.data().foto) fotoUsuario = docSnap.data().foto;
       }
       onLogin(userResult.displayName || userResult.email, rolUsuario, fotoUsuario);
-      navegar('/');
+      navegar('/viajes'); 
+
     } catch (err) {
       console.error("Error al obtener rol:", err);
       onLogin(userResult.displayName || userResult.email, 'usuario', userResult.photoURL);
-      navegar('/');
+      navegar('/viajes'); 
     }
   };
 
@@ -81,8 +81,7 @@ function Login({ onLogin }) {
           <button onClick={manejarGoogle} className="boton-google">
             <svg className="icono-google" width="18" height="18" viewBox="0 0 24 24">
                 <path fill="currentColor" d="M21.35 11.1h-9.17v2.73h6.51c-.33 3.81-3.5 5.44-6.5 5.44C8.36 19.27 5 16.25 5 12c0-4.1 3.2-7.27 7.2-7.27c3.09 0 4.9 1.97 4.9 1.97L19 4.72S16.64 2 12 2C6.48 2 2 6.48 2 12s4.48 10 10 10c5.19 0 8.8-3.72 8.8-9.04c0-.79-.08-1.39-.08-1.39h.63z"/>
-            </svg>
-            Entrar con Google
+            </svg>Entrar con Google
           </button>
         </div>
         {error && <div className="mensajeerror">{error}</div>}
