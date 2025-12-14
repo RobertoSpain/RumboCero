@@ -31,22 +31,22 @@ export default function Perfil() {
         displayName: nombre,
         photoURL: urlFotoFinal
       });
-      // 3. Actualizar Firestore
-      const userRef = doc(db, 'usuarios', usuario.uid);
+            const userRef = doc(db, 'usuarios', usuario.uid);
       await updateDoc(userRef, {
         nombre: nombre,
         foto: urlFotoFinal 
       });
-      // 4. Actualizar LocalStorage
-      localStorage.setItem('usuario', nombre);
+            localStorage.setItem('usuario', nombre);
       localStorage.setItem('fotoPerfil', urlFotoFinal); 
-      // 5. Estado visual
-      setUsuario({
+            setUsuario({
         ...usuario,
         displayName: nombre,
-        photoURL: urlFotoFinal});
+        photoURL: urlFotoFinal
+      });
       setFoto(urlFotoFinal);
-      // <<-- 6. Eliminado setArchivo(null);
+      
+      auth.currentUser.reload(); 
+      
       alert("¡Perfil actualizado con éxito! 📸");
     } catch (error) {
       console.error("Error al actualizar:", error);
@@ -72,7 +72,7 @@ export default function Perfil() {
           <h3 className="nombreusuario">{nombre || usuario.email}</h3>
           <p className="correousuario">{usuario.email}</p>
         </div>
-        {/* Formulario Accesible */}
+        
         <form onSubmit={guardarCambios} className="formularioperfil" role="form" aria-label="Formulario de edición de perfil">
           <div className="campoformulario">
             <label htmlFor="nombreinput">Nombre de Usuario</label>
@@ -97,7 +97,7 @@ export default function Perfil() {
               placeholder="Pega aquí la URL de la imagen (ej: https://ejemplo.com/mi-foto.png)"
             />
             <small className="textoayuda">Copia y pega la URL de la imagen que quieres usar.</small>
-          </div>          
+          </div> 
           <button type="submit" className="botonguardar" disabled={cargando} aria-busy={cargando}>
             {cargando ? '🔄 Guardando...' : '💾 Guardar Cambios'}
           </button>
