@@ -18,7 +18,8 @@ const IconoAvion = () => (
 export default function Header({ usuario, rol, foto, onLogout }) {
     const navegar = useNavigate();
     const [menuAbierto, setMenuAbierto] = useState(false);
-        const [fotoHeader, setFotoHeader] = useState(foto); 
+    const [fotoHeader, setFotoHeader] = useState(foto); 
+
     useEffect(() => {
         setFotoHeader(foto);
     }, [foto]);
@@ -38,7 +39,6 @@ export default function Header({ usuario, rol, foto, onLogout }) {
         navegar('/'); 
         cerrarMenu();
     };
-
     return (
         <header className="cabecera">
             <div className="cabecera-movil">
@@ -72,7 +72,7 @@ export default function Header({ usuario, rol, foto, onLogout }) {
                         <>
                             <Link to="/perfil" className="saludo-usuario" onClick={cerrarMenu}>
                                 <img 
-                                    src={fotoHeader || 'https://cdn-icons-png.flaticon.com/512/149/149071.png'} // <<-- USAMOS EL ESTADO LOCAL
+                                    src={fotoHeader || 'https://cdn-icons-png.flaticon.com/512/149/149071.png'} 
                                     alt="Avatar" 
                                     className="imagen-avatar"
                                     onError={(e) => e.target.src = 'https://cdn-icons-png.flaticon.com/512/149/149071.png'}
