@@ -8,7 +8,7 @@
   --color-text-base: #374151; 
   --color-border: #e5e7eb;
 
-  --bg: #f8f9fa; 
+  --bg: #f3f4f6; 
   --card: #ffffff; 
   --text: var(--color-brand-secondary); 
   --muted: var(--color-text-base); 
@@ -25,24 +25,31 @@
 /* Layout básico */
 * { box-sizing: border-box; }
 
-html, body, #root { 
+html { 
   height: 100%; 
   margin: 0; 
-  padding: 0; /* Quitamos el padding global */
+  padding: 0; 
 }
 
 body {
-  background: var(--bg);
+  margin: 0;
+  padding: 0;
+    background-color: #f3f4f6; 
+  background: linear-gradient(to bottom, #f9fafb, #e5e7eb);
+  min-height: 100vh; 
+  background-attachment: fixed; 
   color: var(--text);
   font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif; 
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  
-
   display: block; 
 }
 
-/* --- Clases de utilidad que puedes necesitar --- */
+#root {
+  min-height: 100vh;
+  width: 100%;
+}
+
 
 .app-container {
   width: 100%;
@@ -51,7 +58,7 @@ body {
   padding: 20px;
 }
 
-/* Landing (Estilos antiguos que aún podrías usar) */
+/* Landing */
 .landing-wrap {
   display: flex;
   flex-direction: column;

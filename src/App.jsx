@@ -3,7 +3,7 @@ import Landing from './components/Landing';
 import Login from './components/login';
 import Registro from './components/Registro';
 import Header from './components/Header';
-import { useState, useEffect } from 'react'; // AÑADIDO: useEffect
+import { useState, useEffect } from 'react'; 
 import CrearViaje from './components/CrearViaje';
 import AdminPanel from './components/AdminPanel';
 import Viajes from './components/Viajes';
@@ -16,6 +16,7 @@ import Estadisticas from './components/Estadisticas';
 import { auth, db } from './firebase';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
+import Contacto from './components/Contacto';
 
 function App() {
   const [usuario, setUsuario] = useState(localStorage.getItem('usuario') || '');
@@ -32,7 +33,7 @@ function App() {
     localStorage.setItem('fotoPerfil', fotoUsuario || ''); 
   };
 
-  // 3. Logout (Limpiar todo)
+  // 3. Logout (
   const handleLogout = () => {
     setUsuario('');
     setRol('');
@@ -41,14 +42,13 @@ function App() {
     localStorage.removeItem('rol');
     localStorage.removeItem('fotoPerfil'); 
   };
-  // Vigila constantemente si el usuario conectado está baneado
+  // busca si el usuario esta baneado
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
       if (firebaseUser) {
         try {
           const docRef = doc(db, "usuarios", firebaseUser.uid);
           const docSnap = await getDoc(docRef);
-
           if (docSnap.exists()) {
              if (docSnap.data().baneado === true) {
                 alert("⛔ SESIÓN CERRADA: Tu cuenta ha sido suspendida por administración.");
@@ -72,6 +72,7 @@ function App() {
         <Route path="/" element={<Landing />} />
         <Route path="/login" element={<Login onLogin={handleLogin} />}/>
         <Route path="/registro" element={<Registro />} />
+        <Route path="/contacto" element={<Contacto />} />
         {/* Rutas protegidas */}
         <Route path="/perfil" element={usuario ? <Perfil /> : <Navigate to="/login" replace />} />
         <Route path="/foro/:id" element={usuario ? <DetalleForo /> : <Navigate to="/login" replace />} />

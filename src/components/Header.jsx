@@ -37,7 +37,8 @@ export default function Header({ usuario, rol, foto, onLogout }) {
       </div>
 
       <div className={`contenido-cabecera ${menuAbierto ? 'activo' : ''}`}>
-        {/* NAVEGACIÓN */}
+        
+        {/* MENÚ PARA USUARIOS LOGUEADOS */}
         {usuario && (
           <nav className="navegacion">
             <Link to="/foro" className="enlace-nav" onClick={cerrarMenu}>Foro</Link>
@@ -52,10 +53,15 @@ export default function Header({ usuario, rol, foto, onLogout }) {
                 + Crear Viaje
             </Link>
             <Link to="/viajes" className="enlace-nav" onClick={cerrarMenu}>Mis Viajes</Link>
+
+            {/* AÑADIDO: Contacto visible para usuarios registrados */}
+            <Link to="/contacto" className="enlace-nav" onClick={cerrarMenu}>Contacto</Link>
           </nav>
         )}
+
         <div className="acciones-cabecera">
           {usuario ? (
+            /* ZONA DERECHA LOGUEADO: Avatar y Cerrar Sesión */
             <>
               <Link to="/perfil" className="saludo-usuario" onClick={cerrarMenu}>
                 <img 
@@ -73,6 +79,7 @@ export default function Header({ usuario, rol, foto, onLogout }) {
               <Link to="/" className="enlace-nav" onClick={cerrarMenu}>Inicio</Link> 
               <Link to="/login" className="boton-entrar" onClick={cerrarMenu}>Iniciar Sesión</Link>
               <Link to="/registro" className="boton-registro" onClick={cerrarMenu}>Registro</Link>
+              <Link to="/contacto" className="enlace-nav" onClick={cerrarMenu}>Contacto</Link>
             </>
           )}      
         </div>
