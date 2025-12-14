@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { collection, addDoc, Timestamp } from "firebase/firestore";
 import { onAuthStateChanged } from 'firebase/auth';
-import { auth, db } from "../firebase.js"; 
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'; 
+import { auth, db, storage } from "../firebase.js"; 
 import '../assets/CrearViaje.css';
 
 function CrearViaje() {
@@ -11,7 +12,7 @@ function CrearViaje() {
   const [fechalnicial, setFechalnicial] = useState('');
   const [fechaFinal, setFechaFinal] = useState('');
   const [descripcion, setDescripcion] = useState('');
-  const [foto, setFoto] = useState('');
+  const [archivo, setArchivo] = useState(null);
   const [error, setError] = useState('');
   const [cargando, setCargando] = useState(false);
   const [userId, setUserId] = useState(null);
@@ -30,34 +31,29 @@ function CrearViaje() {
     setError('');
     setCargando(true);
 
-    if (!userId) {
-      setError("Error: No estás autenticado.");
-      setCargando(false);
-      return;
-    }
-    if (!name || !destinoPrincipal || !fechalnicial || !fechaFinal) {
-      setError('Por favor, rellena todos los campos obligatorios.');
-      setCargando(false);
-      return;
-    }
-
+    if (!userId) { setError("Error: No estás autenticado."); setCargando(false); return; }
+    if (!name || !destinoPrincipal || !fechalnicial || !fechaFinal) { setError('Rellena los campos obligatorios.'); setCargando(false); return; }
     const inicio = new Date(fechalnicial);
     const fin = new Date(fechaFinal);
+    if (inicio > fin) { setError('La vuelta no puede ser antes de la ida.'); setCargando(false); return; }
 
-    if (inicio > fin) {
-      setError('¡La fecha de vuelta no puede ser antes de la ida!');
-      setCargando(false);
-      return;
-    }
+    try {
+      let urlFoto = '';
+      if (archivo) {
+        const storageRef = ref(storage, `viajes/${Date.now()}-${archivo.name}`);
+        const snapshot = await uploadBytes(storageRef, archivo);
+        urlFoto = await getDownloadURL(snapshot.ref);
+      } else {
+        urlFoto = 'https://cdn-icons-png.flaticon.com/512/2037/2037061.png';
+      }
 
-  try {
       await addDoc(collection(db, "viajes"), {
         name: name,
         destinoPrincipal: destinoPrincipal,
         fechalnicial: Timestamp.fromDate(inicio), 
         fechaFinal: Timestamp.fromDate(fin),
         descripcion: descripcion,
-        foto: foto,
+        foto: urlFoto, 
         participantes: [userId], 
         owner: userId, 
         createAt: Timestamp.now() 
@@ -71,92 +67,81 @@ function CrearViaje() {
     }
   };
 
-  if (!userId) {
-    return (
-      <div className="paginacentrada">
-        <p className="textocargando">Cargando usuario...</p>
-      </div>
-    );
-  }
+  if (!userId) return <div className="paginacentrada">Cargando usuario...</div>;
 
   return (
-    <div className="paginacentrada">
-      <div className="cajaformulario"> 
-        <h2 className="titulocrear">✨ Nuevo Viaje</h2>
-        <p className="subtitulocrear">Planifica tu próxima aventura.</p>
-
-        <form onSubmit={manejarCreacion} className="formulario-viaje">
-          <div className="campo">
-            <label htmlFor="name">Título del Viaje:</label>
-            <input 
-                type="text" 
-                id="name" 
-                value={name} 
-                onChange={e => setName(e.target.value)} 
-                required 
-                className="entradatexto" 
-            />
+    <div className="paginacentrada fondoviajes">
+      <div className="cajaformulario efectocristal"> 
+        <div className="cabeceraformulario">
+            <h2 className="titulocrear">✨ Nuevo Rumbo</h2>
+            <p className="subtitulocrear">Diseña tu próxima gran aventura.</p>
+        </div>
+        <form onSubmit={manejarCreacion} className="formularioviaje" role="form" aria-label="Formulario para crear viaje">
+          <div className="filadoble">
+              <div className="campo">
+                <label htmlFor="name">🏷️ Título</label>
+                <input 
+                    type="text" id="name" value={name} onChange={e => setName(e.target.value)} 
+                    required className="entradatexto" placeholder="Ej: Escapada a Roma..."
+                    aria-required="true"/>
+              </div>
+              <div className="campo">
+                <label htmlFor="destinoPrincipal">📍 Destino</label>
+                <input 
+                    type="text" id="destinoPrincipal" value={destinoPrincipal} onChange={e => setDestinoPrincipal(e.target.value)} 
+                    required className="entradatexto" placeholder="Ej: Italia"
+                    aria-required="true"/>
+              </div>
           </div>
           <div className="campo">
-            <label htmlFor="destinoPrincipal">Destino Principal:</label>
+            <span className="labeltitulo" id="label-foto">📸 Foto de Portada</span>
+            <label htmlFor="ficheroupload" className={`zonasubida ${archivo ? 'archivoseleccionado' : ''}`} role="button" tabIndex="0">
+                <span className="icononube">{archivo ? '✅' : '☁️'}</span>
+                <span className="textosubida">
+                    {archivo ? `Listo: ${archivo.name}` : "Pulsa para subir una fotaza"}
+                </span>
+            </label>
+            
             <input 
-                type="text" 
-                id="destinoPrincipal" 
-                value={destinoPrincipal} 
-                onChange={e => setDestinoPrincipal(e.target.value)} 
-                required 
-                className="entradatexto" 
+                type="file" 
+                id="ficheroupload" 
+                onChange={(e) => setArchivo(e.target.files[0])} 
+                accept="image/*" 
+                className="inputoculto"
+                aria-labelledby="label-foto"
             />
-          </div>
-          <div className="campo">
-            <label htmlFor="foto">Foto de Portada (URL):</label>
-            <input 
-              type="url" 
-              id="foto" 
-              value={foto} 
-              onChange={(e) => setFoto(e.target.value)} 
-              placeholder="https://..."
-              className="entradatexto"
-            />
-            <small className="textoayuda">Copia y pega el enlace de una imagen de Google.</small>
           </div>
           <div className="filafechas">
               <div className="campo mitad">
-                <label htmlFor="fechalnicial">Fecha Ida:</label>
+                <label htmlFor="fechalnicial">🛫 Ida</label>
                 <input 
-                    type="date" 
-                    id="fechalnicial" 
-                    value={fechalnicial} 
-                    onChange={e => setFechalnicial(e.target.value)} 
-                    required 
-                    className="entradatexto" 
-                />
+                    type="date" id="fechalnicial" value={fechalnicial} onChange={e => setFechalnicial(e.target.value)} 
+                    required className="entradatexto inputfecha" 
+                    aria-required="true"/>
               </div>
               <div className="campo mitad">
-                <label htmlFor="fechaFinal">Fecha Vuelta:</label>
+                <label htmlFor="fechaFinal">🛬 Vuelta</label>
                 <input 
-                    type="date" 
-                    id="fechaFinal" 
-                    value={fechaFinal} 
-                    onChange={e => setFechaFinal(e.target.value)} 
-                    required 
-                    className="entradatexto" 
-                />
+                    type="date" id="fechaFinal" value={fechaFinal} onChange={e => setFechaFinal(e.target.value)} 
+                    required className="entradatexto inputfecha" 
+                    aria-required="true"/>
               </div>
           </div>
           <div className="campo">
-            <label htmlFor="descripcion">Descripción:</label>
+            <label htmlFor="descripcion">📝 Descripción</label>
             <textarea 
-                id="descripcion" 
-                value={descripcion} 
-                onChange={e => setDescripcion(e.target.value)} 
-                rows="3" 
-                className="entradatexto areatexto"
+                id="descripcion" value={descripcion} onChange={e => setDescripcion(e.target.value)} 
+                rows="3" className="entradatexto areatexto" placeholder="Cuéntanos los planes..."
             ></textarea>
           </div>
-          {error && <div className="mensajeerror">{error}</div>}
-          <button type="submit" className="botonguardar" disabled={cargando}>
-            {cargando ? 'Guardando...' : 'Crear Viaje'}
+          {error && (
+            <div className="mensajeerror" role="alert" aria-live="assertive">
+                ⚠️ {error}
+            </div>
+          )}
+          
+          <button type="submit" className="botonguardar" disabled={cargando} aria-busy={cargando}>
+            {cargando ? '🚀 Subiendo...' : 'Crear Aventura'}
           </button>
         </form>
       </div>

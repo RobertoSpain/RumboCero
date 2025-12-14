@@ -1,8 +1,8 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
+import { getStorage } from "firebase/storage"; 
 
-// 1. Configuración de Firebase (LEYENDO DESDE EL ARCHIVO .env)
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_API_KEY, 
   authDomain: import.meta.env.VITE_AUTH_DOMAIN,
@@ -12,10 +12,9 @@ const firebaseConfig = {
   appId: import.meta.env.VITE_APP_ID, 
   measurementId: import.meta.env.VITE_MEASUREMENT_ID
 };
-
 // 2. Inicializa Firebase
 const app = initializeApp(firebaseConfig);
-
 // 3. Inicializa Servicios y los exporta
 export const db = getFirestore(app);
 export const auth = getAuth(app);
+export const storage = getStorage(app); 

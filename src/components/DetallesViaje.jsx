@@ -1,18 +1,20 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { doc, getDoc, collection, addDoc, onSnapshot, query, orderBy, Timestamp, deleteDoc, updateDoc, arrayUnion, getDocs, where } from 'firebase/firestore';
-import { db } from '../firebase.js'; 
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'; 
+import { db, storage } from '../firebase.js'; 
 import '../assets/DetallesViaje.css'; 
 
 export default function DetalleViaje() {
   const { id } = useParams();
   const [viaje, setViaje] = useState(null);
   const [loading, setLoading] = useState(true);
-  // --- ESTADOS ---
   const [destinos, setDestinos] = useState([]);
   const [nuevoDestino, setNuevoDestino] = useState('');
   const [categoria, setCategoria] = useState('Turismo');
-  const [fotoDestino, setFotoDestino] = useState(''); 
+    const [archivoDestino, setArchivoDestino] = useState(null);
+  const [subiendo, setSubiendo] = useState(false); 
+  const [resetKey, setResetKey] = useState(0); 
   const [checklist, setChecklist] = useState([]);
   const [nuevoItemMaleta, setNuevoItemMaleta] = useState('');
   const [clima, setClima] = useState(null);
@@ -44,25 +46,18 @@ export default function DetalleViaje() {
     return () => { unsubDest(); unsubCheck(); unsubEventos(); };
   }, [id]);
 
-  // --- CARGAR NOMBRES DE AMIGOS ---
+  // --- AMIGOS Y CLIMA ---
   useEffect(() => {
     if (!viaje?.participantes) return; 
     const cargarAmigos = async () => {
         try {
             const promesas = viaje.participantes.map(uid => getDoc(doc(db, 'usuarios', uid)));
             const snapshots = await Promise.all(promesas);
-            const emails = snapshots.map(snap => {
-                if (snap.exists()) return snap.data().email;
-                return 'Usuario desconocido';
-            });
-            setListaAmigos(emails);
-        } catch (error) {
-            console.error("Error cargando amigos:", error);
-        }
+            setListaAmigos(snapshots.map(snap => snap.exists() ? snap.data().email : 'Desconocido'));
+        } catch (error) { console.error(error); }
     };
     cargarAmigos();
   }, [viaje]);
-  // --- CLIMA ---
   useEffect(() => {
     if (!viaje?.destinoPrincipal) return;
     const cargarClima = async () => {
@@ -77,33 +72,18 @@ export default function DetalleViaje() {
     };
     cargarClima();
   }, [viaje]);
-  // --- INVITAR AMIGO ---
+  // --- FUNCIONES ---
   const invitarAmigo = async () => {
-    const emailAmigo = prompt("Introduce el email de tu amigo (debe estar registrado):");
+    const emailAmigo = prompt("Introduce el email de tu amigo:");
     if (!emailAmigo) return;
-    
     try {
-        const usuariosRef = collection(db, 'usuarios');
-        const q = query(usuariosRef, where('email', '==', emailAmigo));
+        const q = query(collection(db, 'usuarios'), where('email', '==', emailAmigo));
         const querySnapshot = await getDocs(q);
-        if (querySnapshot.empty) {
-            alert("❌ Error: No existe ningún usuario con ese correo.");
-            return;
-        }
-
-        const uidAmigo = querySnapshot.docs[0].id;
-        const viajeRef = doc(db, 'viajes', id);
-        await updateDoc(viajeRef, {
-            participantes: arrayUnion(uidAmigo)
-        });
-
-        alert(`✅ ¡Listo! ${emailAmigo} añadido al equipo.`);
-    } catch (error) {
-        console.error("Error al invitar:", error);
-        alert("Hubo un error al procesar la invitación.");
-    }
+        if (querySnapshot.empty) return alert("❌ Usuario no encontrado.");
+        await updateDoc(doc(db, 'viajes', id), { participantes: arrayUnion(querySnapshot.docs[0].id) });
+        alert(`✅ ${emailAmigo} añadido.`);
+    } catch (error) { console.error("Error al invitar:", error); alert("Error al invitar."); }
   };
-  // --- AGENDA ---
   const agregarEvento = async (e) => {
     e.preventDefault();
     if (!nuevoEvento.titulo || !nuevoEvento.fecha) return;
@@ -113,15 +93,43 @@ export default function DetalleViaje() {
             fecha: Timestamp.fromDate(new Date(nuevoEvento.fecha)),
             createAt: Timestamp.now()
         });
-        setNuevoEvento({ titulo: '', fecha: '' }); 
-    } catch (err) { console.error(err); alert("Error al guardar"); }
+        setNuevoEvento({ titulo: '', fecha: '' });
+    } catch (error) { console.error(error); }
   };
-  const borrarEvento = async (idEv) => { if(confirm("¿Eliminar evento?")) await deleteDoc(doc(db, 'viajes', id, 'eventos', idEv)); };
-  // --- DESTINOS ---
-  const agregarDestino = async (e) => { e.preventDefault(); if(!nuevoDestino) return; await addDoc(collection(db,'viajes',id,'destinos'),{nombre:nuevoDestino,categoria,foto:fotoDestino,visitado:false,createAt:Timestamp.now()}); setNuevoDestino(''); setFotoDestino(''); };
+  
+  const borrarEvento = async (idEv) => { if(confirm("¿Eliminar?")) await deleteDoc(doc(db, 'viajes', id, 'eventos', idEv)); };
+  const agregarDestino = async (e) => { 
+    e.preventDefault(); 
+    if(!nuevoDestino) return; 
+    setSubiendo(true); 
+
+    try {
+        let urlFoto = '';
+        if (archivoDestino) {
+            const storageRef = ref(storage, `destinos/${Date.now()}-${archivoDestino.name}`);
+            const snapshot = await uploadBytes(storageRef, archivoDestino);
+            urlFoto = await getDownloadURL(snapshot.ref);
+        }
+        await addDoc(collection(db,'viajes',id,'destinos'),{
+            nombre: nuevoDestino,
+            categoria,
+            foto: urlFoto, 
+            visitado: false,
+            createAt: Timestamp.now()
+        }); 
+        setNuevoDestino(''); 
+        setArchivoDestino(null);
+        setResetKey(prev => prev + 1); 
+    } catch (error) {
+        console.error("Error:", error);
+        alert("Error al subir el destino.");
+    } finally {
+        setSubiendo(false);
+    }
+  };
+
   const borrarDestino = async (idD) => { if(confirm("¿Borrar?")) await deleteDoc(doc(db,'viajes',id,'destinos',idD)); };
   const toggleVisitado = async (d) => updateDoc(doc(db,'viajes',id,'destinos',d.id),{visitado:!d.visitado});
-  // --- MALETA ---
   const agregarItem = async (e) => { e.preventDefault(); if(!nuevoItemMaleta) return; await addDoc(collection(db,'viajes',id,'checklist'),{nombre:nuevoItemMaleta,preparado:false,createAt:Timestamp.now()}); setNuevoItemMaleta(''); };
   const borrarItem = async (idI) => deleteDoc(doc(db,'viajes',id,'checklist',idI));
   const togglePreparado = async (i) => updateDoc(doc(db,'viajes',id,'checklist',i.id),{preparado:!i.preparado});
@@ -137,43 +145,25 @@ export default function DetalleViaje() {
         <div className="contenidohero">
             <h1 className="titulohero">{viaje.name}</h1>
             <p className="subtitulohero">📍 {viaje.destinoPrincipal}</p>
-            {/* BOTÓN INVITAR LIMPIO */}
-            <button onClick={invitarAmigo} className="boton-invitar">
-                ➕ Invitar Amigos
-            </button>
-            {/* LISTA DE VIAJEROS LIMPIA */}
+            <button onClick={invitarAmigo} className="boton-invitar">➕ Invitar Amigos</button>
             {listaAmigos.length > 0 && (
                 <div className="caja-viajeros">
                     <p className="titulo-viajeros">👥 Viajeros:</p>
-                    <div className="lista-emails">
-                        {listaAmigos.map((email, index) => (
-                            <span key={index} className="badge-email">
-                                {email}
-                            </span>
-                        ))}
-                    </div>
+                    <div className="lista-emails">{listaAmigos.map((e, i) => <span key={i} className="badge-email">{e}</span>)}</div>
                 </div>
             )}
         </div>
       </div>
       <div className="contenedorprincipal">
-        {/* --- CARRUSEL DE FOTOS --- */}
+        {/* CARRUSEL */}
         {destinos.some(d => d.foto) && (
             <div className="seccion-galeria">
                 <h3 className="titulo-galeria">📸 Galería del Viaje</h3>
                 <div className="carrusel-fotos">
                     {destinos.filter(d => d.foto).map(dest => (
-                        <a 
-                            key={dest.id} 
-                            href={dest.foto} 
-                            target="_blank" 
-                            rel="noopener noreferrer" 
-                            className="tarjeta-foto"
-                            title="Ver foto original">
+                        <a key={dest.id} href={dest.foto} target="_blank" rel="noopener noreferrer" className="tarjeta-foto">
                             <img src={dest.foto} alt={dest.nombre} />
-                            <div className="overlay-foto">
-                                <span>{dest.nombre} ↗</span>
-                            </div>
+                            <div className="overlay-foto"><span>{dest.nombre} ↗</span></div>
                         </a>
                     ))}
                 </div>
@@ -182,7 +172,6 @@ export default function DetalleViaje() {
         
         <div className="rejillainfo">
           <div className="columnaizquierda">
-            {/* TARJETA 1: PLAN */}
             <div className="tarjeta">
               <div className="titulotarjeta"><span className="iconotarjeta">📅</span> Fechas</div>
               <div className="filafecha">
@@ -192,11 +181,9 @@ export default function DetalleViaje() {
               </div>
               <p className="cajadescripcion">"{viaje.descripcion || 'Sin notas.'}"</p>
             </div>
-            {/* TARJETA 2: AGENDA */}
             <div className="tarjeta">
                 <div className="titulotarjeta"><span className="iconotarjeta">📆</span> Agenda</div>
                 <div className="contenedordestinos">
-                    {eventos.length === 0 && <p className="textovacio">No hay planes. Añade eventos.</p>}
                     {eventos.map(ev => (
                         <div key={ev.id} className="item-agenda">
                             <div className="fecha-caja">
@@ -213,14 +200,14 @@ export default function DetalleViaje() {
                        <input type="datetime-local" value={nuevoEvento.fecha} onChange={e => setNuevoEvento({...nuevoEvento, fecha: e.target.value})} className="inputdestino" required />
                    </div>
                    <div className="filaflex">
-                       <input type="text" placeholder="Título del evento..." value={nuevoEvento.titulo} onChange={e => setNuevoEvento({...nuevoEvento, titulo: e.target.value})} className="inputdestino" required />
+                       <input type="text" placeholder="Título..." value={nuevoEvento.titulo} onChange={e => setNuevoEvento({...nuevoEvento, titulo: e.target.value})} className="inputdestino" required />
                        <button type="submit" className="botonagregar">OK</button>
                    </div>
                 </form>
             </div>
-            {/* TARJETA 3: DESTINOS */}
+            {/* --- TARJETA DESTINOS --- */}
             <div className="tarjeta">
-              <div className="titulotarjeta"><span className="iconotarjeta">🏙️</span> Sitios</div> 
+              <div className="titulotarjeta"><span className="iconotarjeta">🏙️</span> Sitios de interés</div> 
               <div className="contenedordestinos">
                 {destinos.map(d => (
                   <div key={d.id} className={`elementodestino ${d.visitado ? 'visitado' : ''}`}>
@@ -238,20 +225,38 @@ export default function DetalleViaje() {
               </div>
               <form onSubmit={agregarDestino} className="formulariodestino">
                  <div className="filaflex">
-                    <input type="text" placeholder="Sitio..." value={nuevoDestino} onChange={e => setNuevoDestino(e.target.value)} className="inputdestino" required />
+                    <input type="text" placeholder="Nombre del sitio..." value={nuevoDestino} onChange={e => setNuevoDestino(e.target.value)} className="inputdestino" required />
                     <select value={categoria} onChange={e => setCategoria(e.target.value)} className="selectdestino">
                        <option>Turismo</option><option>Comida</option><option>Ocio</option>
                     </select>
                  </div>
-                 <div className="filaflex">
-                     <input type="url" placeholder="Foto URL" value={fotoDestino} onChange={e => setFotoDestino(e.target.value)} className="inputurl" />
-                     <button type="submit" className="botonagregar">Añadir</button>
+                 {/* ZONA DE SUBIDA MEJORADA Y ACCESIBLE */}
+                 <div className="cajafoto">
+                     <label 
+                        htmlFor="ficherodestino" 
+                        className={`zonasubidadestino ${archivoDestino ? 'archivoseleccionado' : ''}`}
+                        role="button" 
+                        aria-label="Seleccionar fotografía para el destino"
+                     >
+                        <span className="icono">{archivoDestino ? '✅' : '📷'}</span>
+                        <span className="texto">{archivoDestino ? archivoDestino.name : "Añadir foto"}</span>
+                     </label>
+                     <input 
+                        key={resetKey} 
+                        type="file" 
+                        id="ficherodestino"
+                        accept="image/*"
+                        onChange={e => setArchivoDestino(e.target.files[0])} 
+                        className="inputoculto" 
+                     />
                  </div>
+                 <button type="submit" className="botonagregar" disabled={subiendo} style={{ marginTop: '10px' }}>
+                    {subiendo ? '⏳' : 'Añadir Sitio'}
+                 </button>
               </form>
             </div>
           </div>
           <div className="columnaderecha">
-              {/* CLIMA */}
               <div className="tarjeta tarjetaclima">
                   <div className="titulotarjeta"><span className="iconotarjeta">🌤️</span> Clima</div>
                   {clima ? (
@@ -262,7 +267,6 @@ export default function DetalleViaje() {
                     </div>
                   ) : <div className="cargandoclima">Cargando...</div>}
               </div>
-              {/* MALETA */}
               <div className="tarjeta">
                 <div className="titulotarjeta">
                   <span className="iconotarjeta">🎒</span> Maleta ({checklist.filter(i=>i.preparado).length}/{checklist.length})

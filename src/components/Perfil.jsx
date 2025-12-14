@@ -1,13 +1,15 @@
 import { useState, useEffect } from 'react';
-import { auth, db } from '../firebase';
+import { auth, db, storage } from '../firebase';
 import { updateProfile } from 'firebase/auth';
 import { doc, updateDoc } from 'firebase/firestore';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'; 
 import '../assets/Perfil.css'; 
 
 export default function Perfil() {
   const [usuario, setUsuario] = useState(null);
   const [nombre, setNombre] = useState('');
   const [foto, setFoto] = useState('');
+  const [archivo, setArchivo] = useState(null);
   const [cargando, setCargando] = useState(false);
 
   useEffect(() => {
@@ -20,33 +22,39 @@ export default function Perfil() {
     });
     return () => unsubscribe();
   }, []);
-
   const guardarCambios = async (e) => {
     e.preventDefault();
     if (!usuario) return;
     setCargando(true);
     try {
-      // 1. Actualizar Auth de Firebase 
+      let urlFotoFinal = foto; 
+      if (archivo) {
+        const storageRef = ref(storage, `perfiles/${usuario.uid}-${Date.now()}`); 
+        const snapshot = await uploadBytes(storageRef, archivo);
+        urlFotoFinal = await getDownloadURL(snapshot.ref); 
+      }
+      // 2. Actualizar Auth
       await updateProfile(usuario, {
         displayName: nombre,
-        photoURL: foto
+        photoURL: urlFotoFinal
       });
-      // 2. Actualizar Base de Datos Firestore
+      // 3. Actualizar Firestore
       const userRef = doc(db, 'usuarios', usuario.uid);
       await updateDoc(userRef, {
         nombre: nombre,
-        foto: foto 
+        foto: urlFotoFinal 
       });
-      // 3. Actualizar LocalStorage
+      // 4. Actualizar LocalStorage
       localStorage.setItem('usuario', nombre);
-      localStorage.setItem('fotoPerfil', foto); 
-      // 4. ACTUALIZACIÓN VISUAL 
+      localStorage.setItem('fotoPerfil', urlFotoFinal); 
+      // 5. Estado visual
       setUsuario({
         ...usuario,
         displayName: nombre,
-        photoURL: foto
-      });
-      alert("¡Perfil actualizado con éxito!");
+        photoURL: urlFotoFinal});
+      setFoto(urlFotoFinal);
+      setArchivo(null); 
+      alert("¡Perfil actualizado con éxito! 📸");
     } catch (error) {
       console.error("Error al actualizar:", error);
       alert("Hubo un error al guardar los cambios.");
@@ -55,49 +63,60 @@ export default function Perfil() {
     }
   };
 
-  if (!usuario) return <div className="cargando-perfil">Cargando tu perfil...</div>;
-  
+  if (!usuario) return <div className="cargandoperfil">Cargando tu perfil...</div>;
   return (
     <div className="paginaperfil">
       <div className="cajaperfil">
         <h1 className="tituloperfil">👤 Editar Perfil</h1>
-        <div className="cabecera-perfil">
+        
+        <div className="cabeceraperfil">
           <img 
             src={foto || 'https://cdn-icons-png.flaticon.com/512/149/149071.png'} 
-            alt="Avatar" 
+            alt={`Foto de perfil de ${nombre}`} 
             className="avatarimagen"
             onError={(e) => e.target.src = 'https://cdn-icons-png.flaticon.com/512/149/149071.png'} 
           />
-          <h3 className="nombre-usuario">{nombre || usuario.email}</h3>
+          <h3 className="nombreusuario">{nombre || usuario.email}</h3>
           <p className="correousuario">{usuario.email}</p>
         </div>
-
-        {/* Formulario */}
-        <form onSubmit={guardarCambios} className="formulario-perfil">
-          <div className="campo-formulario">
-            <label>Nombre de Usuario</label>
+        {/* Formulario Accesible */}
+        <form onSubmit={guardarCambios} className="formularioperfil" role="form" aria-label="Formulario de edición de perfil">
+          <div className="campoformulario">
+            <label htmlFor="nombreinput">Nombre de Usuario</label>
             <input 
               type="text" 
+              id="nombreinput"
               value={nombre} 
               onChange={(e) => setNombre(e.target.value)} 
-              className="entrada-datos"
+              className="entradadatos"
               placeholder="Ej: Roberto España"
               required
-            />
+              aria-required="true"/>
           </div>
 
           <div className="campoformulario">
-            <label>Foto de Perfil (URL)</label>
+            <span className="labeltitulo" id="label-foto">Foto de Perfil</span>
+            {/* ZONA DE SUBIDA MODERNA Y ACCESIBLE */}
+            <label 
+                htmlFor="ficheroperfil" 
+                className={`zonasubidaperfil ${archivo ? 'archivoseleccionado' : ''}`}
+                role="button"
+                tabIndex="0"
+                aria-label="Subir nueva foto de perfil">
+                <span className="iconoperfil">{archivo ? '✅' : '📤'}</span>
+                <span className="textoperfil">{archivo ? archivo.name : "Subir foto nueva"}</span>
+            </label>
             <input 
-              type="text" 
-              value={foto} 
-              onChange={(e) => setFoto(e.target.value)} 
-              className="entrada-datos"
-              placeholder="https://..."/>
-            <small className="textoayuda">Pega aquí el enlace de una imagen de Google.</small>
+              type="file" 
+              id="ficheroperfil"
+              accept="image/*"
+              onChange={(e) => setArchivo(e.target.files[0])} 
+              className="inputoculto"
+              aria-labelledby="label-foto"/>
+            <small className="textoayuda">Elige una foto chula de tu dispositivo.</small>
           </div>
-          <button type="submit" className="boton-guardar" disabled={cargando}>
-            {cargando ? 'Guardando...' : '💾 Guardar Cambios'}
+          <button type="submit" className="botonguardar" disabled={cargando} aria-busy={cargando}>
+            {cargando ? '🔄 Subiendo...' : '💾 Guardar Cambios'}
           </button>
         </form>
       </div>
