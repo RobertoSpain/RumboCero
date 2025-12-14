@@ -1,15 +1,13 @@
 import { useState, useEffect } from 'react';
-import { auth, db, storage } from '../firebase';
+import { auth, db } from '../firebase'; 
 import { updateProfile } from 'firebase/auth';
 import { doc, updateDoc } from 'firebase/firestore';
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'; 
 import '../assets/Perfil.css'; 
 
 export default function Perfil() {
   const [usuario, setUsuario] = useState(null);
   const [nombre, setNombre] = useState('');
   const [foto, setFoto] = useState('');
-  const [archivo, setArchivo] = useState(null);
   const [cargando, setCargando] = useState(false);
 
   useEffect(() => {
@@ -28,11 +26,6 @@ export default function Perfil() {
     setCargando(true);
     try {
       let urlFotoFinal = foto; 
-      if (archivo) {
-        const storageRef = ref(storage, `perfiles/${usuario.uid}-${Date.now()}`); 
-        const snapshot = await uploadBytes(storageRef, archivo);
-        urlFotoFinal = await getDownloadURL(snapshot.ref); 
-      }
       // 2. Actualizar Auth
       await updateProfile(usuario, {
         displayName: nombre,
@@ -53,7 +46,7 @@ export default function Perfil() {
         displayName: nombre,
         photoURL: urlFotoFinal});
       setFoto(urlFotoFinal);
-      setArchivo(null); 
+      // <<-- 6. Eliminado setArchivo(null);
       alert("¡Perfil actualizado con éxito! 📸");
     } catch (error) {
       console.error("Error al actualizar:", error);
@@ -93,30 +86,20 @@ export default function Perfil() {
               required
               aria-required="true"/>
           </div>
-
           <div className="campoformulario">
-            <span className="labeltitulo" id="label-foto">Foto de Perfil</span>
-            {/* ZONA DE SUBIDA MODERNA Y ACCESIBLE */}
-            <label 
-                htmlFor="ficheroperfil" 
-                className={`zonasubidaperfil ${archivo ? 'archivoseleccionado' : ''}`}
-                role="button"
-                tabIndex="0"
-                aria-label="Subir nueva foto de perfil">
-                <span className="iconoperfil">{archivo ? '✅' : '📤'}</span>
-                <span className="textoperfil">{archivo ? archivo.name : "Subir foto nueva"}</span>
-            </label>
+            <label htmlFor="fotoinput">URL de la Foto de Perfil</label>
             <input 
-              type="file" 
-              id="ficheroperfil"
-              accept="image/*"
-              onChange={(e) => setArchivo(e.target.files[0])} 
-              className="inputoculto"
-              aria-labelledby="label-foto"/>
-            <small className="textoayuda">Elige una foto de tu dispositivo.</small>
-          </div>
+              type="text" 
+              id="fotoinput"
+              value={foto} 
+              onChange={(e) => setFoto(e.target.value)} 
+              className="entradadatos"
+              placeholder="Pega aquí la URL de la imagen (ej: https://ejemplo.com/mi-foto.png)"
+            />
+            <small className="textoayuda">Copia y pega la URL de la imagen que quieres usar.</small>
+          </div>          
           <button type="submit" className="botonguardar" disabled={cargando} aria-busy={cargando}>
-            {cargando ? '🔄 Subiendo...' : '💾 Guardar Cambios'}
+            {cargando ? '🔄 Guardando...' : '💾 Guardar Cambios'}
           </button>
         </form>
       </div>
