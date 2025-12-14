@@ -1,202 +1,279 @@
-/* --- Estilos Generales --- */
+/* 1. LAYOUT PRINCIPAL */
 .viajes-page {
   background-color: #f3f4f6;
   min-height: 100vh;
   padding: 40px 20px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Segoe UI', system-ui, sans-serif;
 }
 
-/* Cabecera */
+.cargando-contenedor {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
+}
+
+/* 2. CABECERA */
 .viajes-header {
-  max-width: 1200px;
-  margin: 0 auto 40px auto;
-  border-bottom: 4px solid #0d9488; 
-  display: inline-block;
-  padding-bottom: 10px;
+  max-width: 1000px;
+  margin: 0 auto 30px auto;
+  border-bottom: 2px solid #e5e7eb;
+  padding-bottom: 15px;
 }
 
 .viajes-titulo {
-  font-size: 2.5rem;
-  color: #1f2937;
-  font-weight: 800;
   margin: 0;
+  font-size: 2rem;
+  font-weight: 800;
+  color: #111827;
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
-/* --- GRID DE TARJETAS --- */
+.viajes-titulo svg {
+  width: 36px;
+  height: 36px;
+  color: #0d9488; 
+}
+
+/* 3. GRID DE VIAJES */
 .viajes-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); 
-  gap: 30px;
-  max-width: 1200px;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 25px;
+  max-width: 1000px;
   margin: 0 auto;
 }
 
-/* --- TARJETA INDIVIDUAL --- */
+/* 4. TARJETA DE VIAJE */
 .viaje-card {
   background: white;
-  border-radius: 16px;
+  border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+  border: 1px solid #e5e7eb;
+  border-left: 5px solid #0d9488; 
   display: flex;
   flex-direction: column;
-  position: relative;
-  border: 1px solid rgba(0,0,0,0.05);
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .viaje-card:hover {
-  transform: translateY(-5px); 
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  transform: translateY(-4px);
+  box-shadow: 0 10px 15px rgba(0,0,0,0.1);
 }
 
-/* FOTO DE LA TARJETA */
+/* Imagen */
 .contenedorimg {
-  height: 200px;
   width: 100%;
-  background-color: #e5e7eb;
+  height: 180px;
+  background-color: #f9fafb;
   position: relative;
+  overflow: hidden;
 }
 
 .campoimg {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: transform 0.5s;
+}
+.viaje-card:hover .campoimg {
+  transform: scale(1.05);
 }
 
-/* Cuando no hay imagen */
 .noimg {
   width: 100%;
   height: 100%;
   display: flex;
-  align-items: center;
   justify-content: center;
-  background-color: #ccfbf1; 
+  align-items: center;
+  background-color: #f0fdfa;
   color: #0d9488;
-  font-size: 3rem;
 }
 
-/* CONTENIDO  */
+.noimg svg { width: 48px; height: 48px; opacity: 0.5; }
+
+/* Cuerpo de la tarjeta */
 .cuerpo {
   padding: 20px;
-  flex-grow: 1;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .titulo {
+  margin: 0;
   font-size: 1.25rem;
+  color: #1f2937;
   font-weight: 700;
-  color: #111827;
-  margin: 0 0 10px 0;
   white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis; 
+  text-overflow: ellipsis;
 }
 
-.info {
-  font-size: 0.9rem;
-  color: #4b5563;
-  margin-bottom: 6px;
+.info-grupo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 5px;
+}
+
+.info-item {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
+  font-size: 0.9rem;
+  color: #4b5563;
+}
+
+.info-item svg {
+  width: 18px;
+  height: 18px;
+  color: #0d9488;
 }
 
 .desc {
-  background-color: #f9fafb;
-  padding: 10px;
-  border-radius: 8px;
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   color: #6b7280;
-  font-style: italic;
-  margin-top: 15px;
+  line-height: 1.5;
   display: -webkit-box;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  -webkit-line-clamp: 2;
+  margin: 0;
 }
 
-/* BOTONERA  */
+.text-muted { font-style: italic; color: #9ca3af; }
+
+/* Botones de acción */
 .acciones {
   padding: 15px 20px;
-  background-color: #f9fafb;
   border-top: 1px solid #f3f4f6;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  background-color: #fafafa;
 }
-
+/* Botón Borrar */
 .btn-borrar {
-  background: none;
-  border: none;
-  color: #ef4444; 
-  font-weight: 600;
+  background: white;
+  border: 1px solid #fee2e2;
+  color: #ef4444;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   cursor: pointer;
-  padding: 6px 12px;
-  border-radius: 6px;
-  transition: background 0.2s;
+  transition: all 0.2s;
 }
 
+.btn-borrar svg { width: 20px; height: 20px; }
 .btn-borrar:hover {
   background-color: #fef2f2;
+  border-color: #ef4444;
 }
 
+/* Botón Ver Detalles (verde) */
 .btn-ver {
-  text-decoration: none;
-  background-color: white;
-  color: #0d9488; 
-  border: 1px solid #ccfbf1;
-  padding: 8px 16px;
-  border-radius: 20px;
-  font-weight: 700;
-  font-size: 0.9rem;
-  transition: all 0.2s;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
-}
-
-.btn-ver:hover {
+  flex: 1;
+  margin-left: 15px;
   background-color: #0d9488;
   color: white;
-  transform: scale(1.05);
+  text-decoration: none;
+  padding: 10px;
+  border-radius: 8px;
+  font-weight: 600;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  transition: background 0.2s;
+  font-size: 0.95rem;
 }
 
-/* Estado Vacío (Cuando no hay viajes) */
-.estado {
+.btn-ver svg { width: 18px; height: 18px; }
+
+.btn-ver:hover {
+  background-color: #0f766e;
+}
+
+/* 5. ESTADO VACÍO */
+.estado-vacio {
   text-align: center;
-  padding: 60px 20px;
-  background: white;
-  border-radius: 20px;
   max-width: 500px;
-  margin: 40px auto;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+  margin: 100px auto;
+  padding: 40px;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
 }
 
-.cargando-contenedor {
-  text-align: center;
-  padding-top: 50px;
-  color: #666;
-  font-size: 1.2rem;
+.icono-vacio {
+  width: 80px;
+  height: 80px;
+  background-color: #f0fdfa;
+  color: #0d9488;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px auto;
 }
+
+.icono-vacio svg { width: 40px; height: 40px; }
 
 .estado-titulo {
-  font-size: 2rem;
-  margin-bottom: 10px;
-  margin-top: 0;
-  color: #111827;
+  margin: 0 0 10px 0;
+  color: #1f2937;
+  font-size: 1.5rem;
 }
 
 .estado-texto {
-  color: #666;
+  color: #6b7280;
   margin-bottom: 25px;
 }
 
-.btn-ver.btn-solido {
+.btn-solido {
+  display: inline-block;
   background-color: #0d9488;
   color: white;
-  border: none;
-  display: inline-block;
-  padding: 12px 24px; 
+  text-decoration: none;
+  padding: 12px 30px;
+  border-radius: 30px;
+  font-weight: 700;
+  transition: transform 0.2s;
+}
+.btn-solido:hover { transform: translateY(-2px); background-color: #0f766e; }
+
+/* 6. SPINNER SVG */
+.spinner-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  color: #0d9488;
+  font-weight: 600;
 }
 
-.btn-ver.btn-solido:hover {
-  background-color: #0f766e;
-  color: white;
-  transform: translateY(-2px);
+.spinner-svg {
+  width: 48px;
+  height: 48px;
+  color: #0d9488;
+  animation: girar 1s linear infinite;
+}
+
+@keyframes girar {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* RESPONSIVE */
+@media (max-width: 600px) {
+  .viajes-grid { grid-template-columns: 1fr; }
+  .acciones { flex-direction: row; }
 }

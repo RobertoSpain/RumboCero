@@ -12,9 +12,19 @@
   font-size: 2.5rem;
   margin-bottom: 30px;
   color: #111827;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
 }
 
-/* --- ZONA DE PESTAÑAS  --- */
+.icono-titulo {
+    width: 40px;
+    height: 40px;
+    color: #0d9488;
+}
+
+/* --- ZONA DE PESTAÑAS --- */
 .zonatabs {
   display: flex;
   justify-content: center;
@@ -28,21 +38,24 @@
   border: none;
   font-size: 1.1rem;
   font-weight: 600;
-  padding: 10px 20px;
+  padding: 12px 25px;
   cursor: pointer;
   color: #6b7280; 
   border-bottom: 3px solid transparent;
   transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .boton-pes:hover {
-  color: #3b82f6;
+  color: #0d9488; /* Verde al pasar ratón */
 }
 
-/* Estado Activo ) */
+/* Estado Activo */
 .boton-pes.activa {
-  color: #3b82f6; /* Azul */
-  border-bottom: 3px solid #3b82f6;
+  color: #0d9488; /* Verde corporativo */
+  border-bottom: 3px solid #0d9488;
 }
 
 /* --- CAJA DEL CONTENIDO --- */
@@ -55,12 +68,24 @@
   min-height: 400px;
 }
 
+/* Spinner carga */
 .estado-carga {
   text-align: center;
   font-size: 1.2rem;
   margin-top: 50px;
-  color: #6b7280;
+  color: #0d9488;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
 }
+
+.spinner-carga {
+    width: 40px;
+    height: 40px;
+    animation: girar 1s linear infinite;
+}
+@keyframes girar { from {transform: rotate(0deg);} to {transform: rotate(360deg);} }
 
 .titulolista {
   margin-top: 0;
@@ -70,14 +95,7 @@
   font-size: 1.5rem;
 }
 
-.texto-vacio {
-  text-align: center;
-  color: #9ca3af;
-  font-style: italic;
-  margin-top: 40px;
-}
-
-/* --- FILAS DE DATOS  --- */
+/* --- FILAS DE DATOS --- */
 .filadato {
   display: flex;
   justify-content: space-between;
@@ -94,15 +112,27 @@
   margin: 0;
   font-size: 1.1rem;
   color: #111827;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .columnainfo p {
   margin: 5px 0 0 0;
   color: #6b7280;
   font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
-/* --- ETIQUETAS DE ROL --- */
+.flex-row {
+    display: flex; 
+    align-items: center; 
+    gap: 6px;
+}
+
+/* --- ETIQUETAS Y TAGS --- */
 .contenedor-rol {
   margin-top: 8px;
 }
@@ -117,8 +147,8 @@
 }
 
 .tipo-jefe {
-  background-color: #dbeafe; 
-  color: #1e40af; 
+  background-color: #f0fdfa; /* Fondo verde claro */
+  color: #0d9488; 
 }
 
 .tipo-normal {
@@ -126,7 +156,21 @@
   color: #374151; 
 }
 
-/* --- BOTONES DE ACCIÓN  --- */
+.tag-baneado {
+    font-size: 0.8rem;
+    color: #ef4444;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* --- BOTONES DE ACCIÓN --- */
+.botones-grupo {
+    display: flex;
+    gap: 10px;
+}
+
 .boton-mini {
   padding: 8px 16px;
   border: none;
@@ -135,6 +179,9 @@
   cursor: pointer;
   font-size: 0.9rem;
   transition: transform 0.2s, opacity 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .boton-mini:hover {
@@ -142,17 +189,18 @@
   transform: scale(1.05);
 }
 
-.rojo {
-  background-color: #ef4444;
-  color: white;
-}
+.icono-mini { width: 18px; height: 18px; }
+.icono-micro { width: 14px; height: 14px; }
 
-.azul {
-  background-color: #3b82f6;
-  color: white;
-}
+/* Colores botones */
+.rojo { background-color: #fee2e2; color: #ef4444; }
+.rojo:hover { background-color: #ef4444; color: white; }
 
-/* --- RESPONSIVE  --- */
+.verde { background-color: #0d9488; color: white; } /* Botón principal */
+
+.azul { background-color: #dbeafe; color: #1e40af; } /* Botón secundario/desbanear */
+
+/* --- RESPONSIVE --- */
 @media (max-width: 600px) {
   .filadato {
     flex-direction: column;
@@ -162,21 +210,22 @@
 
   .boton-mini {
     width: 100%; 
+    justify-content: center;
+  }
+
+  .botones-grupo {
+      width: 100%;
+      flex-direction: column;
   }
 
   .zonatabs {
-    flex-direction: column;
-    gap: 0;
+    gap: 10px;
+    flex-wrap: wrap;
   }
   
   .boton-pes {
-    width: 100%;
-    text-align: center;
+    flex: 1;
+    justify-content: center;
     border-bottom: 1px solid #e5e7eb;
-  }
-  
-  .boton-pes.activa {
-    border-bottom: 3px solid #3b82f6;
-    background-color: #eff6ff;
   }
 }

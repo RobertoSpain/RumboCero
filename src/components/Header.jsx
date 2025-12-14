@@ -37,7 +37,6 @@ export default function Header({ usuario, rol, foto, onLogout }) {
       </div>
 
       <div className={`contenido-cabecera ${menuAbierto ? 'activo' : ''}`}>
-        
         {/* MENÚ PARA USUARIOS LOGUEADOS */}
         {usuario && (
           <nav className="navegacion">
@@ -53,15 +52,12 @@ export default function Header({ usuario, rol, foto, onLogout }) {
                 + Crear Viaje
             </Link>
             <Link to="/viajes" className="enlace-nav" onClick={cerrarMenu}>Mis Viajes</Link>
-
-            {/* AÑADIDO: Contacto visible para usuarios registrados */}
             <Link to="/contacto" className="enlace-nav" onClick={cerrarMenu}>Contacto</Link>
           </nav>
         )}
 
         <div className="acciones-cabecera">
           {usuario ? (
-            /* ZONA DERECHA LOGUEADO: Avatar y Cerrar Sesión */
             <>
               <Link to="/perfil" className="saludo-usuario" onClick={cerrarMenu}>
                 <img 

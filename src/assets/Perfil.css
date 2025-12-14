@@ -1,3 +1,6 @@
+/* src/assets/Perfil.css */
+* { box-sizing: border-box; }
+
 .paginaperfil {
   background-color: #f3f4f6;
   min-height: 100vh;
@@ -5,9 +8,10 @@
   justify-content: center;
   align-items: center;
   padding: 20px;
+  font-family: 'Segoe UI', system-ui, sans-serif;
 }
 
-.cargando-perfil {
+.cargandoperfil {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -16,6 +20,7 @@
   font-size: 1.2rem;
 }
 
+/* CAJA PRINCIPAL */
 .cajaperfil {
   background: white;
   width: 100%;
@@ -23,7 +28,7 @@
   padding: 40px;
   border-radius: 20px;
   box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
-  text-align: center;
+  text-align: center; /* Esto centra el avatar y los títulos */
 }
 
 .tituloperfil {
@@ -34,13 +39,13 @@
   margin-bottom: 25px;
 }
 
-.cabecera-perfil {
+.cabeceraperfil {
   margin-bottom: 30px;
 }
 
 .avatarimagen {
-  width: 100px;
-  height: 100px;
+  width: 120px;
+  height: 120px;
   border-radius: 50%;
   object-fit: cover;
   border: 4px solid #f3f4f6;
@@ -48,7 +53,7 @@
   margin-bottom: 10px;
 }
 
-.nombre-usuario {
+.nombreusuario {
   margin-top: 10px;
   margin-bottom: 5px;
   font-size: 1.3rem;
@@ -67,65 +72,93 @@
   margin: 0;
 }
 
-.formulario-perfil {
+/* --- FORMULARIO (AQUÍ ESTABA EL FALLO DE NOMBRES) --- */
+.formularioperfil {
   display: flex;
   flex-direction: column;
   gap: 20px;
-  text-align: left;
+  text-align: left; /* Importante: Alineamos los inputs a la izquierda */
+  width: 100%;
 }
 
-.campo-formulario label, .campoformulario label {
+.campoformulario {
+  width: 100%;
+}
+
+.campoformulario label, .labeltitulo {
   display: block;
   font-weight: 700;
   color: #374151;
   font-size: 0.9rem;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
+  text-align: left;
 }
 
-.entrada-datos {
-  width: 100%;
-  padding: 12px;
+/* INPUT DE TEXTO */
+.entradadatos {
+  width: 100%; /* Ocupa todo el ancho disponible */
+  padding: 12px 15px;
   border: 1px solid #d1d5db;
   border-radius: 10px;
   font-size: 1rem;
   box-sizing: border-box; 
   transition: border 0.2s;
+  background-color: #f9fafb;
+  color: #1f2937;
 }
 
-.entrada-datos:focus {
+.entradadatos:focus {
   outline: none;
   border-color: #0d9488;
+  background-color: white;
   box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.1);
 }
 
-.input-file-perfil {
-  background-color: #f9fafb;
-  cursor: pointer;
-  padding: 8px; 
+/* --- ZONA SUBIDA FOTO (SIN GUIONES) --- */
+.inputoculto { display: none; }
+
+.zonasubidaperfil {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 15px;
+    background-color: #f9fafb;
+    border: 2px dashed #d1d5db;
+    border-radius: 10px;
+    color: #6b7280;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-weight: 600;
+    width: 100%; /* Para que ocupe todo el ancho igual que el botón */
 }
-.input-file-perfil::file-selector-button {
-  margin-right: 15px;
-  border: none;
-  background: #0d9488;
-  padding: 6px 12px;
-  border-radius: 6px;
-  color: white;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background 0.2s;
+
+.zonasubidaperfil:hover {
+    border-color: #0d9488;
+    background-color: #f0fdfa;
+    color: #0d9488;
+    transform: translateY(-2px);
 }
-.input-file-perfil::file-selector-button:hover {
-  background: #0f766e;
+
+.zonasubidaperfil.archivoseleccionado {
+    border-style: solid;
+    border-color: #059669;
+    background-color: #ecfdf5;
+    color: #059669;
 }
+
+.iconoperfil { font-size: 1.2rem; }
 
 .textoayuda {
   display: block;
-  margin-top: 5px;
+  margin-top: 8px;
   color: #9ca3af;
   font-size: 0.8rem;
+  text-align: center;
 }
 
-.boton-guardar {
+/* BOTÓN GUARDAR */
+.botonguardar {
   width: 100%;
   background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
   color: white;
@@ -139,12 +172,12 @@
   margin-top: 10px;
 }
 
-.boton-guardar:hover {
+.botonguardar:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(13, 148, 136, 0.3);
 }
 
-.boton-guardar:disabled {
+.botonguardar:disabled {
   opacity: 0.7;
   cursor: not-allowed;
   transform: none;

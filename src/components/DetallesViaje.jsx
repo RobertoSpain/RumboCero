@@ -12,7 +12,7 @@ export default function DetalleViaje() {
   const [destinos, setDestinos] = useState([]);
   const [nuevoDestino, setNuevoDestino] = useState('');
   const [categoria, setCategoria] = useState('Turismo');
-    const [archivoDestino, setArchivoDestino] = useState(null);
+  const [archivoDestino, setArchivoDestino] = useState(null);
   const [subiendo, setSubiendo] = useState(false); 
   const [resetKey, setResetKey] = useState(0); 
   const [checklist, setChecklist] = useState([]);
@@ -21,7 +21,7 @@ export default function DetalleViaje() {
   const [eventos, setEventos] = useState([]);
   const [nuevoEvento, setNuevoEvento] = useState({ titulo: '', fecha: '' });
   const [listaAmigos, setListaAmigos] = useState([]); 
-  // --- CARGA DE DATOS ---
+
   useEffect(() => {
     const obtenerViaje = async () => {
       try {
@@ -37,16 +37,11 @@ export default function DetalleViaje() {
     const unsubCheck = onSnapshot(qCheck, (s) => setChecklist(s.docs.map(d => ({ id: d.id, ...d.data() }))));
     const qEventos = query(collection(db, 'viajes', id, 'eventos'), orderBy('fecha', 'asc'));
     const unsubEventos = onSnapshot(qEventos, (s) => {
-        setEventos(s.docs.map(d => ({ 
-            id: d.id, 
-            ...d.data(),
-            fechaJs: d.data().fecha?.toDate ? d.data().fecha.toDate() : new Date() 
-        })));
+        setEventos(s.docs.map(d => ({ id: d.id, ...d.data(), fechaJs: d.data().fecha?.toDate ? d.data().fecha.toDate() : new Date() })));
     });
     return () => { unsubDest(); unsubCheck(); unsubEventos(); };
   }, [id]);
 
-  // --- AMIGOS Y CLIMA ---
   useEffect(() => {
     if (!viaje?.participantes) return; 
     const cargarAmigos = async () => {
@@ -72,7 +67,6 @@ export default function DetalleViaje() {
     };
     cargarClima();
   }, [viaje]);
-  // --- FUNCIONES ---
   const invitarAmigo = async () => {
     const emailAmigo = prompt("Introduce el email de tu amigo:");
     if (!emailAmigo) return;
@@ -82,7 +76,7 @@ export default function DetalleViaje() {
         if (querySnapshot.empty) return alert("❌ Usuario no encontrado.");
         await updateDoc(doc(db, 'viajes', id), { participantes: arrayUnion(querySnapshot.docs[0].id) });
         alert(`✅ ${emailAmigo} añadido.`);
-    } catch (error) { console.error("Error al invitar:", error); alert("Error al invitar."); }
+    } catch (error) { console.error(error); alert("Error al invitar."); }
   };
   const agregarEvento = async (e) => {
     e.preventDefault();
@@ -96,13 +90,11 @@ export default function DetalleViaje() {
         setNuevoEvento({ titulo: '', fecha: '' });
     } catch (error) { console.error(error); }
   };
-  
   const borrarEvento = async (idEv) => { if(confirm("¿Eliminar?")) await deleteDoc(doc(db, 'viajes', id, 'eventos', idEv)); };
   const agregarDestino = async (e) => { 
     e.preventDefault(); 
     if(!nuevoDestino) return; 
     setSubiendo(true); 
-
     try {
         let urlFoto = '';
         if (archivoDestino) {
@@ -110,30 +102,23 @@ export default function DetalleViaje() {
             const snapshot = await uploadBytes(storageRef, archivoDestino);
             urlFoto = await getDownloadURL(snapshot.ref);
         }
-        await addDoc(collection(db,'viajes',id,'destinos'),{
-            nombre: nuevoDestino,
-            categoria,
-            foto: urlFoto, 
-            visitado: false,
-            createAt: Timestamp.now()
-        }); 
-        setNuevoDestino(''); 
-        setArchivoDestino(null);
-        setResetKey(prev => prev + 1); 
-    } catch (error) {
-        console.error("Error:", error);
-        alert("Error al subir el destino.");
-    } finally {
-        setSubiendo(false);
-    }
+        await addDoc(collection(db,'viajes',id,'destinos'),{ nombre: nuevoDestino, categoria, foto: urlFoto, visitado: false, createAt: Timestamp.now() }); 
+        setNuevoDestino(''); setArchivoDestino(null); setResetKey(prev => prev + 1); 
+    } catch (error) { console.error(error); alert("Error al subir."); } finally { setSubiendo(false); }
   };
-
+  
   const borrarDestino = async (idD) => { if(confirm("¿Borrar?")) await deleteDoc(doc(db,'viajes',id,'destinos',idD)); };
   const toggleVisitado = async (d) => updateDoc(doc(db,'viajes',id,'destinos',d.id),{visitado:!d.visitado});
   const agregarItem = async (e) => { e.preventDefault(); if(!nuevoItemMaleta) return; await addDoc(collection(db,'viajes',id,'checklist'),{nombre:nuevoItemMaleta,preparado:false,createAt:Timestamp.now()}); setNuevoItemMaleta(''); };
   const borrarItem = async (idI) => deleteDoc(doc(db,'viajes',id,'checklist',idI));
   const togglePreparado = async (i) => updateDoc(doc(db,'viajes',id,'checklist',i.id),{preparado:!i.preparado});
-  const getIconoClima = (c) => c===0?'☀️':c<45?'⛅':c<80?'🌧️':'⛈️';
+    const getIconoClima = (c) => {
+    if (c === 0) return <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" style={{width:40, height:40}}><path strokeLinecap="round" strokeLinejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" /></svg>; // Sol
+    if (c < 45) return <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" style={{width:40, height:40}}><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15a4.5 4.5 0 004.5 4.5H18a3.75 3.75 0 001.332-7.257 3 3 0 00-3.758-3.848 5.25 5.25 0 00-10.233 2.33A4.502 4.502 0 002.25 15z" /></svg>; // Nubes
+    if (c < 80) return <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" style={{width:40, height:40}}><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15a4.5 4.5 0 004.5 4.5H18a3.75 3.75 0 001.332-7.257 3 3 0 00-3.758-3.848 5.25 5.25 0 00-10.233 2.33A4.502 4.502 0 002.25 15z" /><path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L12 24.75" /><path strokeLinecap="round" strokeLinejoin="round" d="M12 19.5L8.25 24.75" /></svg>; // Lluvia
+    return <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" style={{width:40, height:40}}><path strokeLinecap="round" strokeLinejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" /></svg>; // Tormenta
+  };
+
   if (loading || !viaje) return <div className="paginacentrada">Cargando...</div>;
   const inicio = viaje.fechalnicial?.toDate ? viaje.fechalnicial.toDate().toLocaleDateString() : '--';
   const fin = viaje.fechaFinal?.toDate ? viaje.fechaFinal.toDate().toLocaleDateString() : '--';
@@ -144,45 +129,56 @@ export default function DetalleViaje() {
         <div className="capahero"></div>
         <div className="contenidohero">
             <h1 className="titulohero">{viaje.name}</h1>
-            <p className="subtitulohero">📍 {viaje.destinoPrincipal}</p>
-            <button onClick={invitarAmigo} className="boton-invitar">➕ Invitar Amigos</button>
+            <div className="ubicacion-hero" style={{display:'flex', alignItems:'center', gap:'5px', marginTop:'10px'}}>
+               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6" style={{width:'24px'}}><path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" /><path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" /></svg>
+               <p className="subtitulohero">{viaje.destinoPrincipal}</p>
+            </div>
+            <button onClick={invitarAmigo} className="boton-invitar">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" style={{width:'18px', marginRight:'5px'}}><path strokeLinecap="round" strokeLinejoin="round" d="M19 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zM3.75 15c0-1.678 4.5-1.53 4.5-1.53s.18.528.32 1.05a7.5 7.5 0 0113.844-3.17" /></svg>
+                Invitar
+            </button>
             {listaAmigos.length > 0 && (
                 <div className="caja-viajeros">
-                    <p className="titulo-viajeros">👥 Viajeros:</p>
+                    <div style={{display:'flex', alignItems:'center', gap:'5px', color:'white', fontWeight:'bold', marginBottom:'5px'}}>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" style={{width:'18px'}}><path strokeLinecap="round" strokeLinejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" /></svg>
+                        Viajeros:
+                    </div>
                     <div className="lista-emails">{listaAmigos.map((e, i) => <span key={i} className="badge-email">{e}</span>)}</div>
                 </div>
             )}
         </div>
       </div>
       <div className="contenedorprincipal">
-        {/* CARRUSEL */}
         {destinos.some(d => d.foto) && (
             <div className="seccion-galeria">
-                <h3 className="titulo-galeria">📸 Galería del Viaje</h3>
-                <div className="carrusel-fotos">
-                    {destinos.filter(d => d.foto).map(dest => (
-                        <a key={dest.id} href={dest.foto} target="_blank" rel="noopener noreferrer" className="tarjeta-foto">
-                            <img src={dest.foto} alt={dest.nombre} />
-                            <div className="overlay-foto"><span>{dest.nombre} ↗</span></div>
-                        </a>
-                    ))}
-                </div>
+                <h3 className="titulo-galeria" style={{display:'flex', alignItems:'center', gap:'10px'}}>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" style={{width:'24px'}}><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" /></svg>
+                    Galería
+                </h3>
+                <div className="carrusel-fotos">{destinos.filter(d => d.foto).map(dest => (<a key={dest.id} href={dest.foto} target="_blank" rel="noopener noreferrer" className="tarjeta-foto"><img src={dest.foto} alt={dest.nombre} /><div className="overlay-foto"><span>{dest.nombre} ↗</span></div></a>))}</div>
             </div>
-        )}
-        
+        )}   
         <div className="rejillainfo">
           <div className="columnaizquierda">
             <div className="tarjeta">
-              <div className="titulotarjeta"><span className="iconotarjeta">📅</span> Fechas</div>
-              <div className="filafecha">
-                  <div><p className="etiquetafecha">Ida</p><p className="valorfecha">{inicio}</p></div>
-                  <div className="flecha">➔</div>
-                  <div><p className="etiquetafecha">Vuelta</p><p className="valorfecha">{fin}</p></div>
-              </div>
-              <p className="cajadescripcion">"{viaje.descripcion || 'Sin notas.'}"</p>
+                <div className="titulotarjeta">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" style={{width:'24px'}}><path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" /></svg>
+                    Fechas
+                </div>
+                <div className="filafecha">
+                    <div><p className="etiquetafecha">Ida</p><p className="valorfecha">{inicio}</p></div>
+                    <div className="flecha">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" style={{width:'24px'}}><path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" /></svg>
+                    </div>
+                    <div><p className="etiquetafecha">Vuelta</p><p className="valorfecha">{fin}</p></div>
+                </div>
+                <p className="cajadescripcion">"{viaje.descripcion || 'Sin notas.'}"</p>
             </div>
             <div className="tarjeta">
-                <div className="titulotarjeta"><span className="iconotarjeta">📆</span> Agenda</div>
+                <div className="titulotarjeta">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" style={{width:'24px'}}><path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                    Agenda
+                </div>
                 <div className="contenedordestinos">
                     {eventos.map(ev => (
                         <div key={ev.id} className="item-agenda">
@@ -191,74 +187,64 @@ export default function DetalleViaje() {
                                 <div className="hora-evento">{ev.fechaJs.getHours()}:{ev.fechaJs.getMinutes().toString().padStart(2,'0')}</div>
                             </div>
                             <div className="titulo-evento">{ev.titulo}</div>
-                            <button onClick={() => borrarEvento(ev.id)} className="botonbasura">×</button>
+                            <button onClick={() => borrarEvento(ev.id)} className="botonbasura">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" style={{width:'20px'}}><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+                            </button>
                         </div>
                     ))}
                 </div>
                 <form onSubmit={agregarEvento} className="form-agenda">
-                   <div className="filaflex">
-                       <input type="datetime-local" value={nuevoEvento.fecha} onChange={e => setNuevoEvento({...nuevoEvento, fecha: e.target.value})} className="inputdestino" required />
-                   </div>
-                   <div className="filaflex">
-                       <input type="text" placeholder="Título..." value={nuevoEvento.titulo} onChange={e => setNuevoEvento({...nuevoEvento, titulo: e.target.value})} className="inputdestino" required />
-                       <button type="submit" className="botonagregar">OK</button>
-                   </div>
+                   <div className="filaflex"><input type="datetime-local" value={nuevoEvento.fecha} onChange={e => setNuevoEvento({...nuevoEvento, fecha: e.target.value})} className="inputdestino" required /></div>
+                   <div className="filaflex"><input type="text" placeholder="Título..." value={nuevoEvento.titulo} onChange={e => setNuevoEvento({...nuevoEvento, titulo: e.target.value})} className="inputdestino" required /><button type="submit" className="botonagregar">OK</button></div>
                 </form>
             </div>
-            {/* --- TARJETA DESTINOS --- */}
+            
             <div className="tarjeta">
-              <div className="titulotarjeta"><span className="iconotarjeta">🏙️</span> Sitios de interés</div> 
+              <div className="titulotarjeta">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" style={{width:'24px'}}><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 3.75h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008z" /></svg>
+                  Sitios
+              </div> 
               <div className="contenedordestinos">
                 {destinos.map(d => (
                   <div key={d.id} className={`elementodestino ${d.visitado ? 'visitado' : ''}`}>
                     <div className="infodestino">
                       <input type="checkbox" checked={d.visitado} onChange={() => toggleVisitado(d)} className="checkboxdestino"/>
                       {d.foto && <img src={d.foto} alt="mini" className="imagendestino" />}
-                      <div>
-                        <p className="nombredestino">{d.nombre}</p>
-                        <span className="etiquetadestino">{d.categoria}</span>
-                      </div>
+                      <div><p className="nombredestino">{d.nombre}</p><span className="etiquetadestino">{d.categoria}</span></div>
                     </div>
-                    <button onClick={() => borrarDestino(d.id)} className="botonbasura">🗑️</button>
+                    <button onClick={() => borrarDestino(d.id)} className="botonbasura">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" style={{width:'20px'}}><path strokeLinecap="round" strokeLinejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" /></svg>
+                    </button>
                   </div>
                 ))} 
               </div>
               <form onSubmit={agregarDestino} className="formulariodestino">
                  <div className="filaflex">
-                    <input type="text" placeholder="Nombre del sitio..." value={nuevoDestino} onChange={e => setNuevoDestino(e.target.value)} className="inputdestino" required />
-                    <select value={categoria} onChange={e => setCategoria(e.target.value)} className="selectdestino">
-                       <option>Turismo</option><option>Comida</option><option>Ocio</option>
-                    </select>
+                    <input type="text" placeholder="Sitio..." value={nuevoDestino} onChange={e => setNuevoDestino(e.target.value)} className="inputdestino" required />
+                    <select value={categoria} onChange={e => setCategoria(e.target.value)} className="selectdestino"><option>Turismo</option><option>Comida</option><option>Ocio</option></select>
                  </div>
-                 {/* ZONA DE SUBIDA MEJORADA Y ACCESIBLE */}
                  <div className="cajafoto">
-                     <label 
-                        htmlFor="ficherodestino" 
-                        className={`zonasubidadestino ${archivoDestino ? 'archivoseleccionado' : ''}`}
-                        role="button" 
-                        aria-label="Seleccionar fotografía para el destino"
-                     >
-                        <span className="icono">{archivoDestino ? '✅' : '📷'}</span>
+                     <label htmlFor="ficherodestino" className={`zonasubidadestino ${archivoDestino ? 'archivoseleccionado' : ''}`} role="button">
+                        <div className="icono">
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" style={{width:'20px', height:'20px'}}>
+                             <path strokeLinecap="round" strokeLinejoin="round" d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z" />
+                             <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0zM18.75 10.5h.008v.008h-.008V10.5z" />
+                          </svg>
+                        </div>
                         <span className="texto">{archivoDestino ? archivoDestino.name : "Añadir foto"}</span>
                      </label>
-                     <input 
-                        key={resetKey} 
-                        type="file" 
-                        id="ficherodestino"
-                        accept="image/*"
-                        onChange={e => setArchivoDestino(e.target.files[0])} 
-                        className="inputoculto" 
-                     />
+                     <input key={resetKey} type="file" id="ficherodestino" accept="image/*" onChange={e => setArchivoDestino(e.target.files[0])} className="inputoculto" />
                  </div>
-                 <button type="submit" className="botonagregar" disabled={subiendo} style={{ marginTop: '10px' }}>
-                    {subiendo ? '⏳' : 'Añadir Sitio'}
-                 </button>
+                 <button type="submit" className="botonagregar" disabled={subiendo} style={{ marginTop: '10px' }}>{subiendo ? '...' : 'Añadir'}</button>
               </form>
             </div>
           </div>
           <div className="columnaderecha">
               <div className="tarjeta tarjetaclima">
-                  <div className="titulotarjeta"><span className="iconotarjeta">🌤️</span> Clima</div>
+                  <div className="titulotarjeta">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" style={{width:'24px'}}><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15a4.5 4.5 0 004.5 4.5H18a3.75 3.75 0 001.332-7.257 3 3 0 00-3.758-3.848 5.25 5.25 0 00-10.233 2.33A4.502 4.502 0 002.25 15z" /><path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m12-6a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                      Clima
+                  </div>
                   {clima ? (
                     <div className="cajaclima">
                         <div className="textoclima">{clima.temperature_2m}°C</div>
@@ -269,7 +255,8 @@ export default function DetalleViaje() {
               </div>
               <div className="tarjeta">
                 <div className="titulotarjeta">
-                  <span className="iconotarjeta">🎒</span> Maleta ({checklist.filter(i=>i.preparado).length}/{checklist.length})
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" style={{width:'24px'}}><path strokeLinecap="round" strokeLinejoin="round" d="M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 00.75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 00-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0112 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 01-.673-.38m0 0A2.18 2.18 0 013 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 013.413-.387m7.5 0V5.25a3 3 0 00-3-3 3 3 0 00-3 3v.248m6 0c.965.059 1.915.148 2.85.265 1.086.143 1.905 1.096 1.905 2.195v3.25" /></svg>
+                  Maleta ({checklist.filter(i=>i.preparado).length}/{checklist.length})
                 </div>
                 <div className="listamaleta">
                   {checklist.map(i => (
@@ -278,13 +265,17 @@ export default function DetalleViaje() {
                           <input type="checkbox" checked={i.preparado} onChange={() => togglePreparado(i)} className="checkboxmaleta"/>
                           <span>{i.nombre}</span>
                       </label>
-                      <button onClick={() => borrarItem(i.id)} className="botonborraritem">✕</button>
+                      <button onClick={() => borrarItem(i.id)} className="botonborraritem">
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" style={{width:'20px'}}><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+                      </button>
                     </div>
                   ))}
                 </div>
                 <form onSubmit={agregarItem} className="formulariomaleta">
                     <input type="text" placeholder="Item..." value={nuevoItemMaleta} onChange={e => setNuevoItemMaleta(e.target.value)} className="inputmaleta" required/>
-                    <button type="submit" className="botonmas">+</button>
+                    <button type="submit" className="botonmas">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" style={{width:'20px'}}><path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
+                    </button>
                 </form>
               </div> 
           </div>

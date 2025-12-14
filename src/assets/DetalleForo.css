@@ -1,12 +1,41 @@
+/* 1. LAYOUT PRINCIPAL */
 .paginadetalle {
   background-color: #f3f4f6;
   min-height: 100vh;
   padding: 40px 20px;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+}
+.centrado {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
+  color: #6b7280;
+  font-size: 1.2rem;
 }
 
 .contenedordetalle {
   max-width: 800px;
   margin: 0 auto;
+}
+
+.enlacevolver {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 20px;
+  text-decoration: none;
+  color: #6b7280;
+  font-weight: 600;
+  transition: color 0.2s;
+}
+
+.enlacevolver:hover {
+  color: #0d9488;
+}
+.enlacevolver svg {
+  width: 20px;
+  height: 20px;
 }
 
 /* Post Principal */
@@ -15,16 +44,53 @@
   padding: 30px;
   border-radius: 12px;
   box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-  border-left: 5px solid #3b82f6;
+  border-left: 5px solid #0d9488; 
   margin-bottom: 40px;
 }
 
 .titulopost { margin: 0 0 10px 0; color: #111827; }
-.datospost { color: #6b7280; font-size: 0.9rem; margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 15px; }
-.cuerpopost { line-height: 1.6; color: #374151; white-space: pre-wrap; }
+
+.datospost { 
+  color: #6b7280; 
+  font-size: 0.9rem; 
+  margin-bottom: 20px; 
+  border-bottom: 1px solid #eee; 
+  padding-bottom: 15px; 
+}
+
+.autor-resaltado { color: #0d9488; font-weight: bold; }
+
+.cuerpopost { 
+  line-height: 1.6; 
+  color: #374151; 
+  white-space: pre-wrap; 
+}
+
+/* Título Sección Respuestas con SVG */
+.titulorespuestas {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #1f2937;
+  margin-bottom: 20px;
+}
+
+.titulorespuestas svg {
+  width: 24px;
+  height: 24px;
+  color: #0d9488;
+}
 
 /* Comentarios */
-.listacomentarios { display: flex; flex-direction: column; gap: 15px; margin-bottom: 30px; }
+.listacomentarios { 
+  display: flex; 
+  flex-direction: column; 
+  gap: 15px; 
+  margin-bottom: 30px; 
+}
+
+.textovacio { color: #9ca3af; font-style: italic; }
+
 .tarjetacomentario {
   background: white;
   padding: 20px;
@@ -34,32 +100,82 @@
   padding-bottom: 45px; 
 }
 
-.cabeceracomentario { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.85rem; }
+.cabeceracomentario { 
+  display: flex; 
+  justify-content: space-between; 
+  margin-bottom: 8px; 
+  font-size: 0.85rem; 
+}
+
 .autorcomentario { font-weight: 700; color: #0d9488; }
 .fechacomentario { color: #9ca3af; font-size: 0.8rem; }
 .textocomentario { margin: 0; color: #4b5563; }
 
-/* Botón de borrar comentario (Posicionado abajo a la derecha) */
+/* Botón de borrar comentario con SVG */
 .botonborrar {
   position: absolute;
   bottom: 10px;
   right: 15px;
   background: transparent;
   border: none;
-  font-size: 1.2rem;
   cursor: pointer;
-  opacity: 0.4;
+  opacity: 0.5;
   color: #ef4444; 
   transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+}
+.botonborrar svg {
+  width: 20px;
+  height: 20px;
 }
 
 .botonborrar:hover {
   opacity: 1;
   transform: scale(1.1);
+  background-color: #fef2f2;
+  border-radius: 50%;
 }
 
 /* Formulario */
-.zonaescribir { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 -4px 10px rgba(0,0,0,0.05); }
-.cajatexto { width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; margin-bottom: 10px; font-family: inherit; resize: vertical; box-sizing: border-box; }
-.botonenviar { background: #3b82f6; color: white; border: none; padding: 10px 20px; border-radius: 6px; font-weight: bold; cursor: pointer; }
-.botonenviar:hover { background: #2563eb; }
+.zonaescribir { 
+  background: white; 
+  padding: 20px; 
+  border-radius: 12px; 
+  box-shadow: 0 -4px 10px rgba(0,0,0,0.05); 
+}
+
+.zonaescribir h4 { margin-top: 0; color: #374151; }
+
+.cajatexto { 
+  width: 100%; 
+  padding: 12px; 
+  border: 1px solid #d1d5db; 
+  border-radius: 8px; 
+  margin-bottom: 10px; 
+  font-family: inherit; 
+  resize: vertical; 
+  box-sizing: border-box; 
+  outline: none;
+}
+
+.cajatexto:focus { border-color: #0d9488; }
+
+.botonenviar { 
+  background: #0d9488; 
+  color: white; 
+  border: none; 
+  padding: 10px 20px; 
+  border-radius: 6px; 
+  font-weight: bold; 
+  cursor: pointer; 
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: background 0.2s;
+}
+
+.botonenviar svg { width: 18px; height: 18px; }
+.botonenviar:hover { background: #0f766e; }

@@ -89,7 +89,7 @@ export default function Perfil() {
               value={nombre} 
               onChange={(e) => setNombre(e.target.value)} 
               className="entradadatos"
-              placeholder="Ej: Roberto España"
+              placeholder="Ej: Fran Ortiz"
               required
               aria-required="true"/>
           </div>
@@ -113,7 +113,7 @@ export default function Perfil() {
               onChange={(e) => setArchivo(e.target.files[0])} 
               className="inputoculto"
               aria-labelledby="label-foto"/>
-            <small className="textoayuda">Elige una foto chula de tu dispositivo.</small>
+            <small className="textoayuda">Elige una foto de tu dispositivo.</small>
           </div>
           <button type="submit" className="botonguardar" disabled={cargando} aria-busy={cargando}>
             {cargando ? '🔄 Subiendo...' : '💾 Guardar Cambios'}

@@ -1,16 +1,30 @@
 /* Contenedor General */
 .estadisticas {
-  padding: 20px;
+  padding: 40px 20px;
   max-width: 1000px;
   margin: 0 auto;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  min-height: 100vh;
+  background-color: #f3f4f6; 
 }
 
 /* Título */
 .tituloprincipal {
   text-align: center;
-  margin-bottom: 30px;
-  color: #333;
+  margin-bottom: 40px;
+  color: #111827;
+  font-size: 2rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+}
+
+.tituloprincipal svg {
+  width: 40px;
+  height: 40px;
+  color: #0d9488;
 }
 
 /* Zona del Desplegable */
@@ -19,86 +33,142 @@
   text-align: center;
 }
 
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
 .miselect {
-  padding: 12px;
-  font-size: 1rem;
+  padding: 15px;
+  font-size: 1.1rem;
   width: 100%;
-  max-width: 400px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
+  max-width: 500px;
+  border-radius: 12px;
+  border: 2px solid #e5e7eb;
   outline: none;
   background: white;
   cursor: pointer;
+  transition: border-color 0.2s;
+  color: #374151;
 }
 
 .miselect:focus {
   border-color: #0d9488;
-  box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.1);
+  box-shadow: 0 0 0 4px rgba(13, 148, 136, 0.1);
 }
 
 /* Rejilla de Tarjetas */
-.rejilla-dat {
+.rejilladatos {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 20px;
+  gap: 25px;
 }
 
-/* Tarjeta Individual (Unificado a bloquedatos) */
+/* Tarjeta Individual */
 .bloquedatos {
   background: white;
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
   text-align: center;
-  border: 1px solid #f3f4f6;
+  border: 1px solid #e5e7eb;
+  border-top: 5px solid #0d9488;
+  transition: transform 0.2s;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.bloquedatos:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
 }
 
 /* Título dentro de la tarjeta */
 .cajatitulo {
   margin-top: 0;
-  margin-bottom: 15px;
-  color: #4b5563;
-  font-size: 1.25rem;
-  font-weight: 600;
+  margin-bottom: 20px;
+  color: #374151;
+  font-size: 1.3rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
 }
 
-/* Estilos Específicos */
+.cajatitulo svg {
+  width: 24px;
+  height: 24px;
+  color: #0d9488;
+}
+
+/* Datos Específicos */
 .numero {
-  font-size: 4rem;
+  font-size: 4.5rem;
   font-weight: 800;
-  color: #f59e0b;
+  color: #0d9488;
   line-height: 1;
   margin: 20px 0;
 }
 
 .texto {
   color: #6b7280;
-  font-size: 1rem;
+  font-size: 1.1rem;
+  font-weight: 600;
 }
 
-.contenedor-grafico {
-  width: 200px;
+/* Control de tamaño de las gráficas */
+.contenedorgrafico {
+  width: 100%;
+  max-width: 180px; 
+  height: 180px; 
   margin: 0 auto;
   position: relative;
 }
 
-.contenedor-barras {
-  height: 220px;
+.contenedorbarras {
   width: 100%;
+  height: 200px; 
 }
 
-.info-extra {
-  margin-top: 15px;
-  font-size: 0.9rem;
-  color: #374151;
+.infoextra {
+  margin-top: 20px;
+  font-size: 1rem;
+  color: #4b5563;
+  background-color: #f3f4f6;
+  padding: 8px;
+  border-radius: 8px;
+  font-weight: 600;
 }
 
 /* Aviso cuando no hay viaje */
-.aviso-vacio {
+.avisovacio {
   text-align: center;
   margin-top: 50px;
-  color: #9ca3af;
-  padding: 40px;
-  background: #f9fafb;
-  border-radius: 8px;
+  color: #6b7280;
+  padding: 50px;
+  background: white;
+  border-radius: 12px;
+  border: 2px dashed #e5e7eb;
 }
+
+.iconoaviso {
+  background-color: #f0fdfa;
+  color: #0d9488;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px auto;
+}
+
+.iconoaviso svg { width: 30px; height: 30px; }

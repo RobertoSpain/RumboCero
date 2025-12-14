@@ -1,298 +1,355 @@
-/* --- LAYOUT PRINCIPAL  --- */
+/* 1. LAYOUT PRINCIPAL */
 .foro {
   background-color: #f3f4f6;
   min-height: 100vh;
   padding: 40px 20px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Segoe UI', system-ui, sans-serif;
 }
 
-/* --- CABECERA --- */
+/* Clase auxiliar para centrar el spinner de carga */
+.centrado {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
+}
+
+.contenedorforo {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* 2. CABECERA */
 .cabeceraforo {
-  max-width: 800px;
-  margin: 0 auto 30px auto;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 30px;
   border-bottom: 2px solid #e5e7eb;
-  padding-bottom: 15px;
+  padding-bottom: 20px;
 }
 
 .tituloseccion {
-  font-size: 2rem;
-  color: #111827;
   margin: 0;
+  font-size: 2rem;
+  font-weight: 800;
+  color: #111827;
   display: flex;
   align-items: center;
-  gap: 10px;
-  font-weight: 800;
+  gap: 12px;
 }
 
-/* --- LISTA DE TEMAS  --- */
+.tituloseccion svg {
+  width: 36px;
+  height: 36px;
+  color: #0d9488; 
+}
+
+/* Botón Nuevo Tema */
+.boton-nuevo {
+  background-color: #0d9488;
+  color: white;
+  text-decoration: none;
+  padding: 12px 24px;
+  border-radius: 30px;
+  font-weight: 700;
+  display: inline-flex; 
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 6px rgba(13, 148, 136, 0.2);
+  transition: all 0.2s ease;
+}
+
+.boton-nuevo:hover {
+  background-color: #0f766e;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(13, 148, 136, 0.3);
+}
+
+.boton-nuevo svg { width: 20px; height: 20px; }
+
+/* 3. LISTA DE TEMAS */
 .lista-temas {
-  max-width: 800px;
-  margin: 0 auto;
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
 
-/* --- TARJETA INDIVIDUAL --- */
+/* Tarjeta individual */
 .tarjeta-tema {
   background: white;
   border-radius: 12px;
   padding: 25px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  border-left: 5px solid #3b82f6; 
+  border-left: 5px solid #0d9488;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
 
 .tarjeta-tema:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
 }
 
-/* Parte superior de la tarjeta */
-.tarjeta {
+/* Cabecera de la tarjeta  */
+.tarjeta-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 15px;
+  gap: 15px;
 }
 
 .titulotema {
-  font-size: 1.25rem;
+  margin: 0 0 8px 0;
+  font-size: 1.3rem;
   color: #1f2937;
-  margin: 0;
   font-weight: 700;
 }
 
-/* Datos meta */
 .datostema {
-  font-size: 0.85rem;
-  color: #6b7280;
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-top: 5px;
+  gap: 12px;
+  font-size: 0.9rem;
+  color: #6b7280;
+  flex-wrap: wrap;
 }
+
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.info-item svg { width: 16px; height: 16px; color: #9ca3af; }
 
 .nombre-autor {
   font-weight: 600;
-  color: #3b82f6;
-  background-color: #eff6ff;
+  color: #0d9488;
+  background-color: #f0fdfa;
   padding: 2px 8px;
-  border-radius: 4px;
+  border-radius: 6px;
 }
+
+.separador { color: #d1d5db; }
+.contador-respuestas {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  padding: 6px 12px;
+  border-radius: 20px;
+  white-space: nowrap; 
+}
+
+.contador-respuestas svg { width: 18px; height: 18px; }
+.con-respuestas { color: #0d9488; background-color: #f0fdfa; }
+.sin-respuestas { color: #9ca3af; background-color: #f3f4f6; }
 
 /* Texto del mensaje */
 .texto {
+  margin: 0;
   color: #4b5563;
   line-height: 1.6;
-  white-space: pre-wrap; 
-  margin-bottom: 20px;
+  white-space: pre-wrap;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
-/* Pie de tarjeta  */
+/* 4. PIE DE TARJETA (BOTONES) */
 .pietarjeta {
   padding-top: 15px;
   border-top: 1px solid #f3f4f6;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
-/* Enlace azul de responder */
 .enlace-responder {
   text-decoration: none;
-  color: #3b82f6;
-  font-weight: bold;
+  color: #0d9488;
+  font-weight: 700;
   display: flex;
   align-items: center;
   gap: 5px;
   transition: color 0.2s;
 }
 
-.enlace-responder:hover {
-  color: #1d4ed8;
-}
-
-/* --- BOTONES GENERALES --- */
-.boton-nuevo {
-  background-color: #3b82f6;
-  color: white;
-  text-decoration: none;
-  padding: 10px 20px;
-  border-radius: 8px;
-  font-weight: 600;
-  box-shadow: 0 4px 6px rgba(59, 130, 246, 0.2);
-  transition: background 0.2s;
-}
-
-.boton-nuevo:hover {
-  background-color: #2563eb;
-}
+.enlace-responder:hover { color: #0f766e; text-decoration: underline; }
+/* Botones de Admin */
 .acciones-admin {
   display: flex;
   gap: 10px;
 }
 
-/* Botón Censurar  */
-.boton-censurar {
-  background-color: #f59e0b; 
-  color: white;
+.boton-censurar, .boton-borrar {
   border: none;
-  padding: 6px 12px;
+  padding: 8px 12px;
   border-radius: 6px;
   font-weight: 600;
-  cursor: pointer;
   font-size: 0.85rem;
-  transition: background 0.2s;
-}
-
-.boton-censurar:hover {
-  background-color: #d97706;
-}
-
-/* Botón Borrar  */
-.boton-borrar {
-  background-color: #ef4444;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   color: white;
-  border: none;
-  padding: 6px 12px;
-  border-radius: 6px;
-  font-weight: 600;
-  cursor: pointer;
-  font-size: 0.85rem;
   transition: background 0.2s;
 }
 
-.boton-borrar:hover {
-  background-color: #dc2626;
+.boton-censurar { background-color: #f59e0b; } /* Naranja */
+.boton-censurar:hover { background-color: #d97706; }
+.boton-borrar { background-color: #ef4444; } /* Rojo */
+.boton-borrar:hover { background-color: #dc2626; }
+.boton-censurar svg, .boton-borrar svg { width: 16px; height: 16px; }
+
+/* 5. ESTADO VACÍO */
+.cajavacia {
+  text-align: center;
+  padding: 50px;
+  background: white;
+  border-radius: 12px;
+  color: #6b7280;
+  border: 2px dashed #e5e7eb;
 }
 
-/* --- ESTILOS DE CREAR POST --- */
-.botonborrarpost {
-  background-color: #f3f4f6;
-  color: #4b5563;
-  padding: 12px;
-  border-radius: 8px;
+/* 6. SPINNER DE CARGA ANIMADO */
+.spinner-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  color: #0d9488;
   font-weight: 600;
-  flex: 1; 
-  transition: background 0.2s;
 }
 
-.botonborrarpost:hover {
-  background-color: #e5e7eb;
-  color: #111827;
+.spinner-svg {
+  width: 48px;
+  height: 48px;
+  color: #0d9488;
+  animation: girar 1s linear infinite;
+}
+
+@keyframes girar {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 .crearpost {
-  max-width: 600px;
-  margin: 0 auto;
+  max-width: 700px;
+  margin: 40px auto; 
   background: white;
-  padding: 30px;
-  border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-}
-
-.form {
-  margin-bottom: 20px;
-}
-
-.input-post, .textarea-post {
-  width: 100%;
-  padding: 12px;
-  margin-top: 5px;
-  border: 1px solid #d1d5db;
-  border-radius: 8px;
-  font-size: 16px;
-  outline: none;
-  box-sizing: border-box;
-  font-family: inherit;
-}
-
-.input-post:focus, .textarea-post:focus {
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-}
-
-/* Botón Publicar  */
-.botonpublicar {
-  flex: 2; 
-  padding: 12px;
-  background-color: #10b981; 
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 16px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.botonpublicar:hover {
-  background-color: #059669;
-}
-
-.botonpublicar:disabled {
-  background-color: #9ca3af;
-  cursor: not-allowed;
-}
-
-/* --- ESTADOS VACÍOS Y CONTADORES --- */
-.cajavacia {
-  text-align: center;
   padding: 40px;
-  background: white;
   border-radius: 12px;
-  color: #6b7280;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e5e7eb;
 }
 
-.contador-respuestas {
-  font-size: 0.85rem;
-  font-weight: bold;
-}
-.con-respuestas { color: #3b82f6; }
-.sin-respuestas { color: #9ca3af; }
-
-.titulo-crear {
+.titulocrear {
   margin-top: 0;
   color: #111827;
-}
-
-.texto-ayuda {
-  color: #6b7280;
-  margin-bottom: 20px;
-}
-
-.label-form {
-  font-weight: bold;
-  display: block;
-  margin-bottom: 5px;
-}
-
-.acciones-post {
+  font-size: 1.8rem;
+  font-weight: 800;
   display: flex;
+  align-items: center;
+  justify-content: center;
   gap: 10px;
+}
+
+.titulocrear svg { color: #0d9488; width: 32px; height: 32px; }
+.subtitulocrear {
+  text-align: center;
+  color: #6b7280;
+  margin-bottom: 30px;
+}
+
+.formulariocrear {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.campocrear {
+  display: flex;
+  flex-direction: column;
+}
+
+.labelcrear {
+  font-weight: 700;
+  color: #374151;
+  margin-bottom: 8px;
+  font-size: 0.95rem;
+}
+
+/* Inputs unificados */
+.inputpost, .areapost {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-family: inherit;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  background-color: #f9fafb;
+  box-sizing: border-box; 
+}
+
+.inputpost:focus, .areapost:focus {
+  outline: none;
+  border-color: #0d9488;
+  background-color: white;
+  box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.1);
+}
+
+.areapost { resize: vertical; min-height: 120px; }
+
+/* Botonera */
+.accionespost {
+  display: flex;
+  justify-content: flex-end; 
+  align-items: center;
+  gap: 15px;
   margin-top: 10px;
 }
 
-.boton-cancelar {
+.botoncancelar {
+  color: #6b7280;
   text-decoration: none;
-  text-align: center;
-  display: block; 
+  font-weight: 600;
+  padding: 10px 15px;
+  transition: color 0.2s;
+}
+.botoncancelar:hover { color: #1f2937; }
+
+.botonpublicar {
+  background-color: #0d9488; 
+  color: white;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  min-width: 160px; 
 }
 
-/* --- RESPONSIVE  --- */
+.botonpublicar:hover { background-color: #0f766e; }
+.botonpublicar:disabled { background-color: #9ca3af; cursor: not-allowed; }
+.flexcentro { display: flex; align-items: center; justify-content: center; gap: 8px; }
+.spinnermini { animation: spin 1s linear infinite; width: 20px; height: 20px; }
+@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+/* RESPONSIVE */
 @media (max-width: 600px) {
-  .pietarjeta {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 15px;
-  }
-  
-  .acciones-admin {
-      width: 100%;
-      justify-content: flex-end; 
-  }
+  .cabeceraforo { flex-direction: column; align-items: flex-start; gap: 15px; }
+  .boton-nuevo { width: 100%; justify-content: center; }
+  .tarjeta-header { flex-direction: column; gap: 10px; }
+  .pietarjeta { flex-direction: column; align-items: flex-start; }
+  .acciones-admin { width: 100%; justify-content: flex-end; }
 }

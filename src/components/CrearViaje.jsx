@@ -44,7 +44,7 @@ function CrearViaje() {
         const snapshot = await uploadBytes(storageRef, archivo);
         urlFoto = await getDownloadURL(snapshot.ref);
       } else {
-        urlFoto = 'https://cdn-icons-png.flaticon.com/512/2037/2037061.png';
+        urlFoto = 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=1920&q=80';
       }
 
       await addDoc(collection(db, "viajes"), {
@@ -73,75 +73,58 @@ function CrearViaje() {
     <div className="paginacentrada fondoviajes">
       <div className="cajaformulario efectocristal"> 
         <div className="cabeceraformulario">
-            <h2 className="titulocrear">✨ Nuevo Rumbo</h2>
-            <p className="subtitulocrear">Diseña tu próxima gran aventura.</p>
+            <h2 className="titulocrear">Nuevo Viaje</h2>
+            <p className="subtitulocrear">Planifica tu próxima aventura.</p>
         </div>
-        <form onSubmit={manejarCreacion} className="formularioviaje" role="form" aria-label="Formulario para crear viaje">
+        <form onSubmit={manejarCreacion} className="formularioviaje" role="form">
           <div className="filadoble">
               <div className="campo">
-                <label htmlFor="name">🏷️ Título</label>
-                <input 
-                    type="text" id="name" value={name} onChange={e => setName(e.target.value)} 
-                    required className="entradatexto" placeholder="Ej: Escapada a Roma..."
-                    aria-required="true"/>
+                <label htmlFor="name">Título del Viaje</label>
+                <input type="text" id="name" value={name} onChange={e => setName(e.target.value)} required className="entradatexto" placeholder="Ej: Escapada a Roma..."/>
               </div>
               <div className="campo">
-                <label htmlFor="destinoPrincipal">📍 Destino</label>
-                <input 
-                    type="text" id="destinoPrincipal" value={destinoPrincipal} onChange={e => setDestinoPrincipal(e.target.value)} 
-                    required className="entradatexto" placeholder="Ej: Italia"
-                    aria-required="true"/>
+                <label htmlFor="destinoPrincipal">Destino Principal</label>
+                <input type="text" id="destinoPrincipal" value={destinoPrincipal} onChange={e => setDestinoPrincipal(e.target.value)} required className="entradatexto" placeholder="Ej: Italia"/>
               </div>
           </div>
           <div className="campo">
-            <span className="labeltitulo" id="label-foto">📸 Foto de Portada</span>
-            <label htmlFor="ficheroupload" className={`zonasubida ${archivo ? 'archivoseleccionado' : ''}`} role="button" tabIndex="0">
-                <span className="icononube">{archivo ? '✅' : '☁️'}</span>
+            <span className="labeltitulo" id="label-foto">Foto de Portada</span>
+                        <label htmlFor="ficheroupload" className={`zonasubida ${archivo ? 'archivoseleccionado' : ''}`} role="button" tabIndex="0">
+                <div className="iconosvg">
+                    {archivo ? (
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    ) : (
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
+                        </svg>
+                    )}
+                </div>
                 <span className="textosubida">
-                    {archivo ? `Listo: ${archivo.name}` : "Pulsa para subir una fotaza"}
+                    {archivo ? `Archivo seleccionado: ${archivo.name}` : "Haz clic para subir imagen"}
                 </span>
             </label>
             
-            <input 
-                type="file" 
-                id="ficheroupload" 
-                onChange={(e) => setArchivo(e.target.files[0])} 
-                accept="image/*" 
-                className="inputoculto"
-                aria-labelledby="label-foto"
-            />
+            <input type="file" id="ficheroupload" onChange={(e) => setArchivo(e.target.files[0])} accept="image/*" className="inputoculto" />
           </div>
           <div className="filafechas">
               <div className="campo mitad">
-                <label htmlFor="fechalnicial">🛫 Ida</label>
-                <input 
-                    type="date" id="fechalnicial" value={fechalnicial} onChange={e => setFechalnicial(e.target.value)} 
-                    required className="entradatexto inputfecha" 
-                    aria-required="true"/>
+                <label htmlFor="fechalnicial">Fecha Ida</label>
+                <input type="date" id="fechalnicial" value={fechalnicial} onChange={e => setFechalnicial(e.target.value)} required className="entradatexto inputfecha" />
               </div>
               <div className="campo mitad">
-                <label htmlFor="fechaFinal">🛬 Vuelta</label>
-                <input 
-                    type="date" id="fechaFinal" value={fechaFinal} onChange={e => setFechaFinal(e.target.value)} 
-                    required className="entradatexto inputfecha" 
-                    aria-required="true"/>
+                <label htmlFor="fechaFinal">Fecha Vuelta</label>
+                <input type="date" id="fechaFinal" value={fechaFinal} onChange={e => setFechaFinal(e.target.value)} required className="entradatexto inputfecha" />
               </div>
           </div>
           <div className="campo">
-            <label htmlFor="descripcion">📝 Descripción</label>
-            <textarea 
-                id="descripcion" value={descripcion} onChange={e => setDescripcion(e.target.value)} 
-                rows="3" className="entradatexto areatexto" placeholder="Cuéntanos los planes..."
-            ></textarea>
+            <label htmlFor="descripcion">Descripción</label>
+            <textarea id="descripcion" value={descripcion} onChange={e => setDescripcion(e.target.value)} rows="3" className="entradatexto areatexto" placeholder="Cuéntanos los planes..."></textarea>
           </div>
-          {error && (
-            <div className="mensajeerror" role="alert" aria-live="assertive">
-                ⚠️ {error}
-            </div>
-          )}
-          
-          <button type="submit" className="botonguardar" disabled={cargando} aria-busy={cargando}>
-            {cargando ? '🚀 Subiendo...' : 'Crear Aventura'}
+          {error && <div className="mensajeerror">{error}</div>}
+          <button type="submit" className="botonguardar" disabled={cargando}>
+            {cargando ? 'Guardando...' : 'Crear Viaje'}
           </button>
         </form>
       </div>

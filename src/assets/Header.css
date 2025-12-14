@@ -11,7 +11,6 @@
   position: sticky;
   top: 0;
   z-index: 1000;
-  white-space: nowrap;
 }
 
 /* Contenedor que agrupa logo y botón móvil */
@@ -20,16 +19,16 @@
   align-items: center;
   justify-content: space-between;
   width: auto; 
+  flex-shrink: 0; /
 }
 
-/* El contenido (Nav + Actions) en Desktop */
 .contenido-cabecera {
   display: flex;
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  margin-left: 40px; 
-  gap: 30px; 
+  margin-left: 20px; 
+  gap: 20px;      
 }
 
 /* LOGO */
@@ -50,7 +49,7 @@
 .navegacion {
   display: flex;
   align-items: center;
-  gap: 30px;
+  gap: 20px; 
 }
 
 .enlace-nav {
@@ -60,18 +59,18 @@
   font-size: 0.95rem;
   transition: color 0.2s ease;
   position: relative;
+  white-space: nowrap; 
 }
 .enlace-nav:hover { color: #0d9488; }
-
-/* Enlace especial Admin  */
 .admin-link { color: #ef4444; }
 .admin-link:hover { color: #dc2626; }
 
-/* ZONA DERECHA */
+/* ZONA DERECHA (USUARIO + BOTONES) */
 .acciones-cabecera {
   display: flex;
   align-items: center;
-  gap: 25px;
+  gap: 15px; 
+  flex-shrink: 0; 
 }
 
 .saludo-usuario {
@@ -80,24 +79,24 @@
   text-decoration: none;
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 8px;
+  white-space: nowrap;
 }
 .saludo-usuario strong { color: #111827; font-weight: 800; }
 
-/* IMAGEN DEL AVATAR  */
+/* IMAGEN DEL AVATAR */
 .imagen-avatar {
   width: 32px;
   height: 32px;
   border-radius: 50%;
   object-fit: cover;
   border: 2px solid #e5e7eb;
-  margin-right: 8px;
   display: block; 
 }
 
 /* BOTONES GENERALES */
 .boton-entrar, .boton-salir, .boton-registro, .boton-crear {
-  padding: 10px 24px;
+  padding: 8px 16px; 
   border-radius: 6px;
   font-weight: 700;
   font-size: 0.9rem;
@@ -108,20 +107,31 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  white-space: nowrap;
 }
 
 .boton-entrar,
 .boton-crear,
 .boton-registro {
-color: #4b5563; 
-  text-decoration: none;
-  font-weight: 600;
-  font-size: 0.95rem;
-  transition: color 0.2s ease;
-  position: relative;
+  color: #4b5563; 
+  background: transparent;
 }
-.boton-entrar:hover,.boton-crear:hover, .boton-registro:hover {
-  color: #0d9488;}
+.boton-entrar:hover, .boton-crear:hover, .boton-registro:hover {
+  color: #0d9488;
+  background-color: #f0fdfa; 
+}
+/* --- CAMBIO 2: BOTÓN SALIR ROJO --- */
+.boton-salir {
+  color: #ef4444; 
+  background-color: transparent;
+  border: 1px solid transparent;
+}
+
+.boton-salir:hover {
+  color: #b91c1c; 
+  background-color: #fef2f2; 
+  border-color: #fecaca;
+}
 
 /* --- HAMBURGUESA --- */
 .boton-menu {
@@ -192,6 +202,7 @@ color: #4b5563;
   from { opacity: 0; transform: translateY(-10px); }
   to { opacity: 1; transform: translateY(0); }
 }
+/* AJUSTE PARA PORTÁTILES Y PANTALLAS MEDIANAS */
 @media (min-width: 961px) and (max-width: 1300px) {
   .cabecera {
     padding: 0 20px; 
@@ -199,13 +210,15 @@ color: #4b5563;
   .navegacion {
     gap: 15px; 
   }
-  .enlace-nav, .boton-entrar, .boton-salir, .saludo-usuario {
-    font-size: 0.85rem; 
+  .enlace-nav {
+    font-size: 0.9rem; 
   }
-  .acciones-cabecera {
-    gap: 20px; 
-  }
-  .contenido-cabecera {
-    gap: 20px; 
+  .saludo-usuario strong {
+      max-width: 100px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      display: inline-block;
+      vertical-align: bottom;
   }
 }
