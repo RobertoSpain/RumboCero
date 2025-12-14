@@ -5,9 +5,9 @@
   justify-content: space-between;
   padding: 0 5%;
   height: 80px;
-  background-color: #ffffff;
-  border-bottom: 1px solid #f3f4f6;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  background-color: #E0F7FA; 
+  border-bottom: none; 
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04); 
   position: sticky;
   top: 0;
   z-index: 1000;
@@ -37,24 +37,24 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  font-size: 1.5rem;
+  font-size: 1.6rem; 
   font-weight: 800;
   color: #111827;
   text-decoration: none;
   letter-spacing: -0.5px;
-  transition: transform 0.2s;
+  transition: color 0.2s;
 }
-.logo-marca:hover { transform: scale(1.02); }
+.logo-marca:hover { color: #0d9488; } 
 
 /* MENÚ DE NAVEGACIÓN */
 .navegacion {
   display: flex;
   align-items: center;
-  gap: 25px;
+  gap: 30px;
 }
 
 .enlace-nav {
-  color: #6b7280;
+  color: #4b5563; 
   text-decoration: none;
   font-weight: 600;
   font-size: 0.95rem;
@@ -63,7 +63,7 @@
 }
 .enlace-nav:hover { color: #0d9488; }
 
-/* Enlace especial Admin (Rojo) */
+/* Enlace especial Admin  */
 .admin-link { color: #ef4444; }
 .admin-link:hover { color: #dc2626; }
 
@@ -71,7 +71,7 @@
 .acciones-cabecera {
   display: flex;
   align-items: center;
-  gap: 35px;
+  gap: 25px;
 }
 
 .saludo-usuario {
@@ -84,7 +84,7 @@
 }
 .saludo-usuario strong { color: #111827; font-weight: 800; }
 
-/* IMAGEN DEL AVATAR  */
+/* IMAGEN DEL AVATAR  */
 .imagen-avatar {
   width: 32px;
   height: 32px;
@@ -98,7 +98,7 @@
 /* BOTONES GENERALES */
 .boton-entrar, .boton-salir, .boton-registro, .boton-crear {
   padding: 10px 24px;
-  border-radius: 50px;
+  border-radius: 6px;
   font-weight: 700;
   font-size: 0.9rem;
   text-decoration: none;
@@ -110,23 +110,18 @@
   justify-content: center;
 }
 
-/* Botón Principal (Login y Crear Viaje) */
-.boton-entrar, .boton-crear {
-  background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
-  color: white;
-  box-shadow: 0 4px 6px rgba(13, 148, 136, 0.25);
+.boton-entrar,
+.boton-crear,
+.boton-registro {
+color: #4b5563; 
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: color 0.2s ease;
+  position: relative;
 }
-.boton-entrar:hover, .boton-crear:hover { 
-  transform: translateY(-2px); 
-  box-shadow: 0 6px 12px rgba(13, 148, 136, 0.3); 
-}
-
-/* Botón Salir (Rojo) */
-.boton-salir { background-color: #fee2e2; color: #ef4444; }
-.boton-salir:hover { background-color: #fecaca; color: #dc2626; }
-/* Botón Registro (Fantasma) */
-.boton-registro { background: transparent; color: #4b5563; }
-.boton-registro:hover { background: #f3f4f6; color: #111827; }
+.boton-entrar:hover,.boton-crear:hover, .boton-registro:hover {
+  color: #0d9488;}
 
 /* --- HAMBURGUESA --- */
 .boton-menu {
@@ -138,7 +133,7 @@
   cursor: pointer;
 }
 
-/* RESPONSIVE / MÓVIL (Menor de 960px) */
+/* RESPONSIVE / MÓVIL */
 @media (max-width: 960px) {
   .cabecera {
     padding: 0 20px;
@@ -146,7 +141,6 @@
     height: auto; 
     align-items: stretch;
   }
-
   .cabecera-movil {
     height: 80px; 
     width: 100%;
@@ -154,47 +148,40 @@
     justify-content: space-between;
     align-items: center;
   }
-
   .boton-menu {
     display: block;
   }
-
   .contenido-cabecera {
     display: none; 
     flex-direction: column;
     width: 100%;
     margin-left: 0;
-    background-color: white;
+    background-color: #E0F7FA; 
     padding-bottom: 20px;
     border-top: 1px solid #f3f4f6;
     animation: slideDown 0.3s ease-out;
     gap: 0; 
   }
-
   .contenido-cabecera.activo {
     display: flex;
   }
-
   .navegacion {
     flex-direction: column;
     width: 100%;
     gap: 0;
   }
-
   .enlace-nav {
     width: 100%;
     padding: 15px;
     text-align: center;
     border-bottom: 1px solid #f9fafb;
   }
-
   .acciones-cabecera {
     flex-direction: column;
     gap: 15px;
     margin-top: 20px;
     width: 100%;
   }
-  /* Ajustar botones en móvil */
   .boton-entrar, .boton-salir, .boton-registro, .boton-crear {
     width: 80%; 
   }
