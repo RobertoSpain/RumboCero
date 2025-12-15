@@ -16,20 +16,17 @@
   font-size: 1.2rem;
 }
 
-/* 2. PORTADA  */
+/* 2. PORTADA */
 .seccionportada {
-  width: 100vw; 
+  width: 100%; 
   position: relative; 
-  left: 50%; 
-  right: 50%; 
-  margin-left: -50vw; 
-  margin-right: -50vw; 
-  max-width: none;
-  height: 300px; 
+  height: 350px; 
   background-size: cover; 
   background-position: center; 
   display: flex; 
   align-items: flex-end;
+  margin-top: -40px; 
+  padding-top: 40px;
 }
 
 .capahero {
@@ -47,7 +44,6 @@
   margin: 0 auto;
   color: white;
   
-  /* --- CORRECCIÓN IMPORTANTE: ALINEACIÓN --- */
   display: flex;
   flex-direction: column;
   align-items: flex-start; 
@@ -139,7 +135,6 @@
   letter-spacing: 1px;
 }
 
-/* Color verde para los iconos SVG de los títulos */
 .titulotarjeta svg {
   color: #0d9488;
 }
@@ -284,6 +279,51 @@
 .imagendestino { width: 40px; height: 40px; border-radius: 4px; object-fit: cover; }
 .checkboxdestino, .checkboxmaleta { width: 18px; height: 18px; accent-color: #0d9488; cursor: pointer; }
 
+/* --- ESTILOS DE LISTA DE VIAJEROS --- */
+
+.caja-viajeros {
+  margin-top: 15px;
+  background: rgba(0, 0, 0, 0.3); 
+  padding: 10px 20px;
+  border-radius: 10px;
+  backdrop-filter: blur(5px); 
+  display: inline-block;
+  max-width: 100%;
+}
+
+.lista-emails {
+  display: flex; 
+  flex-wrap: wrap;     
+  gap: 12px;           
+  align-items: center;
+}
+
+.badge-email {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 5px 12px;
+  border-radius: 15px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  white-space: nowrap;
+}
+
+.lista-emails {
+  display: flex;       
+  flex-wrap: wrap;     
+  gap: 12px;           
+  align-items: center;
+}
+
+.badge-email {
+  padding: 5px 12px;
+  border-radius: 15px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  white-space: nowrap; 
+}
+
 /* Botones de borrar con SVG */
 .botonbasura, .botonborraritem {
   border: none;
@@ -350,38 +390,6 @@
 .botonagregar:active, .botonmas:active { transform: scale(0.98); }
 .botonmas { width: 44px; padding: 0; }
 
-/* 9. ZONA SUBIDA PERSONALIZADA */
-.inputoculto { display: none; }
-.cajafoto { width: 100%; margin-top: 10px; }
-
-.zonasubidadestino {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    padding: 10px;
-    background-color: #f9fafb;
-    border: 2px dashed #d1d5db;
-    border-radius: 8px;
-    color: #6b7280;
-    cursor: pointer;
-    transition: all 0.2s;
-    font-size: 0.9rem;
-    font-weight: 600;
-}
-.zonasubidadestino:hover {
-    border-color: #0d9488;
-    background-color: #f0fdfa;
-    color: #0d9488;
-}
-.zonasubidadestino.archivoseleccionado {
-    border-style: solid;
-    border-color: #059669;
-    background-color: #ecfdf5;
-    color: #059669;
-}
-.icono { display: flex; align-items: center; }
-
 /* 10. AGENDA */
 .item-agenda { display: flex; align-items: center; margin-bottom: 10px; background-color: white; padding: 10px; border-radius: 8px; border: 1px solid #e5e7eb; border-left: 4px solid #3b82f6; transition: transform 0.2s ease; }
 .item-agenda:hover { transform: scale(1.01); box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
@@ -427,6 +435,6 @@
   .tarjeta-foto { width: 220px; height: 130px; }
   
   .caja-viajeros { margin-top: 15px; background: rgba(0,0,0,0.3); padding: 10px 20px; border-radius: 10px; backdrop-filter: blur(5px); display: inline-block; }
-  .lista-emails { display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-start; }
-  .badge-email { background: rgba(255,255,255,0.2); padding: 4px 10px; border-radius: 15px; font-size: 0.85rem; color: white; } 
+  .lista-emails { display: flex; flex-wrap: wrap; gap: 12px; justify-content: flex-start; }
+  .badge-email { background: rgba(255,255,255,0.2); padding: 6px 12px; border-radius: 15px; font-size: 0.85rem; color: white; } 
 }

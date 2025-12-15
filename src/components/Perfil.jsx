@@ -20,6 +20,7 @@ export default function Perfil() {
     });
     return () => unsubscribe();
   }, []);
+
   const guardarCambios = async (e) => {
     e.preventDefault();
     const userReal = auth.currentUser;
@@ -30,17 +31,18 @@ export default function Perfil() {
     try {
       let urlFotoFinal = foto; 
       
+      // 1. Actualizar en Firebase Auth
       await updateProfile(userReal, {
         displayName: nombre,
         photoURL: urlFotoFinal
       });
-
+      // 2. Actualizar en Firestore
       const userRef = doc(db, 'usuarios', userReal.uid);
       await updateDoc(userRef, {
         nombre: nombre,
         foto: urlFotoFinal 
       });
-
+      // 3. Actualizar LocalStorage y Estado local
       localStorage.setItem('usuario', nombre);
       localStorage.setItem('fotoPerfil', urlFotoFinal); 
       setNombre(nombre);
@@ -48,6 +50,7 @@ export default function Perfil() {
       
       await userReal.reload(); 
       setUsuario(auth.currentUser); 
+      window.dispatchEvent(new Event("perfilActualizado"));
       alert("¡Perfil actualizado con éxito!");
     } catch (error) {
       console.error("Error al actualizar:", error);
@@ -69,7 +72,6 @@ export default function Perfil() {
             </svg>
             Editar Perfil
         </h1>
-        
         <div className="cabeceraperfil">
           <img 
             src={foto || 'https://cdn-icons-png.flaticon.com/512/149/149071.png'} 
@@ -107,18 +109,9 @@ export default function Perfil() {
           </div> 
           <button type="submit" className="botonguardar" disabled={cargando} aria-busy={cargando}>
             {cargando ? (
-                <span className="flexcentro">
-                    <svg className="spinner-loading" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
-                    Guardando...
-                </span>
+                <span className="flexcentro">Guardando...</span>
             ) : (
                 <span className="flexcentro">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" aria-hidden="true" className="icono-btn">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 3.75V16.5L12 14.25 7.5 16.5V3.75m9 0H18A2.25 2.25 0 0120.25 6v12A2.25 2.25 0 0118 20.25H6A2.25 2.25 0 013.75 18V6A2.25 2.25 0 016 3.75h1.5m9 0h-9" />
-                    </svg>
                     Guardar Cambios
                 </span>
             )}

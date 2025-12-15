@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { doc, setDoc, Timestamp } from 'firebase/firestore';
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
 import { auth, db } from '../firebase';
 import '../assets/Estiloslogin.css'; 
 
@@ -11,25 +11,30 @@ const Registro = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
-
   const manejarRegistro = async (e) => {
     e.preventDefault();
     setError('');
 
     if (!nombre || !email || !password) {
         setError('Por favor, rellena todos los campos');
-        return;}
+        return;
+    }
+
     try {
       // 1. Crear usuario en Auth
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
-      // 2. Guardar ficha en Firestore 
+      // 2. MAGIA: Actualizar el perfil de Auth inmediatamente
+      await updateProfile(user, {
+        displayName: nombre
+      });
+      // 3. Guardar ficha en Firestore 
       await setDoc(doc(db, "usuarios", user.uid), {
         uid: user.uid,
         nombre: nombre,
         email: email,
         rol: 'usuario', 
-        createAt: Timestamp.now()
+        createdAt: serverTimestamp() 
       });
       navigate('/viajes'); 
     } catch (error) {
@@ -55,6 +60,7 @@ const Registro = () => {
             placeholder="Nombre de usuario"
             value={nombre}
             onChange={(e) => setNombre(e.target.value)}
+            required
           />
           <input 
             type="email" 
@@ -62,6 +68,7 @@ const Registro = () => {
             placeholder="Correo electrónico"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            required
           />
           <input 
             type="password" 
@@ -69,6 +76,7 @@ const Registro = () => {
             placeholder="Contraseña"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            required
           />
           <button type="submit" className="botonentrar">
             Registrarse

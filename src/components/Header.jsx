@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { auth } from '../firebase'; 
-import '../assets/Header.css'; 
+import { auth } from '../firebase';
+import '../assets/Header.css';
 
 const IconoAvion = () => (
     <svg viewBox="0 0 24 24" width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -18,25 +18,44 @@ const IconoAvion = () => (
 export default function Header({ usuario, rol, foto, onLogout }) {
     const navegar = useNavigate();
     const [menuAbierto, setMenuAbierto] = useState(false);
-    const [fotoHeader, setFotoHeader] = useState(foto); 
+    const [fotoHeader, setFotoHeader] = useState(foto);
+    const [nombreHeader, setNombreHeader] = useState(usuario);
 
     useEffect(() => {
         setFotoHeader(foto);
     }, [foto]);
+
+    useEffect(() => {
+        setNombreHeader(usuario);
+    }, [usuario]);
+
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged((user) => {
-            if (user && user.photoURL !== fotoHeader) {
-                setFotoHeader(user.photoURL); 
+            if (user) {
+                if (user.photoURL !== fotoHeader) setFotoHeader(user.photoURL);
+                if (user.displayName !== nombreHeader) setNombreHeader(user.displayName);
             }
         });
         return () => unsubscribe();
-    }, [fotoHeader]); 
+    }, [fotoHeader, nombreHeader]);
+
+    useEffect(() => {
+        const escucharCambiosPerfil = () => {
+            const user = auth.currentUser;
+            if (user) {
+                setFotoHeader(user.photoURL);
+                setNombreHeader(user.displayName);
+            }
+        };
+        window.addEventListener("perfilActualizado", escucharCambiosPerfil);
+                return () => window.removeEventListener("perfilActualizado", escucharCambiosPerfil);
+    }, []);
 
     const cerrarMenu = () => setMenuAbierto(false);
     const alternarMenu = () => setMenuAbierto(!menuAbierto);
     const cerrarSesion = () => {
         if (onLogout) onLogout();
-        navegar('/'); 
+        navegar('/');
         cerrarMenu();
     };
     return (
@@ -71,19 +90,19 @@ export default function Header({ usuario, rol, foto, onLogout }) {
                     {usuario ? (
                         <>
                             <Link to="/perfil" className="saludo-usuario" onClick={cerrarMenu}>
-                                <img 
-                                    src={fotoHeader || 'https://cdn-icons-png.flaticon.com/512/149/149071.png'} 
-                                    alt="Avatar" 
+                                <img
+                                    src={fotoHeader || 'https://cdn-icons-png.flaticon.com/512/149/149071.png'}
+                                    alt="Avatar"
                                     className="imagen-avatar"
                                     onError={(e) => e.target.src = 'https://cdn-icons-png.flaticon.com/512/149/149071.png'}
                                 />
-                                <span>Hola, <strong>{usuario}</strong></span>
+                                <span>Hola, <strong>{nombreHeader || usuario}</strong></span>
                             </Link>
                             <button onClick={cerrarSesion} className="boton-salir">Cerrar Sesión</button>
-                        </> 
+                        </>
                     ) : (
                         <>
-                            <Link to="/" className="enlace-nav" onClick={cerrarMenu}>Inicio</Link> 
+                            <Link to="/" className="enlace-nav" onClick={cerrarMenu}>Inicio</Link>
                             <Link to="/login" className="boton-entrar" onClick={cerrarMenu}>Iniciar Sesión</Link>
                             <Link to="/registro" className="boton-registro" onClick={cerrarMenu}>Registro</Link>
                             <Link to="/contacto" className="enlace-nav" onClick={cerrarMenu}>Contacto</Link>
