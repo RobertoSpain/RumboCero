@@ -1,10 +1,9 @@
 import { useState, useEffect } from 'react';
 import { db, auth } from '../firebase';
-import { collection, query, where, onSnapshot } from 'firebase/firestore';
+import { collection, query, where, onSnapshot, or } from 'firebase/firestore';
 import { onAuthStateChanged } from 'firebase/auth'; 
 import '../assets/Estadisticas.css';
 
-// IMPORTS DE GRÁFICOS
 import {
   Chart as ChartJS,
   ArcElement,      
@@ -16,24 +15,29 @@ import {
   Title
 } from 'chart.js';
 import { Doughnut, Bar } from 'react-chartjs-2';
-
 ChartJS.register(ArcElement, BarElement, CategoryScale, LinearScale, Tooltip, Legend, Title);
-
 export default function Estadisticas() {
   const [viajes, setViajes] = useState([]); 
   const [idViajeSeleccionado, setIdViajeSeleccionado] = useState(''); 
-const [datosFirebase, setDatosFirebase] = useState({
+  const [datosFirebase, setDatosFirebase] = useState({
     checklistCompletado: 0,
     checklistTotal: 0,
     destinosVisitados: 0,
     destinosTotal: 0
   });
 
-  // 1. Cargar Viajes del Usuario
+  // 1. Cargar Viajes (Propios + Invitados)
   useEffect(() => {
      const unsubscribe = onAuthStateChanged(auth, (user) => {
         if(user) {
-            const q = query(collection(db, 'viajes'), where('owner', '==', user.uid));
+            const q = query(
+                collection(db, 'viajes'), 
+                or(
+                    where('owner', '==', user.uid),
+                    where('participantes', 'array-contains', user.uid)
+                )
+            );
+
             onSnapshot(q, (snapshot) => {
                 const lista = snapshot.docs.map(doc => ({
                     id: doc.id, 
@@ -50,7 +54,7 @@ const [datosFirebase, setDatosFirebase] = useState({
   const calcularDiasRestantes = () => {
     if (!idViajeSeleccionado) return 0;
     const viaje = viajes.find(v => v.id === idViajeSeleccionado);
-    if (!viaje || !viaje.fechalnicial) return 0;
+    if (!viaje || !viaje.fechalnicial) return 0; 
     let fechaInicioObj;
 
     if (viaje.fechalnicial.toDate) {
@@ -68,7 +72,6 @@ const [datosFirebase, setDatosFirebase] = useState({
   };
 
   const diasRestantes = calcularDiasRestantes();
-  // 3. Listeners de Subcolecciones 
   useEffect(() => {
     if (!idViajeSeleccionado) return;
     const unsubDestinos = onSnapshot(collection(db, 'viajes', idViajeSeleccionado, 'destinos'), (snap) => {
@@ -76,7 +79,6 @@ const [datosFirebase, setDatosFirebase] = useState({
         const visitados = snap.docs.filter(d => d.data().visitado === true).length;
         setDatosFirebase(prev => ({ ...prev, destinosTotal: total, destinosVisitados: visitados }));
     });
-    // Listener de Checklist
     const unsubChecklist = onSnapshot(collection(db, 'viajes', idViajeSeleccionado, 'checklist'), (snap) => {
         const total = snap.size;
         const completados = snap.docs.filter(d => d.data().completado === true || d.data().preparado === true).length;
@@ -135,7 +137,6 @@ const [datosFirebase, setDatosFirebase] = useState({
         </div>
         {idViajeSeleccionado ? (
             <div className="rejilladatos" role="region" aria-label="Gráficas del viaje">
-                {/* TARJETA 1: CUENTA ATRÁS */}
                 <article className="bloquedatos">
                     <h3 className="cajatitulo">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
@@ -148,7 +149,6 @@ const [datosFirebase, setDatosFirebase] = useState({
                     </div>
                     <p className="texto">Días para el despegue</p>
                 </article>
-                {/* TARJETA 2: EQUIPAJE */}
                 <article className="bloquedatos">
                     <h3 className="cajatitulo">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
@@ -164,7 +164,6 @@ const [datosFirebase, setDatosFirebase] = useState({
                     </p>
                 </article>
 
-                {/* TARJETA 3: ITINERARIO */}
                 <article className="bloquedatos">
                     <h3 className="cajatitulo">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
