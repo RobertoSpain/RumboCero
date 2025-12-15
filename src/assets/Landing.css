@@ -1,379 +1,380 @@
 /* --- 1. FONDO --- */
 .paginalanding {
-    height: 100vh;
-    width: 100%;
-    background-image: url('https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?q=80&w=2070&auto=format&fit=crop');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    text-align: center;
-    color: white;
-    font-family: 'Segoe UI', sans-serif;
-    overflow: hidden;
+  height: 100vh;
+  width: 100%;
+  background-image: url('https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?q=80&w=2070&auto=format&fit=crop');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  text-align: center;
+  color: white;
+  font-family: 'Segoe UI', sans-serif;
+  overflow: hidden;
 }
 
 /* --- 2. EL FILTRO --- */
 .filtrooscuro {
-    position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0, 0, 0, 0.3);
-    z-index: 1;
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 1;
 }
 
 /* --- 3. LA CAJA DEL MEDIO --- */
 .cajacentral {
-    position: relative;
-    z-index: 2;
-    max-width: 56.25rem; 
-    padding: 0 1.25rem; 
-    animation: subir 1s ease-out;
+  position: relative;
+  z-index: 2;
+  max-width: 56.25rem; 
+  padding: 0 1.25rem; 
+  animation: subir 1s ease-out;
 }
 
 @keyframes subir {
-    from { opacity: 0; transform: translateY(1.875rem); } 
-    to { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; transform: translateY(1.875rem); } 
+  to { opacity: 1; transform: translateY(0); }
 }
 
 /* --- 4. TEXTOS --- */
 .titulazo {
-    font-size: 3.5rem;
-    font-weight: 800;
-    margin-bottom: 1.56rem; 
-    line-height: 1.1;
-    text-shadow: 0 0.25rem 1.25rem rgba(0,0,0,0.9); 
+  font-size: 3.5rem;
+  font-weight: 800;
+  margin-bottom: 1.56rem; 
+  line-height: 1.1;
+  text-shadow: 0 0.25rem 1.25rem rgba(0,0,0,0.9); 
 }
 
 .resalteverde {
-    color: #4ade80;
-    text-shadow: 0 0.25rem 1.25rem rgba(0,0,0,0.9); 
+  color: #4ade80;
+  text-shadow: 0 0.25rem 1.25rem rgba(0,0,0,0.9); 
 }
 
 .parrafolanding {
-    font-size: 1.25rem;
-    margin-bottom: 2.5rem; /* 40px */
-    line-height: 1.6;
-    font-weight: 700;
+  font-size: 1.25rem;
+  margin-bottom: 2.5rem; /* 40px */
+  line-height: 1.6;
+  font-weight: 700;
 
-    color: #ffffff !important;
-    opacity: 1;
-    text-shadow: 0 0.125rem 0.625rem rgba(0,0,0,1); 
+  color: #ffffff !important;
+  opacity: 1;
+  text-shadow: 0 0.125rem 0.625rem rgba(0,0,0,1); 
 
-    max-width: 50rem; 
-    margin-left: auto;
-    margin-right: auto;
+  max-width: 50rem; 
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* --- 5. BOTONES --- */
 .zonabotones {
-    display: flex;
-    gap: 1.25rem; 
-    justify-content: center;
-    flex-wrap: wrap;
+  display: flex;
+  gap: 1.25rem; 
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
 .botonlanding {
-    padding: 0.875rem 2rem; 
-    border-radius: 50px; 
-    text-decoration: none;
-    font-weight: 700;
-    font-size: 1.1rem;
-    transition: all 0.3s ease;
-    display: inline-block;
-    backdrop-filter: blur(0.125rem); 
+  padding: 0.875rem 2rem; 
+  border-radius: 50px; 
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+  display: inline-block;
+  backdrop-filter: blur(0.125rem); 
 }
 
 .botonazul {
-    background-color: #3b82f6;
-    color: white;
-    border: 0.125rem solid #3b82f6; 
-    box-shadow: 0 0.25rem 0.94rem rgba(0, 0, 0, 0.5); 
+  background-color: #3b82f6;
+  color: white;
+  border: 0.125rem solid #3b82f6; 
+  box-shadow: 0 0.25rem 0.94rem rgba(0, 0, 0, 0.5); 
 }
 
 .botonazul:hover {
-    background-color: #2563eb;
-    border-color: #2563eb;
-    transform: translateY(-0.1875rem); 
+  background-color: #2563eb;
+  border-color: #2563eb;
+  transform: translateY(-0.1875rem); 
 }
 
 .botontransparente {
-    background-color: rgba(255, 255, 255, 0.1);
-    color: white;
-    border: 0.125rem solid white; 
-    text-shadow: 0 0.0625rem 0.1875rem rgba(0,0,0,0.8); 
+  background-color: rgba(255, 255, 255, 0.1);
+  color: white;
+  border: 0.125rem solid white; 
+  text-shadow: 0 0.0625rem 0.1875rem rgba(0,0,0,0.8); 
 }
 
 .botontransparente:hover {
-    background-color: white;
-    color: #111827;
-    text-shadow: none;
-    transform: translateY(-0.1875rem); 
+  background-color: white;
+  color: #111827;
+  text-shadow: none;
+  transform: translateY(-0.1875rem); 
 }
 
-/* --- 6. FOOTER SOCIAL --- */
-.footer-social {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-
-    /* Diseño y Estilo */
-    background-color: rgba(0, 0, 0, 0.6);
-    padding: 0.625rem 0; 
-    z-index: 5;
-    box-shadow: 0 -0.125rem 0.625rem rgba(0, 0, 0, 0.5); 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 1.875rem; 
-}
-
-/* Regla necesaria para mostrar el texto en pantallas grandes */
-.footer-info {
-    display: block;
-    color: white;
-    font-size: 0.95rem;
-}
-
-.footer-social a {
-    color: white;
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 0.95rem;
-    padding: 0.3125rem 0.625rem; 
-    border-radius: 5px; 
-    transition: background-color 0.3s ease;
-}
-
-.footer-social a:hover {
-    background-color: rgba(255, 255, 255, 0.15);
-    color: #4ade80;
-}
-
-
-/* --- 7. SECCIÓN DE CARACTERÍSTICAS  --- */
+/* --- 6. SECCIÓN DE CARACTERÍSTICAS  --- */
 
 .caracteristicas-section {
-    background-color: #f7fafc; 
-    width: 100%;
-    padding: 5rem 1.25rem; 
-    position: relative;
-    z-index: 3;
-    overflow: hidden;
+  background-color: #f7fafc; 
+  width: 100%;
+  padding: 5rem 1.25rem; 
+  position: relative;
+  z-index: 3;
+  overflow: hidden;
 }
 
 .contenedor-caracteristicas {
-    max-width: 75rem; 
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-around;
-    gap: 2.5rem; 
-    flex-wrap: wrap;
+  max-width: 75rem; 
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-around;
+  gap: 2.5rem; 
+  flex-wrap: wrap;
 }
 
 .bloque-caracteristica {
-    flex: 1; 
-    min-width: 17.5rem; 
-    padding: 1.875rem; 
-    border-radius: 12px; 
-    background-color: #ffffff; 
-    box-shadow: 0 0.25rem 0.94rem rgba(0, 0, 0, 0.05); 
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    text-align: center;
+  flex: 1; 
+  min-width: 17.5rem; 
+  padding: 1.875rem; 
+  border-radius: 12px; 
+  background-color: #ffffff; 
+  box-shadow: 0 0.25rem 0.94rem rgba(0, 0, 0, 0.05); 
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  text-align: center;
 }
 
 .bloque-caracteristica:hover {
-    transform: translateY(-0.3125rem); 
-    box-shadow: 0 0.625rem 1.56rem rgba(0, 0, 0, 0.1); 
+  transform: translateY(-0.3125rem); 
+  box-shadow: 0 0.625rem 1.56rem rgba(0, 0, 0, 0.1); 
 }
 
 .bloque-caracteristica h3 {
-    color: #111827; 
-    margin-top: 0.94rem; 
-    margin-bottom: 0.625rem; 
-    font-size: 1.5rem;
+  color: #111827; 
+  margin-top: 0.94rem; 
+  margin-bottom: 0.625rem; 
+  font-size: 1.5rem;
 }
 
 .bloque-caracteristica p {
-    color: #6b7280; 
-    line-height: 1.6;
+  color: #6b7280; 
+  line-height: 1.6;
 }
 
 /* Estilos para los Íconos SVG */
 .icono-feature {
-    width: 3rem; 
-    height: 3rem; 
-    color: #0d9488; 
-    margin: 0 auto;
+  width: 3rem; 
+  height: 3rem; 
+  color: #0d9488; 
+  margin: 0 auto;
 }
 
 /* Ocultar contenido a los ojos pero mantenerlo para lectores de pantalla */
 .sr-only {
-    position: absolute;
-    width: 0.0625rem; 
-    height: 0.0625rem; 
-    padding: 0;
-    margin: -0.0625rem; 
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border-width: 0;
+  position: absolute;
+  width: 0.0625rem; 
+  height: 0.0625rem; 
+  padding: 0;
+  margin: -0.0625rem; 
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
 }
 
-/* --- 8. SECCIÓN SOBRE NOSOTROS --- */
+/* --- 7. SECCIÓN SOBRE NOSOTROS --- */
 .sobre-nosotros {
-    background-color: #f8fafc; 
-    padding: 5rem 1.25rem; 
-    display: flex;
-    justify-content: center;
+  background-color: #f8fafc; 
+  padding: 5rem 1.25rem; 
+  display: flex;
+  justify-content: center;
 }
 
 .contenedor-sobre-nosotros {
-    max-width: 75rem; 
-    width: 100%;
-    display: flex;
-    align-items: center;
-    gap: 3.75rem; 
-    flex-wrap: wrap; 
+  max-width: 75rem; 
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 3.75rem; 
+  flex-wrap: wrap; 
 }
 
 /* Imagen */
 .imagen-sobre-nosotros {
-    flex: 1;
-    min-width: 18.75rem; 
+  flex: 1;
+  min-width: 18.75rem; 
 }
 
 .imagen-sobre-nosotros img {
-    width: 100%;
-    height: auto;
-    border-radius: 20px; 
-    box-shadow: 0 1.25rem 1.56rem -0.3125rem rgba(0, 0, 0, 0.1), 
-                0 0.625rem 0.625rem -0.3125rem rgba(0, 0, 0, 0.04);
-    object-fit: cover;
-    aspect-ratio: 4/3;
+  width: 100%;
+  height: auto;
+  border-radius: 20px; 
+  box-shadow: 0 1.25rem 1.56rem -0.3125rem rgba(0, 0, 0, 0.1), 
+              0 0.625rem 0.625rem -0.3125rem rgba(0, 0, 0, 0.04);
+  object-fit: cover;
+  aspect-ratio: 4/3;
 }
 
 /* Texto */
 .texto-sobre-nosotros {
-    flex: 1;
-    min-width: 18.75rem; 
-    text-align: left;
+  flex: 1;
+  min-width: 18.75rem; 
+  text-align: left;
 }
 
 .icono-titulo-wrapper {
-    display: flex;
-    align-items: center;
-    gap: 0.94rem; 
-    margin-bottom: 1.25rem; 
+  display: flex;
+  align-items: center;
+  gap: 0.94rem; 
+  margin-bottom: 1.25rem; 
 }
 
 .icono-feature-small {
-    width: 2.18rem; 
-    height: 2.18rem; 
-    color: #0d9488; 
+  width: 2.18rem; 
+  height: 2.18rem; 
+  color: #0d9488; 
 }
 
 .texto-sobre-nosotros h2 {
-    font-size: 2.2rem;
-    color: #1f2937;
-    margin: 0;
-    line-height: 1.2;
+  font-size: 2.2rem;
+  color: #1f2937;
+  margin: 0;
+  line-height: 1.2;
 }
 
 .texto-sobre-nosotros p {
-    font-size: 1.1rem;
-    color: #4b5563;
-    line-height: 1.7;
-    margin-bottom: 1.25rem; 
+  font-size: 1.1rem;
+  color: #4b5563;
+  line-height: 1.7;
+  margin-bottom: 1.25rem; 
 }
 
 .texto-sobre-nosotros strong {
-    color: #0d9488;
+  color: #0d9488;
 }
 
 /* Estadísticas pequeñas */
 .stats-resumen {
-    display: flex;
-    gap: 1.875rem; 
-    margin-top: 1.875rem; 
-    border-top: 0.0625rem solid #e5e7eb; 
-    padding-top: 1.25rem; 
+  display: flex;
+  gap: 1.875rem; 
+  margin-top: 1.875rem; 
+  border-top: 0.0625rem solid #e5e7eb; 
+  padding-top: 1.25rem; 
 }
 
 .stat-item {
-    display: flex;
-    flex-direction: column;
-    font-size: 0.9rem;
-    color: #6b7280;
+  display: flex;
+  flex-direction: column;
+  font-size: 0.9rem;
+  color: #6b7280;
 }
 
 .stat-item strong {
-    font-size: 1.5rem;
-    color: #111827;
+  font-size: 1.5rem;
+  color: #111827;
 }
 
+.footer-pro {
+  background-color: #111827; 
+  color: #9ca3af; 
+  padding: 3.75rem 1.25rem; 
+  font-size: 0.95rem;
+  border-top: 1px solid #1f2937;
+  position: relative; 
+}
 
+.footer-contenedor {
+  max-width: 75rem; 
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15.6rem, 1fr)); 
+  gap: 2.5rem; 
+}
 
+.footer-col {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Columna 1: Marca */
+.footer-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  color: white;
+  font-weight: 800;
+  font-size: 1.3rem;
+}
+.logo-icon-small { width: 1.5rem; height: 1.5rem; color: #0d9488; }
+.footer-desc { line-height: 1.6; font-size: 0.9rem; max-width: 18.75rem; margin: 0; }
+.copyright { font-size: 0.8rem; color: #6b7280; margin-top: auto; }
+
+/* Columna 2: Enlaces */
+.footer-col h4 { color: white; margin: 0; font-size: 1.1rem; }
+.footer-links { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.75rem; }
+.footer-links a { text-decoration: none; color: #9ca3af; transition: color 0.2s; }
+.footer-links a:hover { color: #0d9488; }
+
+/* Columna 3: Tech */
+.tech-tags { display: flex; gap: 0.625rem; flex-wrap: wrap; }
+.tech-tag { background: #1f2937; color: white; padding: 0.25rem 0.75rem; border-radius: 12px; font-size: 0.75rem; font-weight: 600; border: 1px solid #374151; }
+.dev-socials { display: flex; gap: 1rem; margin-top: 0.5rem; }
+.dev-socials a { color: white; opacity: 0.7; transition: all 0.2s; }
+.dev-socials a:hover { opacity: 1; color: #0d9488; transform: translateY(-0.125rem); }
+
+/* --- RESPONSIVE GENERAL --- */
 @media (max-width: 768px) {
-    /* Ajustes de Landing Principal */
-    .titulazo { 
-        font-size: 2.2rem; 
-    }
-    .parrafolanding { 
-        font-size: 1rem; 
-    }
-    .zonabotones { 
-        flex-direction: column; 
-        width: 100%; 
-    }
+  .titulazo { 
+      font-size: 2.2rem; 
+  }
+  .parrafolanding { 
+      font-size: 1rem; 
+  }
+  .zonabotones { 
+      flex-direction: column; 
+      width: 100%; 
+  }
 
-    /* Ajustes de Footer */
-    .footer-social {
-        gap: 0.94rem; 
-        padding: 0.625rem; 
-    }
-    
-    .footer-info {
-        display: none; 
-    }
-    
-    .footer-social a {
-        font-size: 0.85rem; 
-        padding: 0.3125rem; 
-    }
+  /* Ajustes de Características */
+  .caracteristicas-section {
+      padding: 2.5rem 0.94rem; 
+  }
+  
+  .contenedor-caracteristicas {
+      gap: 1.25rem; 
+  }
 
-    /* Ajustes de Características */
-    .caracteristicas-section {
-        padding: 2.5rem 0.94rem; 
-    }
-    
-    .contenedor-caracteristicas {
-        gap: 1.25rem; 
-    }
+  .bloque-caracteristica {
+      min-width: 100%;
+      padding: 1.56rem; 
+  }
 
-    .bloque-caracteristica {
-        min-width: 100%;
-        padding: 1.56rem; 
-    }
+  /* Ajustes Sobre Nosotros */
+  .contenedor-sobre-nosotros {
+      flex-direction: column;
+      gap: 2.5rem; 
+  }
 
-    /* Ajustes Sobre Nosotros */
-    .contenedor-sobre-nosotros {
-        flex-direction: column;
-        gap: 2.5rem; 
-    }
+  .texto-sobre-nosotros {
+      text-align: center;
+  }
 
-    .texto-sobre-nosotros {
-        text-align: center;
-    }
+  .icono-titulo-wrapper {
+      justify-content: center;
+  }
+  
+  .stats-resumen {
+      justify-content: center;
+  }
 
-    .icono-titulo-wrapper {
-        justify-content: center;
-    }
-    
-    .stats-resumen {
-        justify-content: center;
-    }
+  /* Ajuste Footer Móvil */
+  .footer-contenedor {
+      grid-template-columns: 1fr;
+      text-align: center;
+  }
+  .footer-logo { justify-content: center; }
+  .footer-desc { margin: 0 auto; }
+  .dev-socials { justify-content: center; }
+  .tech-tags { justify-content: center; }
 }

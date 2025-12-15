@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { auth, db } from '../firebase'; 
-import { updateProfile } from 'firebase/auth';
+import { updateProfile, updatePassword } from 'firebase/auth';
 import { doc, updateDoc } from 'firebase/firestore';
 import '../assets/Perfil.css'; 
 
@@ -8,6 +8,9 @@ export default function Perfil() {
   const [usuario, setUsuario] = useState(null);
   const [nombre, setNombre] = useState('');
   const [foto, setFoto] = useState('');
+  const [password, setPassword] = useState(''); 
+  const [confirmPassword, setConfirmPassword] = useState(''); 
+  
   const [cargando, setCargando] = useState(false);
 
   useEffect(() => {
@@ -24,37 +27,56 @@ export default function Perfil() {
   const guardarCambios = async (e) => {
     e.preventDefault();
     const userReal = auth.currentUser;
-
     if (!userReal) return;
-    
     setCargando(true);
     try {
       let urlFotoFinal = foto; 
       
-      // 1. Actualizar en Firebase Auth
+      // 1. VALIDACIÓN DE CONTRASEÑAS
+      if (password.trim() !== '') {
+          if (password !== confirmPassword) {
+              alert("❌ Las contraseñas NO coinciden. Por favor, revísalas.");
+              setCargando(false); 
+              return; 
+          }
+          if (password.length < 6) {
+              alert("⚠️ La contraseña debe tener al menos 6 caracteres.");
+              setCargando(false);
+              return;
+          }
+          await updatePassword(userReal, password);
+      }
+      // 2. Actualizar Nombre y Foto 
       await updateProfile(userReal, {
         displayName: nombre,
         photoURL: urlFotoFinal
       });
-      // 2. Actualizar en Firestore
+      // 3. Actualizar en Firestore 
       const userRef = doc(db, 'usuarios', userReal.uid);
       await updateDoc(userRef, {
         nombre: nombre,
         foto: urlFotoFinal 
       });
-      // 3. Actualizar LocalStorage y Estado local
+
+      // 4. Actualizar LocalStorage y Estado local
       localStorage.setItem('usuario', nombre);
       localStorage.setItem('fotoPerfil', urlFotoFinal); 
       setNombre(nombre);
       setFoto(urlFotoFinal);
-      
+      setPassword(''); 
+      setConfirmPassword('');
       await userReal.reload(); 
       setUsuario(auth.currentUser); 
       window.dispatchEvent(new Event("perfilActualizado"));
       alert("¡Perfil actualizado con éxito!");
     } catch (error) {
       console.error("Error al actualizar:", error);
-      alert("Hubo un error al guardar los cambios: " + error.message);
+      
+      if (error.code === 'auth/requires-recent-login') {
+          alert("⚠️ Por seguridad, para cambiar la contraseña debes cerrar sesión y volver a entrar.");
+      } else {
+          alert("Hubo un error: " + error.message);
+      }
     } finally {
       setCargando(false);
     }
@@ -95,7 +117,40 @@ export default function Perfil() {
               required
               aria-required="true"/>
           </div>
-          <div className="campoformulario">
+
+          <div style={{ borderTop: '1px dashed #e5e7eb', marginTop: '20px', paddingTop: '20px' }}>
+              <div className="campoformulario">
+                <label htmlFor="passwordinput">Nueva Contraseña (Opcional)</label>
+                <input 
+                  type="password" 
+                  id="passwordinput"
+                  value={password} 
+                  onChange={(e) => setPassword(e.target.value)} 
+                  className="entradadatos"
+                  placeholder="Nueva contraseña"
+                />
+              </div>
+              {password && (
+                  <div className="campoformulario" style={{ marginTop: '15px' }}>
+                    <label htmlFor="confirmpasswordinput">Repetir Nueva Contraseña</label>
+                    <input 
+                      type="password" 
+                      id="confirmpasswordinput"
+                      value={confirmPassword} 
+                      onChange={(e) => setConfirmPassword(e.target.value)} 
+                      className="entradadatos"
+                      placeholder="Escríbela otra vez para confirmar"
+                    />
+                    {confirmPassword && password !== confirmPassword && (
+                        <small style={{ color: '#ef4444', fontWeight: 'bold' }}>Las contraseñas no coinciden</small>
+                    )}
+                     {confirmPassword && password === confirmPassword && (
+                        <small style={{ color: '#0d9488', fontWeight: 'bold' }}>¡Coinciden!</small>
+                    )}
+                  </div>
+              )}
+          </div>
+          <div className="campoformulario" style={{ marginTop: '20px' }}>
             <label htmlFor="fotoinput">URL de la Foto de Perfil</label>
             <input 
               type="text" 
@@ -103,10 +158,11 @@ export default function Perfil() {
               value={foto} 
               onChange={(e) => setFoto(e.target.value)} 
               className="entradadatos"
-              placeholder="Pega aquí la URL de la imagen (ej: https://ejemplo.com/mi-foto.png)"
+              placeholder="Pega aquí la URL de la imagen"
             />
             <small className="textoayuda">Copia y pega la URL de la imagen que quieres usar.</small>
           </div> 
+
           <button type="submit" className="botonguardar" disabled={cargando} aria-busy={cargando}>
             {cargando ? (
                 <span className="flexcentro">Guardando...</span>

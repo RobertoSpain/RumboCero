@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { db, auth } from '../firebase';
-import { collection, query, where, onSnapshot, or } from 'firebase/firestore';
+import { collection, query, where, onSnapshot } from 'firebase/firestore'; // IMPORTANTE: Quitamos 'or'
 import { onAuthStateChanged } from 'firebase/auth'; 
 import '../assets/Estadisticas.css';
 
@@ -26,16 +26,13 @@ export default function Estadisticas() {
     destinosTotal: 0
   });
 
-  // 1. Cargar Viajes (Propios + Invitados)
+  // 1. Cargar Viajes 
   useEffect(() => {
      const unsubscribe = onAuthStateChanged(auth, (user) => {
         if(user) {
             const q = query(
                 collection(db, 'viajes'), 
-                or(
-                    where('owner', '==', user.uid),
-                    where('participantes', 'array-contains', user.uid)
-                )
+                where('participantes', 'array-contains', user.uid)
             );
 
             onSnapshot(q, (snapshot) => {
@@ -44,11 +41,14 @@ export default function Estadisticas() {
                     ...doc.data()
                 }));
                 setViajes(lista);
+                                if (idViajeSeleccionado && !lista.find(v => v.id === idViajeSeleccionado)) {
+                    setIdViajeSeleccionado('');
+                }
             });
         }
      });
      return () => unsubscribe();
-  }, []);
+  }, [idViajeSeleccionado]); 
 
   // 2. Función Simple para Calcular Días
   const calcularDiasRestantes = () => {
@@ -74,6 +74,8 @@ export default function Estadisticas() {
   const diasRestantes = calcularDiasRestantes();
   useEffect(() => {
     if (!idViajeSeleccionado) return;
+    const viajeExiste = viajes.find(v => v.id === idViajeSeleccionado);
+    if (!viajeExiste) return;
     const unsubDestinos = onSnapshot(collection(db, 'viajes', idViajeSeleccionado, 'destinos'), (snap) => {
         const total = snap.size;
         const visitados = snap.docs.filter(d => d.data().visitado === true).length;
@@ -86,7 +88,7 @@ export default function Estadisticas() {
     });
 
     return () => { unsubDestinos(); unsubChecklist(); };
-  }, [idViajeSeleccionado]); 
+  }, [idViajeSeleccionado, viajes]); 
 
   const dataQuesito = {
     labels: ['Listo', 'Pendiente'],
@@ -135,7 +137,7 @@ export default function Estadisticas() {
                 {viajes.map(v => <option key={v.id} value={v.id}>{v.name}</option>)}
             </select>
         </div>
-        {idViajeSeleccionado ? (
+        {idViajeSeleccionado && viajes.some(v => v.id === idViajeSeleccionado) ? (
             <div className="rejilladatos" role="region" aria-label="Gráficas del viaje">
                 <article className="bloquedatos">
                     <h3 className="cajatitulo">
@@ -148,7 +150,7 @@ export default function Estadisticas() {
                         {diasRestantes}
                     </div>
                     <p className="texto">Días para el despegue</p>
-                </article>
+                </article>   
                 <article className="bloquedatos">
                     <h3 className="cajatitulo">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
@@ -159,9 +161,15 @@ export default function Estadisticas() {
                     <div className="contenedorgrafico">
                         <Doughnut data={dataQuesito} options={{ cutout: '70%', maintainAspectRatio: false }} />
                     </div>
-                    <p className="infoextra">
-                        <strong>{datosFirebase.checklistTotal > 0 ? Math.round((datosFirebase.checklistCompletado / datosFirebase.checklistTotal) * 100) : 0}%</strong> preparado
-                    </p>
+                    <div className="infoextra" style={{ display: 'flex', flexDirection: 'column', gap: '5px', background: 'none', padding: '0', marginTop: '10px' }}>
+                        <span style={{ fontSize: '1.8rem', fontWeight: '800', color: '#0d9488', lineHeight: '1' }}>
+                            {datosFirebase.checklistCompletado} <span style={{fontSize: '1rem', color: '#9ca3af', fontWeight: '400'}}>/ {datosFirebase.checklistTotal}</span>
+                        </span>
+                        
+                        <span style={{ fontSize: '0.9rem', color: '#6b7280', fontWeight: '600' }}>
+                            items listos ({datosFirebase.checklistTotal > 0 ? Math.round((datosFirebase.checklistCompletado / datosFirebase.checklistTotal) * 100) : 0}%)
+                        </span>
+                    </div>
                 </article>
 
                 <article className="bloquedatos">

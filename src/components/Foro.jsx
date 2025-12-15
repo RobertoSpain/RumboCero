@@ -8,7 +8,6 @@ export default function Foro() {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [esAdmin, setEsAdmin] = useState(false);
-
   useEffect(() => {
     const checkAdmin = () => {
       const user = auth.currentUser;
@@ -18,7 +17,6 @@ export default function Foro() {
       }
     };
     checkAdmin();
-
     // 2. Cargar posts 
     const postsRef = collection(db, 'foro');
     const q = query(postsRef, orderBy('createdAt', 'desc'));
@@ -89,7 +87,11 @@ export default function Foro() {
                 <p>Sé el primero en compartir tu experiencia.</p>
             </div>
             ) : (
-            posts.map(post => (
+            posts.map(post => {
+                // VERIFICAMOS SI ESTÁ BANEADO
+                const estaBaneado = post.titulo.includes("⛔ TEMA ELIMINADO");
+
+                return (
                 <article key={post.id} className="tarjeta-tema" aria-labelledby={`titulo-${post.id}`}>
                 
                 <div className="tarjeta-header">
@@ -97,9 +99,6 @@ export default function Foro() {
                         <h3 id={`titulo-${post.id}`} className="titulotema">{post.titulo}</h3>
                         <div className="datostema">
                             <span className="info-item" title="Autor del post">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" aria-hidden="true">
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
-                                </svg>
                                 <span className="nombre-autor">{post.autor}</span>
                             </span>
                             <span className="separador" aria-hidden="true">•</span>
@@ -111,48 +110,51 @@ export default function Foro() {
                     <div 
                         className={`contador-respuestas ${post.respuestas > 0 ? 'con-respuestas' : 'sin-respuestas'}`}
                         aria-label={`${post.respuestas} respuestas en este hilo`} >
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" aria-hidden="true">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.172 48.172 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" />
-                        </svg>
-                        {post.respuestas}
+                        {post.respuestas} resp.
                     </div>
                 </div>
 
                 <p className="texto">{post.contenido}</p> 
                 <div className="pietarjeta">
-                    <Link 
-                        to={`/foro/${post.id}`} 
-                        className="enlace-responder"
-                        aria-label={`Leer discusión completa sobre ${post.titulo}`}>
-                        Ver hilo completo &rarr;
-                    </Link>
+                    {estaBaneado ? (
+                        <span style={{ color: '#9ca3af', fontWeight: 'bold', cursor: 'not-allowed', display: 'flex', alignItems: 'center', gap: '5px' }}>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" style={{width: '20px'}}>
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
+                            </svg>
+                            Tema cerrado
+                        </span>
+                    ) : (
+                        <Link 
+                            to={`/foro/${post.id}`} 
+                            className="enlace-responder"
+                            aria-label={`Leer discusión completa sobre ${post.titulo}`}>
+                            Ver hilo completo &rarr;
+                        </Link>
+                    )}
+
                     {esAdmin && (
                         <div className="acciones-admin" role="group" aria-label="Herramientas de administrador">
-                            <button 
-                                onClick={() => censurarPost(post.id)} 
-                                className="boton-censurar"
-                                aria-label="Censurar este post"
-                                title="Ocultar contenido ofensivo">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
-                                </svg>
-                                Censurar
-                            </button>
+                            {!estaBaneado && (
+                                <button 
+                                    onClick={() => censurarPost(post.id)} 
+                                    className="boton-censurar"
+                                    aria-label="Censurar este post"
+                                    title="Ocultar contenido ofensivo">
+                                    Censurar
+                                </button>
+                            )}
                             <button 
                                 onClick={() => borrarPost(post.id)} 
                                 className="boton-borrar"
                                 aria-label="Borrar este post permanentemente"
                                 title="Eliminar de la base de datos" >
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
-                                </svg>
                                 Borrar
                             </button>
                         </div>
                     )}
                 </div>
                 </article>
-            ))
+            )})
             )}
         </div>
       </div>
