@@ -2,7 +2,7 @@
 .paginadetalle {
   background-color: #f3f4f6;
   min-height: 100vh;
-  padding: 40px 20px;
+  padding: 2.5rem 1.25rem;
   font-family: 'Segoe UI', system-ui, sans-serif;
 }
 .centrado {
@@ -15,15 +15,15 @@
 }
 
 .contenedordetalle {
-  max-width: 800px;
+  max-width: 50rem;
   margin: 0 auto;
 }
 
 .enlacevolver {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 20px;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
   text-decoration: none;
   color: #6b7280;
   font-weight: 600;
@@ -34,28 +34,28 @@
   color: #0d9488;
 }
 .enlacevolver svg {
-  width: 20px;
-  height: 20px;
+  width: 1.25rem;
+  height: 1.25rem;
 }
 
 /* Post Principal */
 .cajapost {
   background: white;
-  padding: 30px;
+  padding: 1.875rem;
   border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-  border-left: 5px solid #0d9488; 
-  margin-bottom: 40px;
+  box-shadow: 0 0.25rem 0.375rem rgba(0,0,0,0.05);
+  border-left: 0.3125rem solid #0d9488; 
+  margin-bottom: 2.5rem;
 }
 
-.titulopost { margin: 0 0 10px 0; color: #111827; }
+.titulopost { margin: 0 0 0.625rem 0; color: #111827; }
 
 .datospost { 
   color: #6b7280; 
   font-size: 0.9rem; 
-  margin-bottom: 20px; 
-  border-bottom: 1px solid #eee; 
-  padding-bottom: 15px; 
+  margin-bottom: 1.25rem; 
+  border-bottom: 0.0625rem solid #eee; 
+  padding-bottom: 0.9375rem; 
 }
 
 .autor-resaltado { color: #0d9488; font-weight: bold; }
@@ -70,14 +70,14 @@
 .titulorespuestas {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 0.625rem;
   color: #1f2937;
-  margin-bottom: 20px;
+  margin-bottom: 1.25rem;
 }
 
 .titulorespuestas svg {
-  width: 24px;
-  height: 24px;
+  width: 1.5rem;
+  height: 1.5rem;
   color: #0d9488;
 }
 
@@ -85,25 +85,25 @@
 .listacomentarios { 
   display: flex; 
   flex-direction: column; 
-  gap: 15px; 
-  margin-bottom: 30px; 
+  gap: 0.9375rem; 
+  margin-bottom: 1.875rem; 
 }
 
 .textovacio { color: #9ca3af; font-style: italic; }
 
 .tarjetacomentario {
   background: white;
-  padding: 20px;
+  padding: 1.25rem;
   border-radius: 12px;
-  border: 1px solid #e5e7eb;
+  border: 0.0625rem solid #e5e7eb;
   position: relative; 
-  padding-bottom: 45px; 
+  padding-bottom: 2.8125rem; 
 }
 
 .cabeceracomentario { 
   display: flex; 
   justify-content: space-between; 
-  margin-bottom: 8px; 
+  margin-bottom: 0.5rem; 
   font-size: 0.85rem; 
 }
 
@@ -114,8 +114,8 @@
 /* Botón de borrar comentario con SVG */
 .botonborrar {
   position: absolute;
-  bottom: 10px;
-  right: 15px;
+  bottom: 0.625rem;
+  right: 0.9375rem;
   background: transparent;
   border: none;
   cursor: pointer;
@@ -125,11 +125,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 5px;
+  padding: 0.3125rem;
 }
 .botonborrar svg {
-  width: 20px;
-  height: 20px;
+  width: 1.25rem;
+  height: 1.25rem;
 }
 
 .botonborrar:hover {
@@ -142,19 +142,19 @@
 /* Formulario */
 .zonaescribir { 
   background: white; 
-  padding: 20px; 
+  padding: 1.25rem; 
   border-radius: 12px; 
-  box-shadow: 0 -4px 10px rgba(0,0,0,0.05); 
+  box-shadow: 0 -0.25rem 0.625rem rgba(0,0,0,0.05); 
 }
 
 .zonaescribir h4 { margin-top: 0; color: #374151; }
 
 .cajatexto { 
   width: 100%; 
-  padding: 12px; 
-  border: 1px solid #d1d5db; 
+  padding: 0.75rem; 
+  border: 0.0625rem solid #d1d5db; 
   border-radius: 8px; 
-  margin-bottom: 10px; 
+  margin-bottom: 0.625rem; 
   font-family: inherit; 
   resize: vertical; 
   box-sizing: border-box; 
@@ -167,15 +167,15 @@
   background: #0d9488; 
   color: white; 
   border: none; 
-  padding: 10px 20px; 
+  padding: 0.625rem 1.25rem; 
   border-radius: 6px; 
   font-weight: bold; 
   cursor: pointer; 
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 0.5rem;
   transition: background 0.2s;
 }
 
-.botonenviar svg { width: 18px; height: 18px; }
+.botonenviar svg { width: 1.125rem; height: 1.125rem; }
 .botonenviar:hover { background: #0f766e; }

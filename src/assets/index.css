@@ -15,11 +15,11 @@
   --accent: var(--color-brand-primary); 
   --danger: #ef4444; 
   --radius: 12px; 
-  --gap: 24px; 
-  --max-width: 1200px; 
+  --gap: 1.5rem; 
+  --max-width: 75rem; 
 
   --font-weight-bold: 700;
-  --font-size-base: 14px;
+  --font-size-base: 0.875rem;
 }
 
 /* Layout básico */
@@ -34,7 +34,7 @@ html {
 body {
   margin: 0;
   padding: 0;
-    background-color: #f3f4f6; 
+  background-color: #f3f4f6; 
   background: linear-gradient(to bottom, #f9fafb, #e5e7eb);
   min-height: 100vh; 
   background-attachment: fixed; 
@@ -55,7 +55,7 @@ body {
   width: 100%;
   max-width: var(--max-width);
   margin: 0 auto; 
-  padding: 20px;
+  padding: 1.25rem;
 }
 
 /* Landing */
@@ -65,7 +65,7 @@ body {
   align-items: center;
   gap: var(--gap);
   text-align: center;
-  padding-top: 40px; 
+  padding-top: 2.5rem; 
 }
 
 .landing-title {
@@ -77,7 +77,7 @@ body {
 
 .landing-sub {
   color: var(--muted);
-  max-width: 640px;
+  max-width: 40rem;
   font-size: 1.1rem; 
 }
 
@@ -87,7 +87,7 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 20px;
+  padding: 1.25rem;
 }
 
 /* Botones genéricos */
@@ -95,8 +95,8 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  padding: 12px 20px; 
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem; 
   border-radius: 8px;
   border: none;
   cursor: pointer;
@@ -108,18 +108,18 @@ body {
 .btn-primary {
   background: var(--accent);
   color: #fff;
-  box-shadow: 0 4px 10px rgba(59, 130, 246, 0.35);
+  box-shadow: 0 0.25rem 0.625rem rgba(59, 130, 246, 0.35);
 }
 
 .btn-primary:hover {
   opacity: 0.9;
-  transform: translateY(-1px);
+  transform: translateY(-0.0625rem);
 }
 
 .btn-ghost {
   background: transparent;
   color: var(--text);
-  border: 1px solid var(--color-border);
+  border: 0.0625rem solid var(--color-border);
 }
 
 .btn-ghost:hover {

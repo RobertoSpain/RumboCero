@@ -1,72 +1,70 @@
 .app-content {
-    /* El contenido ocupará el 100% del ancho disponible */
-    width: 100%; 
-    max-width: var(--max-width); 
-    margin: 0 auto;
-    padding: 30px 40px; 
-    min-height: calc(100vh - 80px); 
+  width: 100%; 
+  max-width: var(--max-width); 
+  margin: 0 auto;
+  padding: 1.875rem 2.5rem; 
+  min-height: calc(100vh - 5rem); 
 }
 
-/* Estilo para los títulos de sección (ej. "Mis Viajes", "Estadísticas") */
+/* Estilo para los títulos de sección */
 .section-title {
-    font-size: 2.2rem;
-    font-weight: 800;
-    color: var(--text);
-    margin-bottom: 24px;
-    text-align: left; 
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 1.5rem;
+  text-align: left; 
 }
 
-/* Contenedor principal para organizar cards (viajes, destinos) */
+/* Contenedor principal para organizar cards  */
 .grid-layout {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
-    gap: 25px; 
-    margin-bottom: 40px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(18.75rem, 1fr)); 
+  gap: 1.5625rem; 
+  margin-bottom: 2.5rem;
 }
 
 /* Estilo para los cards dentro de las secciones de Viajes/Destinos */
 .content-card {
-    background: var(--card);
-    border-radius: var(--radius);
-    padding: 20px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-    border: 1px solid var(--color-border);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  box-shadow: 0 0.25rem 0.9375rem rgba(0, 0, 0, 0.05);
+  border: 0.0625rem solid var(--color-border);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .content-card:hover {
-    transform: translateY(-2px); /* Efecto 3D sutil para interactividad */
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  transform: translateY(-0.125rem); 
+  box-shadow: 0 0.375rem 1.25rem rgba(0, 0, 0, 0.1);
 }
 
 .btn-icon {
-    /* Botones pequeños, a menudo usados para editar o eliminar */
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    color: var(--muted);
-    padding: 8px;
-    border-radius: 50%;
-    transition: color 0.2s ease, background 0.2s ease;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--muted);
+  padding: 0.5rem;
+  border-radius: 50%;
+  transition: color 0.2s ease, background 0.2s ease;
 }
 
 .btn-icon:hover {
-    color: var(--accent);
-    background: rgba(59, 130, 246, 0.1);
+  color: var(--accent);
+  background: rgba(59, 130, 246, 0.1);
 }
 
 @media (max-width: 768px) {
-    .app-content {
-        padding: 20px 20px; 
-    }
+  .app-content {
+      padding: 1.25rem 1.25rem; 
+  }
 
-    .section-title {
-        font-size: 1.8rem;
-    }
+  .section-title {
+      font-size: 1.8rem;
+  }
 }
 
 @media (max-width: 480px) {
-    .grid-layout {
-        grid-template-columns: 1fr; 
-    }
+  .grid-layout {
+      grid-template-columns: 1fr; 
+  }
 }
