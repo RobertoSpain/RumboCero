@@ -1,24 +1,18 @@
 import { Link } from 'react-router-dom';
 import '../assets/Landing.css';
 
-// Componente SVG para los íconos de las características
-// Se pueden definir aquí o en un archivo aparte.
-
-// Ícono 1: Calendario / Rutas (Planificación Colaborativa)
 const IconoCalendar = (props) => (
     <svg {...props} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
         <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0V7.5M9.75 9.75h.008v.008H9.75M9.75 12.75h.008v.008H9.75M9.75 15.75h.008v.008H9.75M12.75 9.75h.008v.008h-.008M12.75 12.75h.008v.008h-.008M12.75 15.75h.008v.008h-.008M15.75 9.75h.008v.008h-.008M15.75 12.75h.008v.008h-.008" />
     </svg>
 );
 
-// Ícono 2: Maleta / Equipaje (Listas Conjuntas)
 const IconoLuggage = (props) => (
     <svg {...props} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
         <path strokeLinecap="round" strokeLinejoin="round" d="M20.25 7.5l-.625 10.584A2.25 2.25 0 0 1 17.671 21H6.329a2.25 2.25 0 0 1-2.247-1.916L3.75 7.5M10.5 11.25h3M12 18V7.5m-8.625 2.25L4.5 10.125m15-.75l.875.875" />
     </svg>
 );
 
-// Ícono 3: Mensajes / Chat (Comunidad)
 const IconoChat = (props) => (
     <svg {...props} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
         <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 12.766L4.29 11.72l.62-1.076m4.246 6.03l.875 1.514M12 21.75l-4.5-8.875m4.5 8.875l4.5-8.875m-4.5 8.875a6.75 6.75 0 1 1 0-13.5 6.75 6.75 0 0 1 0 13.5Z" />
@@ -71,9 +65,8 @@ export default function Landing() {
                 </footer>
             </div>
             
-            {/* Nueva Sección de Características (APARECE DESPUÉS DE 100vh) */}
             <section className="caracteristicas-section" role="region" aria-label="Características clave de la aplicación Rumbo Cero">
-                <h2 className="sr-only">Qué ofrece Rumbo Cero</h2> {/* Título oculto para lectores de pantalla */}
+                <h2 className="sr-only">Qué ofrece Rumbo Cero</h2> 
                 <div className="contenedor-caracteristicas">
                     
                     <article className="bloque-caracteristica">

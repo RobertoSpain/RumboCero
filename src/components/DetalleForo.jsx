@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { db, auth } from '../firebase.js';
-import { doc, getDoc, collection, addDoc, onSnapshot, query, orderBy, Timestamp, deleteDoc } from 'firebase/firestore';
+import { doc, getDoc, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp, deleteDoc } from 'firebase/firestore';
 import '../assets/DetalleForo.css';
 
 export default function DetalleForo() {
@@ -19,7 +19,6 @@ export default function DetalleForo() {
       if (rolGuardado === 'administrador') setEsAdmin(true);
     };
     checkAdmin();
-
     const obtenerPost = async () => {
       try {
         const docRef = doc(db, 'foro', id);
@@ -33,12 +32,12 @@ export default function DetalleForo() {
     obtenerPost();
 
     const comentariosRef = collection(db, 'foro', id, 'comentarios');
-    const q = query(comentariosRef, orderBy('createAt', 'asc'));
+    const q = query(comentariosRef, orderBy('createdAt', 'asc'));
     const unsubscribe = onSnapshot(q, (snapshot) => {
       const comData = snapshot.docs.map(doc => ({
         id: doc.id,
         ...doc.data(),
-        fecha: doc.data().createAt?.toDate ? doc.data().createAt.toDate().toLocaleString() : 'Reciente'
+        fecha: doc.data().createdAt?.toDate ? doc.data().createdAt.toDate().toLocaleString() : 'Reciente'
       }));
       setComentarios(comData);
     });
@@ -56,7 +55,7 @@ export default function DetalleForo() {
         texto: nuevoComentario,
         autor: user.displayName || user.email,
         userId: user.uid, 
-        createAt: Timestamp.now()
+        createdAt: serverTimestamp()
       });
       setNuevoComentario(''); 
     } catch (error) { console.error(error); alert("Error al enviar comentario."); }
@@ -83,7 +82,6 @@ export default function DetalleForo() {
           </svg>
           Volver al Foro
         </Link>
-        {/* POST PRINCIPAL */}
         <div className="cajapost">
           <h1 className="titulopost">{post.titulo}</h1>
           <div className="datospost">
@@ -93,8 +91,6 @@ export default function DetalleForo() {
             {post.contenido}
           </div>
         </div>
-
-        {/* SECCIÓN RESPUESTAS */}
         <div className="seccionrespuestas">
           <h3 className="titulorespuestas">
              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">

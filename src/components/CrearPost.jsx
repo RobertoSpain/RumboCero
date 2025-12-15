@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { collection, addDoc, Timestamp } from "firebase/firestore";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { auth, db } from '../firebase.js';
 import '../assets/Foro.css'; 
 
-export default function CrearForo() {
+export default function CrearPost() {
   const [titulo, setTitulo] = useState('');
   const [contenido, setContenido] = useState('');
   const [cargando, setCargando] = useState(false);
@@ -21,7 +21,7 @@ export default function CrearForo() {
         contenido,
         autor: user.displayName || user.email,
         userId: user.uid,
-        createAt: Timestamp.now()
+        createdAt: serverTimestamp()
       });
       navegar('/foro');
     } catch (error) {
@@ -32,7 +32,7 @@ export default function CrearForo() {
     }
   };
   return (
-    <div className="paginaforo"> 
+    <div className="foro"> 
       <div className="crearpost">
         
         <h2 className="titulocrear">
@@ -41,9 +41,7 @@ export default function CrearForo() {
             </svg>
             Nuevo Debate
         </h2>
-        
         <p className="subtitulocrear">Comparte tus dudas o consejos con la comunidad.</p>
-
         <form onSubmit={manejarCreacion} className="formulariocrear">
           <div className="campocrear">
             <label htmlFor="tituloinput" className="labelcrear">Título del Tema</label>
@@ -55,8 +53,7 @@ export default function CrearForo() {
               onChange={e => setTitulo(e.target.value)} 
               placeholder="Ej: ¿Mejor ruta por el norte de España?" 
               required
-              aria-required="true"
-            />
+              aria-required="true"/>
           </div>
           <div className="campocrear">
             <label htmlFor="contenidoarea" className="labelcrear">Tu Mensaje</label>
@@ -71,7 +68,6 @@ export default function CrearForo() {
               aria-required="true"
             ></textarea>
           </div>
-          
           <div className="accionespost">
               <Link to="/foro" className="botoncancelar">Cancelar</Link>
               <button type="submit" className="botonpublicar" disabled={cargando}>

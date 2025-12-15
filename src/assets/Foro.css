@@ -6,17 +6,18 @@
   font-family: 'Segoe UI', system-ui, sans-serif;
 }
 
-/* Clase auxiliar para centrar el spinner de carga */
+/* Clase para limitar el ancho en pantallas grandes */
+.contenedorforo {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* Spinner de carga de página completa */
 .centrado {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 80vh;
-}
-
-.contenedorforo {
-  max-width: 900px;
-  margin: 0 auto;
 }
 
 /* 2. CABECERA */
@@ -182,6 +183,7 @@
 }
 
 .enlace-responder:hover { color: #0f766e; text-decoration: underline; }
+
 /* Botones de Admin */
 .acciones-admin {
   display: flex;
@@ -218,7 +220,12 @@
   border: 2px dashed #e5e7eb;
 }
 
-/* 6. SPINNER DE CARGA ANIMADO */
+/* 6. SPINNERS Y ANIMACIONES (Unificados) */
+@keyframes girar {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
 .spinner-container {
   display: flex;
   flex-direction: column;
@@ -235,11 +242,13 @@
   animation: girar 1s linear infinite;
 }
 
-@keyframes girar {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+.spinnermini { 
+  animation: girar 1s linear infinite; 
+  width: 20px; 
+  height: 20px; 
 }
 
+/* 7. ESTILOS DE CREAR POST (Formulario) */
 .crearpost {
   max-width: 700px;
   margin: 40px auto; 
@@ -341,9 +350,8 @@
 
 .botonpublicar:hover { background-color: #0f766e; }
 .botonpublicar:disabled { background-color: #9ca3af; cursor: not-allowed; }
+
 .flexcentro { display: flex; align-items: center; justify-content: center; gap: 8px; }
-.spinnermini { animation: spin 1s linear infinite; width: 20px; height: 20px; }
-@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
 /* RESPONSIVE */
 @media (max-width: 600px) {

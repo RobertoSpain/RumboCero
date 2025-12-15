@@ -182,3 +182,44 @@
   cursor: not-allowed;
   transform: none;
 }
+
+/* --- ESTILOS DE ICONOS SVG --- */
+.icono-titulo {
+    width: 32px;
+    height: 32px;
+    color: #0d9488; 
+    margin-right: 10px;
+    vertical-align: bottom;
+}
+
+.icono-btn {
+    width: 20px;
+    height: 20px;
+    margin-right: 8px;
+}
+
+.flexcentro {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Spinner de Carga */
+.spinner-loading {
+    width: 20px;
+    height: 20px;
+    animation: spin 1s linear infinite;
+    margin-right: 8px;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Ajuste del título */
+.tituloperfil {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

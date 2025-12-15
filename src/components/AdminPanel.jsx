@@ -8,7 +8,6 @@ export default function AdminPanel() {
     const [viajes, setViajes] = useState([]);
     const [usuarios, setUsuarios] = useState([]);
     const [cargando, setCargando] = useState(true);
-    // --- 1. CARGA DE DATOS ---
     const cargarDatos = async () => {
         setCargando(true);
         try {
@@ -78,7 +77,7 @@ export default function AdminPanel() {
         }
     };
 
-    // --- 3. RENDERIZADO PRO ---
+    // --- 3. RENDERIZADO ---
     return (
         <div className="admin-contenedor">
             <h1 className="titulo-grande">
@@ -120,7 +119,6 @@ export default function AdminPanel() {
                 </div> 
             ) : (
                 <div className="cajaprincipal">
-                {/* --- PANEL DE VIAJES --- */}
                 {tabActiva === 'viajes' && (
                     <div id="panel-viajes" role="tabpanel">
                          <h2 className="titulolista">Gestión de Viajes ({viajes.length})</h2>     
@@ -150,7 +148,6 @@ export default function AdminPanel() {
                         </div>
                     )}
 
-                    {/* --- PANEL DE USUARIOS --- */}
             {tabActiva === 'usuarios' && (
                         <div id="panel-usuarios" role="tabpanel">
                             <h2 className="titulolista">Gestión de Usuarios ({usuarios.length})</h2>
@@ -181,7 +178,6 @@ export default function AdminPanel() {
                                             onClick={() => cambiarRol(u)}
                                             className="boton-mini verde"
                                             aria-label={`Cambiar rol de ${u.nombre}`}>
-                                    {/* Icono Estrella/User */}
                                     {u.rol === 'administrador' ? (
                                     <>
                                    <svg className="icono-mini" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg>
