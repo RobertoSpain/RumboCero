@@ -1,137 +1,144 @@
 /* --- 1. FONDO --- */
 .paginalanding {
-  height: 100vh;
-  width: 100%;
-  background-image: url('https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?q=80&w=2070&auto=format&fit=crop');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  text-align: center;
-  color: white;
-  font-family: 'Segoe UI', sans-serif;
-  overflow: hidden;
+    height: 100vh;
+    width: 100%;
+    background-image: url('https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?q=80&w=2070&auto=format&fit=crop');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    text-align: center;
+    color: white;
+    font-family: 'Segoe UI', sans-serif;
+    overflow: hidden;
 }
 
 /* --- 2. EL FILTRO --- */
 .filtrooscuro {
-  position: absolute;
-  top: 0; left: 0; width: 100%; height: 100%;
-  background: rgba(0, 0, 0, 0.3); 
-  z-index: 1;
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: 1;
 }
 
 /* --- 3. LA CAJA DEL MEDIO --- */
 .cajacentral {
-  position: relative;
-  z-index: 2;
-  max-width: 900px;
-  padding: 0 20px;
-  animation: subir 1s ease-out;
+    position: relative;
+    z-index: 2;
+    max-width: 900px;
+    padding: 0 20px;
+    animation: subir 1s ease-out;
 }
 
 @keyframes subir {
-  from { opacity: 0; transform: translateY(30px); }
-  to { opacity: 1; transform: translateY(0); }
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 /* --- 4. TEXTOS --- */
 .titulazo {
-  font-size: 3.5rem;
-  font-weight: 800;
-  margin-bottom: 25px;
-  line-height: 1.1;
-  text-shadow: 0 4px 20px rgba(0,0,0,0.9);
+    font-size: 3.5rem;
+    font-weight: 800;
+    margin-bottom: 25px;
+    line-height: 1.1;
+    text-shadow: 0 4px 20px rgba(0,0,0,0.9);
 }
 
 .resalteverde {
-  color: #4ade80; 
-  text-shadow: 0 4px 20px rgba(0,0,0,0.9);
+    color: #4ade80;
+    text-shadow: 0 4px 20px rgba(0,0,0,0.9);
 }
 
 .parrafolanding {
-  font-size: 1.25rem;
-  margin-bottom: 40px;
-  line-height: 1.6;
-  font-weight: 700;
-  
-  color: #ffffff !important;
-  opacity: 1;
-  text-shadow: 0 2px 10px rgba(0,0,0,1); 
-  
-  max-width: 800px;
-  margin-left: auto;
-  margin-right: auto;
+    font-size: 1.25rem;
+    margin-bottom: 40px;
+    line-height: 1.6;
+    font-weight: 700;
+
+    color: #ffffff !important;
+    opacity: 1;
+    text-shadow: 0 2px 10px rgba(0,0,0,1);
+
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 /* --- 5. BOTONES --- */
 .zonabotones {
-  display: flex;
-  gap: 20px;
-  justify-content: center;
-  flex-wrap: wrap;
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
 }
 
 .botonlanding {
-  padding: 14px 32px;
-  border-radius: 50px;
-  text-decoration: none;
-  font-weight: 700;
-  font-size: 1.1rem;
-  transition: all 0.3s ease;
-  display: inline-block;
-  backdrop-filter: blur(2px);
+    padding: 14px 32px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    display: inline-block;
+    backdrop-filter: blur(2px);
 }
 
 .botonazul {
-  background-color: #3b82f6;
-  color: white;
-  border: 2px solid #3b82f6;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    background-color: #3b82f6;
+    color: white;
+    border: 2px solid #3b82f6;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
 }
 
 .botonazul:hover {
-  background-color: #2563eb;
-  border-color: #2563eb;
-  transform: translateY(-3px);
+    background-color: #2563eb;
+    border-color: #2563eb;
+    transform: translateY(-3px);
 }
 
 .botontransparente {
-  background-color: rgba(255, 255, 255, 0.1);
-  color: white;
-  border: 2px solid white;
-  text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+    border: 2px solid white;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.8);
 }
 
 .botontransparente:hover {
-  background-color: white;
-  color: #111827;
-  text-shadow: none;
-  transform: translateY(-3px);
+    background-color: white;
+    color: #111827;
+    text-shadow: none;
+    transform: translateY(-3px);
 }
-/* --- 6. FOOTER SOCIAL  --- */
+/* --- 6. FOOTER SOCIAL --- */
 .footer-social {
     position: fixed;
     bottom: 0;
     left: 0;
     width: 100%;
-    
+
     /* Diseño y Estilo */
-    background-color: rgba(0, 0, 0, 0.6); 
+    background-color: rgba(0, 0, 0, 0.6);
     padding: 10px 0;
-    z-index: 5; 
+    z-index: 5;
     box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.5);
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 30px; 
+    gap: 30px;
+}
+
+/* Regla necesaria para mostrar el texto en pantallas grandes */
+.footer-info {
+    display: block;
+    color: white;
+    font-size: 0.95rem;
 }
 
 .footer-social a {
-    color: white; 
+    color: white;
     text-decoration: none;
     font-weight: 600;
     font-size: 0.95rem;
@@ -141,21 +148,124 @@
 }
 
 .footer-social a:hover {
-    background-color: rgba(255, 255, 255, 0.15); 
-    color: #4ade80; 
+    background-color: rgba(255, 255, 255, 0.15);
+    color: #4ade80;
 }
 
-/* Movil */
-@media (max-width: 768px) {
-  .titulazo { font-size: 2.2rem; }
-  .parrafolanding { font-size: 1rem; }
-  .zonabotones { flex-direction: column; width: 100%; }
+
+/* --- 7. SECCIÓN DE CARACTERÍSTICAS (Debajo del 100vh) --- */
+
+.caracteristicas-section {
+    background-color: #f7fafc; /* Color de fondo muy claro para la sección */
+    width: 100%;
+    padding: 80px 20px;
+    position: relative;
+    z-index: 3;
+    overflow: hidden;
 }
-.footer-social {
+
+.contenedor-caracteristicas {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-around;
+    gap: 40px;
+    flex-wrap: wrap;
+}
+
+.bloque-caracteristica {
+    flex: 1; /* Distribuye los bloques equitativamente */
+    min-width: 280px;
+    padding: 30px;
+    border-radius: 12px;
+    background-color: #ffffff; /* Fondo blanco para los bloques */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-align: center;
+}
+
+.bloque-caracteristica:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.bloque-caracteristica h3 {
+    color: #111827; /* Texto oscuro */
+    margin-top: 15px;
+    margin-bottom: 10px;
+    font-size: 1.5rem;
+}
+
+.bloque-caracteristica p {
+    color: #6b7280; /* Texto gris para la descripción */
+    line-height: 1.6;
+}
+
+/* Estilos para los Íconos SVG */
+.icono-feature {
+    width: 48px;
+    height: 48px;
+    color: #0d9488; /* Color Teal/Cian de tu marca */
+    margin: 0 auto;
+}
+
+/* Ocultar contenido a los ojos pero mantenerlo para lectores de pantalla */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+
+
+/* -------------------------------------- */
+/* --- AJUSTES MÓVILES (max-width: 768px) --- */
+/* -------------------------------------- */
+@media (max-width: 768px) {
+    /* Ajustes de Landing Principal */
+    .titulazo { 
+        font-size: 2.2rem; 
+    }
+    .parrafolanding { 
+        font-size: 1rem; 
+    }
+    .zonabotones { 
+        flex-direction: column; 
+        width: 100%; 
+    }
+
+    /* Ajustes de Footer */
+    .footer-social {
         gap: 15px; 
         padding: 10px;
     }
+    
+    /* Regla para ocultar el texto del autor SOLO en móvil */
+    .footer-info {
+        display: none; 
+    }
+    
     .footer-social a {
         font-size: 0.85rem; 
         padding: 5px;
     }
+
+    /* Ajustes de Características */
+    .caracteristicas-section {
+        padding: 40px 15px;
+    }
+    
+    .contenedor-caracteristicas {
+        gap: 20px;
+    }
+
+    .bloque-caracteristica {
+        min-width: 100%;
+        padding: 25px;
+    }
+}
